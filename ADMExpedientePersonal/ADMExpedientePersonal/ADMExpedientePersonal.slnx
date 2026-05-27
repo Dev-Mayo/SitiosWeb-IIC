@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../ADMExpedientePersonal.BLL/ADMExpedientePersonal.BLL.csproj" />
+  <Project Path="../ADMExpedientePersonal.DAL/ADMExpedientePersonal.DAL.csproj" />
+  <Project Path="../ADMExpedientePersonal.Entities/ADMExpedientePersonal.Entities.csproj" />
+  <Project Path="ADMExpedientePersonal.csproj" />
+</Solution>
