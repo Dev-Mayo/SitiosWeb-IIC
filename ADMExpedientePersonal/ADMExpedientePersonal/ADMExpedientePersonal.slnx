@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="../ADMExpedientePersonal.BLL/ADMExpedientePersonal.BLL.csproj" />
-  <Project Path="../ADMExpedientePersonal.DAL/ADMExpedientePersonal.DAL.csproj" />
-  <Project Path="../ADMExpedientePersonal.Entities/ADMExpedientePersonal.Entities.csproj" />
-  <Project Path="ADMExpedientePersonal.csproj" />
+  <Project Path="../ADMExpedientePersonal.BLL/ADMExpedientePersonal.BLL.csproj" Id="c0268e42-ea6a-41ad-8cdf-51d943069956" />
+  <Project Path="../ADMExpedientePersonal.DAL/ADMExpedientePersonal.DAL.csproj" Id="3ecfb761-b399-4223-8d62-23271ec2e19f" />
+  <Project Path="../ADMExpedientePersonal.Entities/ADMExpedientePersonal.Entities.csproj" Id="783e2e50-7c7d-4a8e-90a7-55bf10be5be7" />
+  <Project Path="ADMExpedientePersonal.csproj" Id="aa35c815-deca-4bef-95ba-4446d7d094a5" />
 </Solution>

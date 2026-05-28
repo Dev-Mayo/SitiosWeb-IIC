@@ -158,3 +158,169 @@ CREATE TABLE inst_educativas (
     codigo_institucion VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL
 );
+
+USE SEG;
+
+-- Roles
+INSERT INTO roles (nombre_rol) VALUES 
+('Administrador'),
+('Reclutador');
+
+-- Modulos
+INSERT INTO modulos (nombre_modulo) VALUES 
+('Seguridad'),
+('Oferentes'),
+('Empleados');
+
+-- Roles_Modulos
+INSERT INTO roles_modulos VALUES 
+(1,1),(1,2),(1,3), -- Admin has all
+(2,2);             -- Reclutador only OFE
+
+-- Usuarios
+INSERT INTO usuarios (nombreusuario, nombre_completo, correo, password, estado) VALUES
+('CarPerez','Carlos Perez','admin@shiro.com',AES_ENCRYPT('1234','key'),'Activo'),
+('MarLopez','Maria Lopez','maria@shiro.com',AES_ENCRYPT('1234','key'),'Activo');
+
+-- Usuarios_Roles
+INSERT INTO usuarios_roles VALUES
+(3,1),
+(2,2);
+
+USE OFE;
+
+-- Oferentes
+INSERT INTO oferentes VALUES
+('101010101','Cedula','Juan Ramirez','1995-05-10',0),
+('102020202','DIMEX','Ana Torres','1998-08-20',0);
+
+-- Emails
+INSERT INTO oferente_emails (identificacion,email) VALUES
+('101010101','juan@gmail.com'),
+('102020202','ana@gmail.com');
+
+-- Telefonos
+INSERT INTO oferente_telefonos (identificacion,telefono) VALUES
+('101010101','88888888'),
+('102020202','77777777');
+
+-- Concursos
+INSERT INTO concursos VALUES
+(1,'Concurso TI','2026-01-01','2026-06-01','Vigente'),
+(2,'Concurso RRHH','2026-02-01','2026-07-01','Vigente');
+
+-- Oferente_Concursos
+INSERT INTO oferente_concursos VALUES
+('101010101',1),
+('102020202',2);
+
+-- Preparacion Academica
+INSERT INTO preparacion_acad (institucion,oferente_id,titulo,fecha_inicio,fecha_fin) VALUES
+('UCR','101010101','Ingenieria Sistemas','2015-01-01','2020-01-01'),
+('TEC','102020202','Administracion','2016-01-01','2021-01-01');
+
+-- Experiencia Laboral
+INSERT INTO exp_laboral (empresa,oferente_id,puesto,fecha_inicio,fecha_fin) VALUES
+('IBM','101010101','Developer','2020-02-01','2023-01-01'),
+('HP','102020202','HR Assistant','2021-02-01','2024-01-01');
+
+USE EMP;
+
+-- Puestos
+INSERT INTO puestos VALUES
+(1,'Gerente',2000,NULL),
+(2,'Desarrollador',1200,1);
+
+-- Empleados
+INSERT INTO empleados (identificacion,tipo_identificacion,nombre_completo,fecha_nacimiento,puesto_id) VALUES
+('201010222','Cedula','Luis Gomez','1990-03-10',1),
+('202020333','Cedula','Sofia Vargas','1995-07-15',2);
+
+-- Emails
+INSERT INTO empleado_emails (empleado_id,email) VALUES
+(1,'luis@empresa.com'),
+(2,'sofia@empresa.com');
+
+-- Telefonos
+INSERT INTO empleado_telefonos (empleado_id,telefono) VALUES
+(1,'66666666'),
+(2,'55555555');
+
+-- Requisitos
+INSERT INTO requisitos_puestos VALUES
+(1,'Titulo universitario'),
+(2,'Experiencia minima 2 años');
+
+-- Areas
+INSERT INTO admin_areas VALUES
+(1,'Tecnologia',1),
+(2,'Recursos Humanos',2);
+
+-- Acciones Personal
+INSERT INTO acciones_personal VALUES
+(1,1001,'2026-01-10','Contratacion inicial',1,1),
+(2,1002,'2026-02-15','Cambio de puesto',2,1);
+
+USE OFE;
+
+INSERT INTO entrevistas (oferente_id,empleado_id,fecha_entrevista,estado) VALUES
+('101010101',1,'2026-06-01 10:00:00','Pendiente'),
+('102020202',2,'2026-06-02 14:00:00','Pendiente');
+
+USE GEN;
+
+-- Compañia
+INSERT INTO compania VALUES
+('C01','Servicios Medicos SA');
+
+-- Instituciones
+INSERT INTO inst_educativas VALUES
+('UCR','Universidad de Costa Rica'),
+('TEC','Tecnologico de Costa Rica');
+
+-- Procedimientos almacenados
+DELIMITER $$
+
+create PROCEDURE sp_crear_usuario (
+    IN p_username VARCHAR(50),
+    IN p_fullname VARCHAR(100),
+    IN p_email VARCHAR(100),
+    IN p_password VARCHAR(100)
+)
+BEGIN
+    INSERT INTO usuarios (
+        nombreusuario,
+        nombre_completo,
+        correo,
+        password,
+        estado
+    )
+    VALUES (
+        p_username,
+        p_fullname,
+        p_email,
+        AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!'),
+        'Activo'
+    );
+END$$
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_validar_login (
+    IN p_username VARCHAR(50),
+    IN p_password VARCHAR(100)
+)
+BEGIN
+    SELECT 
+        id_usuario,
+        nombreusuario,
+        nombre_completo,
+        correo,
+        estado
+    FROM usuarios
+    WHERE nombreusuario = p_username
+      AND password = AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!');
+END$$
+
+DELIMITER ;
