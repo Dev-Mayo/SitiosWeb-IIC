@@ -1,0 +1,6 @@
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\ADMExpedientePersonal.Entities.dll
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\ADMExpedientePersonal.Entities.pdb
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.csproj.AssemblyReference.cache
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.csproj.CoreCompileInputs.cache
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.dll
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.pdb
