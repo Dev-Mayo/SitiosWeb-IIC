@@ -17,5 +17,17 @@ namespace ADMExpedientePersonal
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        void Application_EndRequest(object sender, EventArgs e)
+        {
+            foreach (string key in Response.Cookies.Keys)
+            {
+                if (key == "ASP.NET_SessionId")
+                {
+                    Response.Cookies[key].Secure = true;
+                    Response.Cookies[key].HttpOnly = true;
+                    Response.Cookies[key].SameSite = SameSiteMode.Lax;
+                }
+            }
+        }
     }
 }

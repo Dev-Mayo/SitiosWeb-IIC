@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ADMExpedientePersonal.Entities
 {
-    public class Class1
+    public class Modulo
     {
+        public int id_modulo { get; set; }
+        public string nombre_modulo { get; set; }
     }
 }
