@@ -159,6 +159,17 @@ CREATE TABLE inst_educativas (
     nombre VARCHAR(150) NOT NULL
 );
 
+create database BIT;
+use BIT;
+CREATE TABLE bitacoras (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  usuario VARCHAR(100) NOT NULL,
+  accion ENUM('CREATE','READ','UPDATE','DELETE','ERROR') NOT NULL,
+  descripcion JSON NOT NULL
+);
+
+
 USE SEG;
 
 -- Roles
