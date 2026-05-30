@@ -117,6 +117,7 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
+    <Content Include="EMP\RequisitoPuestoForm.aspx" />
     <Content Include="EMP\RequisitosPuestos.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -189,6 +190,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EMP\RequisitoPuestoForm.aspx.cs">
+      <DependentUpon>RequisitoPuestoForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EMP\RequisitoPuestoForm.aspx.designer.cs">
+      <DependentUpon>RequisitoPuestoForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="EMP\RequisitosPuestos.aspx.cs">
       <DependentUpon>RequisitosPuestos.aspx</DependentUpon>

@@ -18,29 +18,59 @@
 
         <div class="card-body">
 
-            <asp:Button ID="btnNuevo"
+           <asp:Button ID="btnNuevo"
+    runat="server"
+    Text="Nuevo"
+    CssClass="btn btn-success mb-3"
+    OnClick="btnNuevo_Click" />
+            <asp:Label ID="lblMensaje"
                 runat="server"
-                Text="Nuevo"
-                CssClass="btn btn-success mb-3" />
+                CssClass="alert alert-success d-block mb-3"
+                Visible="false"></asp:Label>
 
-            <asp:GridView ID="gvRequisitos"
-                runat="server"
-                AutoGenerateColumns="false"
-                CssClass="table table-striped table-bordered">
+          <asp:GridView ID="gvRequisitos"
+    runat="server"
+    AutoGenerateColumns="false"
+    CssClass="table table-striped table-bordered"
+                AllowPaging="true"
+    PageSize="10"
+    OnRowCommand="gvRequisitos_RowCommand"
+    OnPageIndexChanging="gvRequisitos_PageIndexChanging">
 
-                <Columns>
+    <Columns>
 
-                    <asp:BoundField
-                        DataField="requisito_id"
-                        HeaderText="ID" />
+        <asp:BoundField
+            DataField="requisito_id"
+            HeaderText="ID" />
 
-                    <asp:BoundField
-                        DataField="nombre"
-                        HeaderText="Nombre" />
+        <asp:BoundField
+            DataField="nombre"
+            HeaderText="Nombre" />
 
-                </Columns>
+        <asp:TemplateField HeaderText="Acciones">
+            <ItemTemplate>
 
-            </asp:GridView>
+                <asp:LinkButton ID="btnEditar"
+                    runat="server"
+                    Text="Editar"
+                    CssClass="btn btn-sm btn-primary"
+                    CommandName="Editar"
+                    CommandArgument='<%# Eval("requisito_id") %>' />
+
+                <asp:LinkButton ID="btnEliminar"
+                    runat="server"
+                    Text="Eliminar"
+                    CssClass="btn btn-sm btn-danger ms-2"
+                    CommandName="Eliminar"
+                    CommandArgument='<%# Eval("requisito_id") %>'
+                    OnClientClick="return confirm('¿Realmente desea eliminar el elemento seleccionado?');" />
+
+            </ItemTemplate>
+        </asp:TemplateField>
+
+    </Columns>
+
+</asp:GridView>
 
         </div>
 
