@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccionPersonalBLL.cs" />
+    <Compile Include="AreaBLL.cs" />
     <Compile Include="AuthBLL.cs" />
     <Compile Include="MenuBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

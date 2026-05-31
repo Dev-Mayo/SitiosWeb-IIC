@@ -93,6 +93,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccionPersonalDAL.cs" />
+    <Compile Include="AreaDAL.cs" />
     <Compile Include="MenuDAL.cs" />
     <Compile Include="RequisitoPuestoDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />

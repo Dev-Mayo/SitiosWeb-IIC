@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccionPersonal.cs" />
+    <Compile Include="Area.cs" />
+    <Compile Include="Empleado.cs" />
     <Compile Include="Modulo.cs" />
     <Compile Include="RequisitoPuesto.cs" />
     <Compile Include="Usuario.cs" />

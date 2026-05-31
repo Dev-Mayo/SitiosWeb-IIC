@@ -117,6 +117,8 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
+    <Content Include="EMP\AccionesPersonal.aspx" />
+    <Content Include="EMP\AccionPersonalForm.aspx" />
     <Content Include="EMP\AreaForm.aspx" />
     <Content Include="EMP\Areas.aspx" />
     <Content Include="EMP\RequisitoPuestoForm.aspx" />
@@ -192,6 +194,20 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EMP\AccionesPersonal.aspx.cs">
+      <DependentUpon>AccionesPersonal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EMP\AccionesPersonal.aspx.designer.cs">
+      <DependentUpon>AccionesPersonal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EMP\AccionPersonalForm.aspx.cs">
+      <DependentUpon>AccionPersonalForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EMP\AccionPersonalForm.aspx.designer.cs">
+      <DependentUpon>AccionPersonalForm.aspx</DependentUpon>
     </Compile>
     <Compile Include="EMP\AreaForm.aspx.cs">
       <DependentUpon>AreaForm.aspx</DependentUpon>
