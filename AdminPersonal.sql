@@ -159,6 +159,17 @@ CREATE TABLE inst_educativas (
     nombre VARCHAR(150) NOT NULL
 );
 
+create database BIT;
+use BIT;
+CREATE TABLE bitacoras (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  usuario VARCHAR(100) NOT NULL,
+  accion ENUM('CREATE','READ','UPDATE','DELETE','ERROR') NOT NULL,
+  descripcion JSON NOT NULL
+);
+
+
 USE SEG;
 
 -- Roles
@@ -167,15 +178,32 @@ INSERT INTO roles (nombre_rol) VALUES
 ('Reclutador');
 
 -- Modulos
-INSERT INTO modulos (nombre_modulo) VALUES 
-('Seguridad'),
+INSERT INTO modulos (nombre_modulo) VALUES
+('Inicio'),
+('Roles'),
+('Pantallas'),
+('Usuarios'),
 ('Oferentes'),
-('Empleados');
+('Entrevistas'),
+('Puestos'),
+('Áreas'),
+('Acciones Personal'),
+('Bitácora'),
+('Parámetros'),
+('Compañías'),
+('Ubicaciones'),
+('Inst. Educativas');
 
 -- Roles_Modulos
-INSERT INTO roles_modulos VALUES 
-(1,1),(1,2),(1,3), -- Admin has all
-(2,2);             -- Reclutador only OFE
+INSERT INTO roles_modulos (id_rol, id_modulo)
+SELECT 1, id_modulo FROM modulos; -- Admin has all
+INSERT INTO roles_modulos (id_rol, id_modulo)
+SELECT 2, id_modulo FROM modulos
+WHERE nombre_modulo IN (
+    'Inicio',
+    'Oferentes',
+    'Entrevistas'
+);
 
 -- Usuarios
 INSERT INTO usuarios (nombreusuario, nombre_completo, correo, password, estado) VALUES
@@ -322,5 +350,18 @@ BEGIN
     WHERE nombreusuario = p_username
       AND password = AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!');
 END$$
+
+DELIMITER ;
+USE SEG;
+DELIMITER $$
+
+CREATE PROCEDURE sp_obtener_modulos_por_usuario(IN p_id_usuario INT)
+BEGIN
+    SELECT DISTINCT m.id_modulo, m.nombre_modulo
+    FROM modulos m
+    INNER JOIN roles_modulos rm ON m.id_modulo = rm.id_modulo
+    INNER JOIN usuarios_roles ur ON rm.id_rol = ur.id_rol
+    WHERE ur.id_usuario = p_id_usuario;
+END $$
 
 DELIMITER ;

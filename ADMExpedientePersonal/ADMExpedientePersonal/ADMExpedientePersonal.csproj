@@ -181,6 +181,7 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="SEG\Bienvenida.aspx" />
+    <Content Include="SEG\AdminRoles.aspx" />
     <Content Include="SEG\Login.aspx" />
     <Content Include="Site.Master" />
     <Content Include="Web.config" />
@@ -247,6 +248,13 @@
     </Compile>
     <Compile Include="SEG\Bienvenida.aspx.designer.cs">
       <DependentUpon>Bienvenida.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SEG\AdminRoles.aspx.cs">
+      <DependentUpon>AdminRoles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SEG\AdminRoles.aspx.designer.cs">
+      <DependentUpon>AdminRoles.aspx</DependentUpon>
     </Compile>
     <Compile Include="SEG\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
