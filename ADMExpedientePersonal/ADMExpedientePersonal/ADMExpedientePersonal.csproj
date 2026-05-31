@@ -117,6 +117,8 @@
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
+    <Content Include="EMP\AreaForm.aspx" />
+    <Content Include="EMP\Areas.aspx" />
     <Content Include="EMP\RequisitoPuestoForm.aspx" />
     <Content Include="EMP\RequisitosPuestos.aspx" />
     <Content Include="favicon.ico" />
@@ -190,6 +192,20 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EMP\AreaForm.aspx.cs">
+      <DependentUpon>AreaForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EMP\AreaForm.aspx.designer.cs">
+      <DependentUpon>AreaForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EMP\Areas.aspx.cs">
+      <DependentUpon>Areas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EMP\Areas.aspx.designer.cs">
+      <DependentUpon>Areas.aspx</DependentUpon>
     </Compile>
     <Compile Include="EMP\RequisitoPuestoForm.aspx.cs">
       <DependentUpon>RequisitoPuestoForm.aspx</DependentUpon>
