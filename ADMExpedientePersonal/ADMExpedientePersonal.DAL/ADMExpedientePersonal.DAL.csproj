@@ -99,6 +99,7 @@
     <Compile Include="AdminRolDAL.cs" />
     <Compile Include="BitacoraDAL.cs" />
     <Compile Include="MenuDAL.cs" />
+    <Compile Include="OferentesDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

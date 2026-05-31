@@ -68,12 +68,13 @@ CREATE TABLE oferente_concursos (
 );
 CREATE TABLE preparacion_acad (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    institucion VARCHAR(150) NOT NULL,
+    codigo_institucion VARCHAR(50) NOT NULL,
     oferente_id VARCHAR(20),
     titulo VARCHAR(100) NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
-    FOREIGN KEY (oferente_id) REFERENCES oferentes(identificacion)
+    FOREIGN KEY (oferente_id) REFERENCES oferentes(identificacion),
+    FOREIGN KEY (codigo_institucion) REFERENCES GEN.inst_educativas(codigo_institucion)
 );
 CREATE TABLE exp_laboral (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -226,7 +227,7 @@ INSERT INTO oferente_concursos VALUES
 ('102020202',2);
 
 -- Preparacion Academica
-INSERT INTO preparacion_acad (institucion,oferente_id,titulo,fecha_inicio,fecha_fin) VALUES
+INSERT INTO preparacion_acad (codigo_institucion,oferente_id,titulo,fecha_inicio,fecha_fin) VALUES
 ('UCR','101010101','Ingenieria Sistemas','2015-01-01','2020-01-01'),
 ('TEC','102020202','Administracion','2016-01-01','2021-01-01');
 

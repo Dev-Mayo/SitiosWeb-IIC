@@ -54,6 +54,7 @@
     <Compile Include="AuthBLL.cs" />
     <Compile Include="BitacoraBLL.cs" />
     <Compile Include="MenuBLL.cs" />
+    <Compile Include="OferenteBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
