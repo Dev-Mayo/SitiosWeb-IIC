@@ -457,9 +457,9 @@ BEGIN
     END;
 
     START TRANSACTION;
-        -- Remove role assignments first
+
         DELETE FROM usuarios_roles WHERE id_usuario = p_id_usuario;
-        -- Then delete the user
+
         DELETE FROM usuarios WHERE id_usuario = p_id_usuario;
     COMMIT;
 END$$

@@ -58,7 +58,7 @@ namespace ADMExpedientePersonal.BLL
                         nuevo?.correo,
                         nuevo?.estado,
                         nuevo?.roles
-                        // password NOT included per SEG6 requirement
+                       
                     })
                 });
             }
