@@ -65,7 +65,7 @@ namespace ADMExpedientePersonal
                 {
                     case "Inicio":
                         lnkInicio.Visible = true;
-                        lnkInicio.NavigateUrl = $"~/SEG/Bienvenida.aspx?u={username}";
+                        lnkInicio.NavigateUrl = $"~/SEG/Bienvenida.aspx";
                         break;
                     case "Roles":
                         lnkRoles.Visible = true;
