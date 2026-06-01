@@ -1,86 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal\\seg\\adminroles.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:seg\\adminroles.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\adminrolbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\bitacorabll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\seg\\adminroles.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:seg\\adminroles.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 2,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BitacoraBLL.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAqwFkAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-28T23:38:18.572Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AdminRolBLL.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
-              "ViewState": "AgIAAEcAAAAAAAAAAAAIwFgAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-28T09:11:05.958Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AdminRoles.aspx.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx.cs",
-              "RelativeDocumentMoniker": "SEG\\AdminRoles.aspx.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx.cs*",
-              "RelativeToolTip": "SEG\\AdminRoles.aspx.cs*",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAAAKEAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-28T07:22:17.255Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AdminRoles.aspx",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx",
-              "RelativeDocumentMoniker": "SEG\\AdminRoles.aspx",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx",
-              "RelativeToolTip": "SEG\\AdminRoles.aspx",
-              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2026-05-28T07:21:43.897Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }
