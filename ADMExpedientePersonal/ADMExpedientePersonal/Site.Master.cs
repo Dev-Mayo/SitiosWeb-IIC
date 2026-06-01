@@ -37,7 +37,7 @@ namespace ADMExpedientePersonal
 
         private void CargarMenu(int usuarioId, string username)
         {
-            // First hide all menu links
+        
             lnkInicio.Visible = false;
             lnkRoles.Visible = false;
             lnkPantallas.Visible = false;
@@ -55,7 +55,7 @@ namespace ADMExpedientePersonal
             lnkCargarUbi.Visible = false;
             lnkInsEdu.Visible = false;
 
-            // Then show only what the SP returns
+            
             MenuBLL bll = new MenuBLL();
             var modulos = bll.ObtenerModulosPorUsuario(usuarioId);
 
@@ -65,7 +65,7 @@ namespace ADMExpedientePersonal
                 {
                     case "Inicio":
                         lnkInicio.Visible = true;
-                        lnkInicio.NavigateUrl = $"~/SEG/Bienvenida.aspx?u={username}";
+                        lnkInicio.NavigateUrl = $"~/SEG/Bienvenida.aspx";
                         break;
                     case "Roles":
                         lnkRoles.Visible = true;
@@ -130,7 +130,7 @@ namespace ADMExpedientePersonal
                 }
             }
 
-            // Inicio is always visible
+        
             lnkInicio.Visible = true;
             lnkInicio.NavigateUrl = $"~/SEG/Bienvenida.aspx?u={username}";
         }

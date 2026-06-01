@@ -179,15 +179,32 @@ INSERT INTO roles (nombre_rol) VALUES
 ('Reclutador');
 
 -- Modulos
-INSERT INTO modulos (nombre_modulo) VALUES 
-('Seguridad'),
+INSERT INTO modulos (nombre_modulo) VALUES
+('Inicio'),
+('Roles'),
+('Pantallas'),
+('Usuarios'),
 ('Oferentes'),
-('Empleados');
+('Entrevistas'),
+('Puestos'),
+('Áreas'),
+('Acciones Personal'),
+('Bitácora'),
+('Parámetros'),
+('Compañías'),
+('Ubicaciones'),
+('Inst. Educativas');
 
 -- Roles_Modulos
-INSERT INTO roles_modulos VALUES 
-(1,1),(1,2),(1,3), -- Admin has all
-(2,2);             -- Reclutador only OFE
+INSERT INTO roles_modulos (id_rol, id_modulo)
+SELECT 1, id_modulo FROM modulos; -- Admin has all
+INSERT INTO roles_modulos (id_rol, id_modulo)
+SELECT 2, id_modulo FROM modulos
+WHERE nombre_modulo IN (
+    'Inicio',
+    'Oferentes',
+    'Entrevistas'
+);
 
 -- Usuarios
 INSERT INTO usuarios (nombreusuario, nombre_completo, correo, password, estado) VALUES
@@ -291,31 +308,6 @@ INSERT INTO inst_educativas VALUES
 ('TEC','Tecnologico de Costa Rica');
 
 -- Procedimientos almacenados
-DELIMITER $$
-
-create PROCEDURE sp_crear_usuario (
-    IN p_username VARCHAR(50),
-    IN p_fullname VARCHAR(100),
-    IN p_email VARCHAR(100),
-    IN p_password VARCHAR(100)
-)
-BEGIN
-    INSERT INTO usuarios (
-        nombreusuario,
-        nombre_completo,
-        correo,
-        password,
-        estado
-    )
-    VALUES (
-        p_username,
-        p_fullname,
-        p_email,
-        AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!'),
-        'Activo'
-    );
-END$$
-DELIMITER ;
 
 DELIMITER $$
 
@@ -333,6 +325,144 @@ BEGIN
     FROM usuarios
     WHERE nombreusuario = p_username
       AND password = AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!');
+END$$
+
+DELIMITER ;
+USE SEG;
+DELIMITER $$
+
+CREATE PROCEDURE sp_obtener_modulos_por_usuario(IN p_id_usuario INT)
+BEGIN
+    SELECT DISTINCT m.id_modulo, m.nombre_modulo
+    FROM modulos m
+    INNER JOIN roles_modulos rm ON m.id_modulo = rm.id_modulo
+    INNER JOIN usuarios_roles ur ON rm.id_rol = ur.id_rol
+    WHERE ur.id_usuario = p_id_usuario;
+END $$
+
+DELIMITER ;
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_crear_usuario (
+    IN p_username VARCHAR(50),
+    IN p_fullname VARCHAR(100),
+    IN p_email VARCHAR(100),
+    IN p_password VARCHAR(100),
+    IN p_roles VARCHAR(200)
+)
+BEGIN
+    DECLARE v_id_usuario INT;
+
+    INSERT INTO usuarios (nombreusuario, nombre_completo, correo, password, estado)
+    VALUES (
+        p_username,
+        p_fullname,
+        p_email,
+        AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!'),
+        'Activo'
+    );
+
+    SET v_id_usuario = LAST_INSERT_ID();
+
+    INSERT INTO usuarios_roles (id_usuario, id_rol)
+    SELECT v_id_usuario, CAST(TRIM(value) AS UNSIGNED)
+    FROM JSON_TABLE(
+        CONCAT('["', REPLACE(p_roles, ',', '","'), '"]'),
+        '$[*]' COLUMNS (value VARCHAR(10) PATH '$')
+    ) AS roles_tabla;
+END$$
+
+CREATE PROCEDURE sp_listar_usuarios()
+BEGIN
+    SELECT 
+        u.id_usuario,
+        u.nombreusuario,
+        u.nombre_completo,
+        u.correo,
+        u.estado,
+        GROUP_CONCAT(r.nombre_rol ORDER BY r.nombre_rol SEPARATOR ', ') AS roles
+    FROM usuarios u
+    LEFT JOIN usuarios_roles ur ON u.id_usuario = ur.id_usuario
+    LEFT JOIN roles r ON ur.id_rol = r.id_rol
+    GROUP BY u.id_usuario, u.nombreusuario, u.nombre_completo, u.correo, u.estado
+    ORDER BY u.nombre_completo;
+END$$
+
+
+CREATE PROCEDURE sp_obtener_usuario_por_id(IN p_id_usuario INT)
+BEGIN
+    SELECT 
+        u.id_usuario,
+        u.nombreusuario,
+        u.nombre_completo,
+        u.correo,
+        u.estado,
+        GROUP_CONCAT(ur.id_rol ORDER BY ur.id_rol SEPARATOR ',') AS id_roles
+    FROM usuarios u
+    LEFT JOIN usuarios_roles ur ON u.id_usuario = ur.id_usuario
+    WHERE u.id_usuario = p_id_usuario
+    GROUP BY u.id_usuario, u.nombreusuario, u.nombre_completo, u.correo, u.estado;
+END$$
+
+-- UPDATE
+CREATE PROCEDURE sp_actualizar_usuario (
+    IN p_id_usuario INT,
+    IN p_username VARCHAR(50),
+    IN p_fullname VARCHAR(100),
+    IN p_email VARCHAR(100),
+    IN p_estado ENUM('Activo', 'Inactivo', 'Bloqueado'),
+    IN p_roles VARCHAR(200),
+    IN p_password VARCHAR(100)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+        UPDATE usuarios
+        SET
+            nombreusuario   = COALESCE(NULLIF(p_username, ''), nombreusuario),
+            nombre_completo = COALESCE(NULLIF(p_fullname, ''), nombre_completo),
+            correo          = COALESCE(NULLIF(p_email, ''), correo),
+            estado          = COALESCE(p_estado, estado),
+            password        = IF(p_password IS NOT NULL AND p_password != '',
+                                AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!'),
+                                password)
+        WHERE id_usuario = p_id_usuario;
+
+        DELETE FROM usuarios_roles WHERE id_usuario = p_id_usuario;
+
+        INSERT INTO usuarios_roles (id_usuario, id_rol)
+        SELECT p_id_usuario, CAST(TRIM(value) AS UNSIGNED)
+        FROM JSON_TABLE(
+            CONCAT('["', REPLACE(p_roles, ',', '","'), '"]'),
+            '$[*]' COLUMNS (value VARCHAR(10) PATH '$')
+        ) AS roles_tabla;
+
+    COMMIT;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_eliminar_usuario(IN p_id_usuario INT)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        RESIGNAL;
+    END;
+
+    START TRANSACTION;
+
+        DELETE FROM usuarios_roles WHERE id_usuario = p_id_usuario;
+
+        DELETE FROM usuarios WHERE id_usuario = p_id_usuario;
+    COMMIT;
 END$$
 
 DELIMITER ;

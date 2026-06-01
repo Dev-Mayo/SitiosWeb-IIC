@@ -34,6 +34,10 @@ namespace ADMExpedientePersonal.SEG
                 return;
             }
 
+            Session["Usuario"] = result.usuario;
+            Session["NombreUsuario"] = result.usuario.nombre_completo;
+            Session["IdUsuario"] = result.usuario.id_usuario;
+
             Response.Redirect($"~/SEG/Bienvenida.aspx?u={result.usuario.nombreusuario}");
         }
     }

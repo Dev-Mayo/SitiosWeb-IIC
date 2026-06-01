@@ -43,50 +43,52 @@ D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePerso
 D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.IO.Pipelines.xml
 D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Hash.xxHash.xml
 D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Numerics.Vectors.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.dll.config
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.pdb
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.Entities.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Configuration.ConfigurationManager.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\MySql.Data.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Dapper.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Google.Protobuf.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ZstdSharp.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.Streams.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\BouncyCastle.Cryptography.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Memory.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Threading.Tasks.Extensions.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Buffers.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.IO.Pipelines.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Hash.xxHash.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Numerics.Vectors.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.pdb
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.dll.config
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.Entities.pdb
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Configuration.ConfigurationManager.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\MySql.Data.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Dapper.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Google.Protobuf.pdb
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Google.Protobuf.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.Streams.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\BouncyCastle.Cryptography.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Memory.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Threading.Tasks.Extensions.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Buffers.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.IO.Pipelines.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Hash.xxHash.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Numerics.Vectors.xml
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.csproj.AssemblyReference.cache
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.csproj.CoreCompileInputs.cache
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExped.E07082AD.Up2Date
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.pdb
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.dll
-C:\Users\Rafae\Documents\GitHub\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.dll.config
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.Entities.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Configuration.ConfigurationManager.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\MySql.Data.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Dapper.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Google.Protobuf.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ZstdSharp.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.Streams.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\BouncyCastle.Cryptography.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Memory.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Buffers.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.IO.Pipelines.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Hash.xxHash.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.dll.config
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.Entities.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Configuration.ConfigurationManager.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\MySql.Data.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Dapper.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Google.Protobuf.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Google.Protobuf.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.Streams.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\BouncyCastle.Cryptography.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Memory.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Buffers.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Compression.LZ4.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.IO.Pipelines.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\K4os.Hash.xxHash.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.csproj.AssemblyReference.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.csproj.CoreCompileInputs.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExped.E07082AD.Up2Date
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.pdb
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.dll
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.xml

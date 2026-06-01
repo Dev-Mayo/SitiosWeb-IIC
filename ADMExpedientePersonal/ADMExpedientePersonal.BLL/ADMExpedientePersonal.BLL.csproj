@@ -51,11 +51,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminRolBLL.cs" />
+    <Compile Include="AdminUsuarioBLL.cs" />
     <Compile Include="AuthBLL.cs" />
+    <Compile Include="CompaniaBLL.cs" />
+    <Compile Include="ConcursoBLL.cs" />
     <Compile Include="BitacoraBLL.cs" />
     <Compile Include="MenuBLL.cs" />
     <Compile Include="OferenteBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PuestoBLL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADMExpedientePersonal.DAL\ADMExpedientePersonal.DAL.csproj">

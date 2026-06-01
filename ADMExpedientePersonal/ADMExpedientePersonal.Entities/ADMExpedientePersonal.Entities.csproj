@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compania.cs" />
+    <Compile Include="Concurso.cs" />
+    <Compile Include="Modulo.cs" />
+    <Compile Include="Puesto.cs" />
     <Compile Include="Bitacora.cs" />
     <Compile Include="ConcursoTemporal.cs" />
     <Compile Include="Entrevista.cs" />
