@@ -55,6 +55,9 @@
     <Reference Include="MySql.Data, Version=9.7.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\ADMExpedientePersonal\packages\MySql.Data.9.7.0\lib\net48\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\ADMExpedientePersonal\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\ADMExpedientePersonal\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -99,6 +102,8 @@
     <Compile Include="Conexiones\ConexionGEN.cs" />
     <Compile Include="Conexiones\ConexionOFE.cs" />
     <Compile Include="Conexiones\ConexionSEG.cs" />
+    <Compile Include="AdminRolDAL.cs" />
+    <Compile Include="BitacoraDAL.cs" />
     <Compile Include="MenuDAL.cs" />
     <Compile Include="PuestoDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />

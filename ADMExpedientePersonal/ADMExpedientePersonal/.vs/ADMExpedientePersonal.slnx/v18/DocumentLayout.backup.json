@@ -1,16 +1,20 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\",
+  "WorkspaceRootPath": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{783E2E50-7C7D-4A8E-90A7-55BF10BE5BE7}|..\\ADMExpedientePersonal.Entities\\ADMExpedientePersonal.Entities.csproj|c:\\users\\santi\\documents\\cuc\\sitios web\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.entities\\concurso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal\\seg\\adminroles.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:seg\\adminroles.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3ECFB761-B399-4223-8D62-23271EC2E19F}|..\\ADMExpedientePersonal.DAL\\ADMExpedientePersonal.DAL.csproj|c:\\users\\santi\\documents\\cuc\\sitios web\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.dal\\usuariodal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\adminrolbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|c:\\users\\santi\\documents\\cuc\\sitios web\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal\\emp\\adminpuestos.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:emp\\adminpuestos.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\bitacorabll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\seg\\adminroles.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:seg\\adminroles.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,45 +24,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Concurso.cs",
-              "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.Entities\\Concurso.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.Entities\\Concurso.cs",
-              "ToolTip": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.Entities\\Concurso.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.Entities\\Concurso.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "BitacoraBLL.cs",
+              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
+              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
+              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
+              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAqwFkAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T01:34:59.636Z",
+              "WhenOpened": "2026-05-28T23:38:18.572Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UsuarioDAL.cs",
-              "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\UsuarioDAL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.DAL\\UsuarioDAL.cs",
-              "ToolTip": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\UsuarioDAL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.DAL\\UsuarioDAL.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "AdminRolBLL.cs",
+              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
+              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
+              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
+              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
+              "ViewState": "AgIAAEcAAAAAAAAAAAAIwFgAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T01:34:51.214Z",
+              "WhenOpened": "2026-05-28T09:11:05.958Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AdminPuestos.aspx",
-              "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\EMP\\AdminPuestos.aspx",
-              "RelativeDocumentMoniker": "EMP\\AdminPuestos.aspx",
-              "ToolTip": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\EMP\\AdminPuestos.aspx",
-              "RelativeToolTip": "EMP\\AdminPuestos.aspx",
+              "DocumentIndex": 0,
+              "Title": "AdminRoles.aspx.cs",
+              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx.cs",
+              "RelativeDocumentMoniker": "SEG\\AdminRoles.aspx.cs",
+              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx.cs*",
+              "RelativeToolTip": "SEG\\AdminRoles.aspx.cs*",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAAAKEAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-28T07:22:17.255Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AdminRoles.aspx",
+              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx",
+              "RelativeDocumentMoniker": "SEG\\AdminRoles.aspx",
+              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\SEG\\AdminRoles.aspx",
+              "RelativeToolTip": "SEG\\AdminRoles.aspx",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2026-06-01T01:34:43.068Z",
+              "WhenOpened": "2026-05-28T07:21:43.897Z",
               "EditorCaption": ""
             }
           ]
