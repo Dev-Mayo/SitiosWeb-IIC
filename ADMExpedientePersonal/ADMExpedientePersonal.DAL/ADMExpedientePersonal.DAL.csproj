@@ -93,7 +93,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompaniaDAL.cs" />
+    <Compile Include="ConcursoDAL.cs" />
+    <Compile Include="Conexiones\ConexionEMP.cs" />
+    <Compile Include="Conexiones\ConexionGEN.cs" />
+    <Compile Include="Conexiones\ConexionOFE.cs" />
+    <Compile Include="Conexiones\ConexionSEG.cs" />
     <Compile Include="MenuDAL.cs" />
+    <Compile Include="PuestoDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

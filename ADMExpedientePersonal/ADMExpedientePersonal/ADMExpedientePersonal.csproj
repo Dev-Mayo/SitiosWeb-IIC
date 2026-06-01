@@ -115,10 +115,16 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\img\logo.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Default.aspx" />
+    <Content Include="EMP\AdminPuestos.aspx" />
     <Content Include="favicon.ico" />
+    <Content Include="GEN\AdminCompanias.aspx">
+      <BrowseToURL>~/GEN/AdminCompanias.aspx</BrowseToURL>
+    </Content>
     <Content Include="Global.asax" />
+    <Content Include="OFE\RegistroConcursos.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -189,8 +195,29 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EMP\AdminPuestos.aspx.cs">
+      <DependentUpon>AdminPuestos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EMP\AdminPuestos.aspx.designer.cs">
+      <DependentUpon>AdminPuestos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GEN\AdminCompanias.aspx.cs">
+      <DependentUpon>AdminCompanias.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GEN\AdminCompanias.aspx.designer.cs">
+      <DependentUpon>AdminCompanias.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="OFE\RegistroConcursos.aspx.cs">
+      <DependentUpon>RegistroConcursos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OFE\RegistroConcursos.aspx.designer.cs">
+      <DependentUpon>RegistroConcursos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SEG\Bienvenida.aspx.cs">
