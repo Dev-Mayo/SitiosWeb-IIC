@@ -52,6 +52,7 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\K4os.Hash.xxHash.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\MySql.Data.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\Newtonsoft.Json.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\System.Buffers.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\System.Configuration.ConfigurationManager.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\System.IO.Pipelines.dll
@@ -70,6 +71,7 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\K4os.Hash.xxHash.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\MySql.Data.xml
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\Newtonsoft.Json.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\System.Buffers.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\System.Configuration.ConfigurationManager.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\System.IO.Pipelines.xml

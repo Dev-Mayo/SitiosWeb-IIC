@@ -3,6 +3,9 @@
   "WorkspaceRootPath": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3ECFB761-B399-4223-8D62-23271EC2E19F}|..\\ADMExpedientePersonal.DAL\\ADMExpedientePersonal.DAL.csproj|c:\\users\\santi\\documents\\cuc\\sitios web\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.dal\\adminroldal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|c:\\users\\santi\\documents\\cuc\\sitios web\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -36,6 +39,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "AdminRolDAL.cs",
+              "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\AdminRolDAL.cs",
+              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.DAL\\AdminRolDAL.cs",
+              "ToolTip": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\AdminRolDAL.cs",
+              "RelativeToolTip": "..\\ADMExpedientePersonal.DAL\\AdminRolDAL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-01T02:41:56.184Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Site.Master.cs",
               "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\Site.Master.cs",
               "RelativeDocumentMoniker": "Site.Master.cs",
@@ -48,7 +64,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Site.Master",
               "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\Site.Master",
               "RelativeDocumentMoniker": "Site.Master",
@@ -56,12 +72,11 @@
               "RelativeToolTip": "Site.Master",
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
-              "WhenOpened": "2026-06-01T02:27:33.799Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-01T02:27:33.799Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "BitacoraBLL.cs",
               "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
               "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
@@ -73,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "AdminRolBLL.cs",
               "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
               "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
@@ -81,12 +96,11 @@
               "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\AdminRolBLL.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-01T02:26:11.1Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-01T02:26:11.1Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Concurso.cs",
               "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.Entities\\Concurso.cs",
               "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.Entities\\Concurso.cs",
@@ -98,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "AdminPuestos.aspx",
               "DocumentMoniker": "C:\\Users\\santi\\Documents\\CUC\\Sitios WEB\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\EMP\\AdminPuestos.aspx",
               "RelativeDocumentMoniker": "EMP\\AdminPuestos.aspx",

@@ -6,7 +6,10 @@ D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePerso
 D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.pdb
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\ADMExpedientePersonal.Entities.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\ADMExpedientePersonal.Entities.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\Newtonsoft.Json.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\Newtonsoft.Json.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.csproj.AssemblyReference.cache
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.csproj.CoreCompileInputs.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExped.EB10E9A0.Up2Date
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.pdb
