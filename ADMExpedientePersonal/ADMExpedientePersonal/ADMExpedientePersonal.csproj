@@ -180,6 +180,7 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="SEG\AdminUsuarios.aspx" />
     <Content Include="SEG\Bienvenida.aspx" />
     <Content Include="SEG\AdminRoles.aspx" />
     <Content Include="SEG\Login.aspx" />
@@ -221,6 +222,13 @@
       <DependentUpon>RegistroConcursos.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SEG\AdminUsuarios.aspx.cs">
+      <DependentUpon>AdminUsuarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SEG\AdminUsuarios.aspx.designer.cs">
+      <DependentUpon>AdminUsuarios.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SEG\Bienvenida.aspx.cs">
       <DependentUpon>Bienvenida.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -252,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Assets\img\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -13,5 +13,7 @@ namespace ADMExpedientePersonal.Entities
         public string nombre_completo { get; set; }
         public string correo { get; set; }
         public string estado { get; set; }
+        public string id_roles { get; set; }
+        public string roles { get; set; }
     }
 }

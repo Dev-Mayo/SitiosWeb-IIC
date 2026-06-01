@@ -13,3 +13,6 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExped.EB10E9A0.Up2Date
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExpedientePersonal.Entities.pdb
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\Newtonsoft.Json.dll
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\bin\Debug\Newtonsoft.Json.xml
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.Entities\obj\Debug\ADMExped.EB10E9A0.Up2Date

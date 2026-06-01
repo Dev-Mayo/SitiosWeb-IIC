@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminRolBLL.cs" />
+    <Compile Include="AdminUsuarioBLL.cs" />
     <Compile Include="AuthBLL.cs" />
     <Compile Include="CompaniaBLL.cs" />
     <Compile Include="ConcursoBLL.cs" />

@@ -96,6 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminUsuarioDAL.cs" />
     <Compile Include="CompaniaDAL.cs" />
     <Compile Include="ConcursoDAL.cs" />
     <Compile Include="Conexiones\ConexionEMP.cs" />

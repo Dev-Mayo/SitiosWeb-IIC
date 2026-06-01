@@ -90,3 +90,5 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExped.E07082AD.Up2Date
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\obj\Debug\ADMExpedientePersonal.BLL.pdb
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.dll
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.xml

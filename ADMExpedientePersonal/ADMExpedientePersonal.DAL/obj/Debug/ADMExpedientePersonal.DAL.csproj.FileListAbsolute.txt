@@ -84,3 +84,5 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\obj\Debug\ADMExped.3F69B9F7.Up2Date
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\obj\Debug\ADMExpedientePersonal.DAL.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.DAL\obj\Debug\ADMExpedientePersonal.DAL.pdb
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\Newtonsoft.Json.dll
+D:\Escritorio\CUC TI\SitiosWeb\Proyecto\ADMExpedientePersonal\ADMExpedientePersonal.DAL\bin\Debug\Newtonsoft.Json.xml
