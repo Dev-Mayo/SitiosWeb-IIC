@@ -127,5 +127,119 @@ namespace ADMExpedientePersonal.DAL
             return concursos;
         }
 
+        // Obtener entrevistas
+        public List<Entrevista> ObtenerEntrevistas(string identificacion = null)
+        {
+            var entrevistas = new List<Entrevista>();
+
+            using (var conn = new MySqlConnection(connectionStringOFE))
+            using (var cmd = new MySqlCommand("sp_ObtenerEntrevistas", conn))
+            {
+                // Parámetro de entrada
+                if (string.IsNullOrEmpty(identificacion))
+                    cmd.Parameters.AddWithValue("@p_identificacion", DBNull.Value);
+                else
+                    cmd.Parameters.AddWithValue("@p_identificacion", identificacion);
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        entrevistas.Add(new Entrevista
+                        {
+                            EntrevistaId = reader.GetInt32("entrevista_id"),
+                            OferenteIdentificacion = reader.GetString("oferente_id"),
+                            EmpleadoId = reader.GetInt32("empleado_id"),
+                            FechaEntrevista = reader.GetDateTime("fecha_entrevista"),
+                            Estado = reader.GetString("estado")
+                        });
+                    }
+                }
+            }
+            return entrevistas;
+        }
+
+        // Crear entrevista
+        /// <summary>
+        /// Crea una nueva entrevista para un oferente. El estado inicial siempre será "Pendiente"
+        /// </summary>
+        /// <param name="entrevista"> Necesita: OferenteIdentificacion, EmpleadoId, FechaEntrevista </param>
+        /// <returns> 1:Exito </returns>
+        public int CrearEntrevista(Entrevista entrevista)
+        {
+            using (var conn = new MySqlConnection(connectionStringOFE))
+            using (var cmd = new MySqlCommand("sp_CrearEntrevista", conn))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@p_identificacion", entrevista.OferenteIdentificacion);
+                cmd.Parameters.AddWithValue("@p_empleado_id", entrevista.EmpleadoId);
+                cmd.Parameters.AddWithValue("@p_fecha", entrevista.FechaEntrevista);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()); // devuelve 1 si éxito
+            }
+        }
+
+        // Modificar entrevista
+        /// <summary>
+        /// Modifica la fecha o el empleado de una entrevista existente. No se puede modificar el oferente ni el estado desde aquí.
+        /// </summary>
+        /// <param name="entrevista"> Necesita: EntrevistaId, EmpleadoId, FechaEntrevista </param>
+        /// <returns> 1:Exito, 0:Fallos </returns>
+        public int ModificarEntrevista(Entrevista entrevista)
+        {
+            using (var conn = new MySqlConnection(connectionStringOFE))
+            using (var cmd = new MySqlCommand("ModificarEntrevista", conn))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@p_entrevista_id", entrevista.EntrevistaId);
+                cmd.Parameters.AddWithValue("@p_empleado_id", entrevista.EmpleadoId);
+                cmd.Parameters.AddWithValue("@p_fecha", entrevista.FechaEntrevista);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()); // 1 si éxito, 0 si no
+            }
+        }
+
+        // Eliminar entrevista
+        /// <summary>
+        /// Elimina una entrevista existente.
+        /// </summary>
+        /// <param name="entrevistaId">ID de la entrevista a eliminar</param>
+        /// <returns> 1:Exito, 0:Fallo </returns>
+        public int EliminarEntrevista(int entrevistaId)
+        {
+            using (var conn = new MySqlConnection(connectionStringOFE))
+            using (var cmd = new MySqlCommand("sp_EliminarEntrevista", conn))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@p_entrevista_id", entrevistaId);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()); // 1 si éxito, 0 si no
+            }
+        }
+
+        // Cambiar estado
+        /// <summary>
+        /// Cambia el estado de una entrevista existente. El nuevo estado debe ser "Pendiente", "Realizada" o "Eliminada".
+        /// </summary>
+        /// <param name="entrevista">Objeto entrevista que contiene el ID de entrevista y el nuevo estado</param>
+        /// <returns> 1:Exito, 0:Fallo </returns>
+        public int CambiarEstadoEntrevista(Entrevista entrevista)
+        {
+            using (var conn = new MySqlConnection(connectionStringOFE))
+            using (var cmd = new MySqlCommand("sp_CambiarEstadoEntrevista", conn))
+            {
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@p_id", entrevista.EntrevistaId);
+                cmd.Parameters.AddWithValue("@p_estado", entrevista.Estado);
+
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()); // 1 si éxito, 0 si no
+            }
+        }
+
     }
 }

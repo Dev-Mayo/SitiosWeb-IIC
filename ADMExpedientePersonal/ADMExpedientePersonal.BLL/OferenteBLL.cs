@@ -2,6 +2,7 @@
 using ADMExpedientePersonal.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,5 +97,58 @@ namespace ADMExpedientePersonal.BLL
             //GenericoCrearBitacora(Usuario, 3, 1, detalles: "Concursos Temporales");
             return concursos;
         }
+
+        // Obtener entrevistas
+        public List<Entrevista> ObtenerEntrevistas(string Usuario, string identificacion = null)
+        {
+            List<Entrevista> entrevistas = oferentesDAL.ObtenerEntrevistas(identificacion);
+            GenericoCrearBitacora(Usuario, 3, 1, detalles: "Entrevistas");
+            return entrevistas;
+        }
+
+        // Crear entrevista
+        /// <summary>
+        /// Crea una nueva entrevista para un oferente. El estado inicial siempre será "Pendiente"
+        /// </summary>
+        /// <param name="entrevista"> Necesita: OferenteIdentificacion, EmpleadoId, FechaEntrevista </param>
+        /// <returns> 1:Exito </returns>
+        public int CrearEntrevista(Entrevista entrevista)   
+        {
+            return oferentesDAL.CrearEntrevista(entrevista);
+        }
+
+        // Modificar entrevista
+        /// <summary>
+        /// Modifica la fecha o el empleado de una entrevista existente. No se puede modificar el oferente ni el estado desde aquí.
+        /// </summary>
+        /// <param name="entrevista"> Necesita: EntrevistaId, EmpleadoId, FechaEntrevista </param>
+        /// <returns> 1:Exito, 0:Fallos </returns>
+        public int ModificarEntrevista(Entrevista entrevista)
+        {
+            return oferentesDAL.ModificarEntrevista(entrevista);
+        }
+
+        // Eliminar entrevista
+        /// <summary>
+        /// Elimina una entrevista existente.
+        /// </summary>
+        /// <param name="entrevistaId">ID de la entrevista a eliminar</param>
+        /// <returns> 1:Exito, 0:Fallo </returns>
+        public int EliminarEntrevista(int entrevistaId)
+        {
+            return oferentesDAL.EliminarEntrevista(entrevistaId);
+        }
+
+        // Cambiar estado
+        /// <summary>
+        /// Cambia el estado de una entrevista existente. El nuevo estado debe ser "Pendiente", "Realizada" o "Eliminada".
+        /// </summary>
+        /// <param name="entrevista">Objeto entrevista que contiene el ID de entrevista y el nuevo estado</param>
+        /// <returns> 1:Exito, 0:Fallo </returns>
+        public int CambiarEstadoEntrevista(Entrevista entrevista)
+        {
+            return oferentesDAL.CambiarEstadoEntrevista(entrevista);
+        }
+
     }
 }

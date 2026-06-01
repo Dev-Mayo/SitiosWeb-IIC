@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Bitacora.cs" />
     <Compile Include="ConcursoTemporal.cs" />
+    <Compile Include="Entrevista.cs" />
     <Compile Include="Modulo.cs" />
     <Compile Include="Oferente.cs" />
     <Compile Include="Rol.cs" />

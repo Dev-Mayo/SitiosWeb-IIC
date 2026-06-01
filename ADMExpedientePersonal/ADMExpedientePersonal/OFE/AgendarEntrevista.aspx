@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" MasterPageFile="~/Site.Master" CodeBehind="MainOferentes.aspx.cs" Inherits="ADMExpedientePersonal.OFE.MainOferentes" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" MasterPageFile="~/Site.Master" CodeBehind="AgendarEntrevista.aspx.cs" Inherits="ADMExpedientePersonal.OFE.AgendarEntrevista" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
@@ -20,29 +20,33 @@
             <asp:ScriptManager ID="ScriptManager1" runat="server" />
             <asp:UpdatePanel ID="upMain" runat="server">
                 <ContentTemplate>
-                    <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" CssClass="btn btn-primary mb-3 fw-semibold"
+                    <asp:Button ID="btnNuevo" runat="server" Text="Nueva Entrevista" CssClass="btn btn-primary mb-3 fw-semibold"
                         OnClick="btnNuevo_Click" />
 
-                    <asp:HiddenField ID="hfIdOferente" runat="server" />
+                    <asp:HiddenField ID="hfEntrevistaId" runat="server" />
 
-                    <asp:GridView ID="gvOferentes" runat="server" CssClass="table table-striped table-bordered"
-                        AutoGenerateColumns="False" DataKeyNames="identificacion" OnRowCommand="gvOferentes_RowCommand"
-                        AllowPaging="true" PageSize="10" OnPageIndexChanging="gvOferentes_PageIndexChanging" PagerStyle-CssClass="grid-pager">
+                    <asp:GridView ID="gvEntrevistas" runat="server" CssClass="table table-striped table-bordered"
+                        AutoGenerateColumns="False" DataKeyNames="EntrevistaId" OnRowCommand="gvEntrevistas_RowCommand"
+                        AllowPaging="true" PageSize="10" OnPageIndexChanging="gvEntrevistas_PageIndexChanging" PagerStyle-CssClass="grid-pager">
                         <Columns>
-                            <asp:BoundField DataField="identificacion" HeaderText="Identificación" />
-                            <asp:BoundField DataField="nombre_completo" HeaderText="Nombre Completo" />
-                            <asp:BoundField DataField="EmailDisplay" HeaderText="Email" />
-                            <asp:BoundField DataField="TelefonoDisplay" HeaderText="Telefono" />
-                            <asp:BoundField DataField="ConcursoDisplay" HeaderText="Concurso" />
+                            <asp:BoundField DataField="EntrevistaId" HeaderText="Entrevista" />
+                            <asp:BoundField DataField="OferenteIdentificacion" HeaderText="Identificación" />
+                            <asp:BoundField DataField="EmpleadoId" HeaderText="Email" />
+                            <asp:BoundField DataField="FechaEntrevista" HeaderText="Fecha Entrevista" />
+                            <asp:BoundField DataField="Estado" HeaderText="Estado" />
                             <asp:TemplateField HeaderText="Acciones">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="lnkEditar" runat="server" CommandName="Editar"
-                                        CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-warning me-2">
+                                        CommandArgument='<%# Eval("EnrevistaId") %>' CssClass="btn btn-sm btn-warning me-2">
                                         <i class="bi bi-pencil"></i> Editar
                                     </asp:LinkButton>
                                     <asp:LinkButton ID="lnkEliminar" runat="server" CommandName="Eliminar"
-                                        CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-danger">
+                                        CommandArgument='<%# Eval("EntrevistaId") %>' CssClass="btn btn-sm btn-danger">
                                         <i class="bi bi-trash"></i> Eliminar
+                                    </asp:LinkButton>
+                                    <asp:LinkButton ID="lnkRealizada" runat="server" CommandName="Realizada"
+                                        CommandArgument='<%# Eval("EntrevistaId") %>' CssClass="btn btn-sm btn-success">
+                                        <i class="bi bi-check"></i> Realizada
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -63,7 +67,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro que desea eliminar este oferente?</p>
+                    <p>¿Está seguro que desea eliminar la entrevista?</p>
                 </div>
                 <div class="modal-footer">
                     <asp:Button ID="btnConfirmarEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger"
@@ -74,7 +78,7 @@
         </div>
     </div>
 
-        <!-- Modal para Agregar / Editar Oferente -->
+        <!-- Modal para Agregar / Editar Entrevistas -->
     <div id="modalOferente" runat="server" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

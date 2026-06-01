@@ -14,7 +14,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ADMExpedientePersonal.OFE
 {
-    public partial class MainOferentes : System.Web.UI.Page
+    public partial class AgendarEntrevista : System.Web.UI.Page
     {
         private OferenteBLL oferenteBLL = new OferenteBLL();
         private AuthBLL AuthBLL = new AuthBLL();
@@ -56,8 +56,8 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                gvOferentes.DataSource = oferenteBLL.ObtenerOferentes(usuario);
-                gvOferentes.DataBind();
+                gvEntrevistas.DataSource = oferenteBLL.ObtenerEntrevistas(usuario);
+                gvEntrevistas.DataBind();
             }
             catch (Exception ex)
             {
@@ -65,11 +65,11 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        protected void gvOferentes_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void gvRoles_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             try
             {
-                gvOferentes.PageIndex = e.NewPageIndex;
+                gvEntrevistas.PageIndex = e.NewPageIndex;
                 CargarOferentes(); // vuelve a enlazar los datos al GridView
             }
             catch (Exception ex)
@@ -85,12 +85,12 @@ namespace ADMExpedientePersonal.OFE
         }
 
 
-        protected void gvOferentes_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void gvRoles_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
                 int id = Convert.ToInt32(e.CommandArgument);
-                hfIdOferente.Value = e.CommandArgument.ToString();
+                hfEntrevistaId.Value = e.CommandArgument.ToString();
                 if (e.CommandName == "Editar")
                 {
                     lblMensajeError.Text = "";
@@ -128,7 +128,7 @@ namespace ADMExpedientePersonal.OFE
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
                 hfAccion.Value = "1";
-                string identificacion = hfIdOferente.Value;
+                string identificacion = hfEntrevistaId.Value;
                 txtIdentificacion.Enabled = false;
                 var oferente = oferenteBLL.ObtenerOferente(usuario, identificacion);
                 if (oferente != null)
@@ -293,7 +293,7 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                string identificacionOferente = hfIdOferente.Value.ToString();
+                string identificacionOferente = hfEntrevistaId.Value.ToString();
 
                 Oferente oferenteAntiguo = oferenteBLL.ObtenerOferente(usuario, identificacionOferente);
                 if (oferenteAntiguo == null)
