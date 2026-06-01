@@ -48,6 +48,7 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.BLL.pdb
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.Entities.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Configuration.ConfigurationManager.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\MySql.Data.dll
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Dapper.dll
@@ -67,6 +68,7 @@ C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADME
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.pdb
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.DAL.dll.config
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\ADMExpedientePersonal.Entities.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Newtonsoft.Json.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\System.Configuration.ConfigurationManager.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\MySql.Data.xml
 C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpedientePersonal\ADMExpedientePersonal.BLL\bin\Debug\Dapper.xml
