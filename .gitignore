@@ -109,6 +109,11 @@ StyleCopReport.xml
 *.pgc
 *.pgd
 *.rsp
+*.dtbcache,json
+*.dll
+*.pdb
+*.cache
+*.suo
 # but not Directory.Build.rsp, as it configures directory-level build defaults
 !Directory.Build.rsp
 *.sbr
