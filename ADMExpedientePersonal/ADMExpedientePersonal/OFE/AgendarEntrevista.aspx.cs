@@ -27,7 +27,7 @@ namespace ADMExpedientePersonal.OFE
             {
                 if (!IsPostBack)
                 {
-                    CargarOferentes();
+                    CargarEntrevistas();
                 }
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        private void CargarOferentes()
+        private void CargarEntrevistas()
         {
             try
             {
@@ -65,12 +65,12 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        protected void gvRoles_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void gvEntrevistas_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             try
             {
                 gvEntrevistas.PageIndex = e.NewPageIndex;
-                CargarOferentes(); // vuelve a enlazar los datos al GridView
+                CargarEntrevistas(); // vuelve a enlazar los datos al GridView
             }
             catch (Exception ex)
             {
@@ -81,15 +81,20 @@ namespace ADMExpedientePersonal.OFE
         private void MostrarMensaje(string mensaje)
         {
             litMensajeModal.Text = mensaje;
+
+            // Actualiza SOLO el panel del modal
+            upModalMensaje.Update();
+
+            // Lanza el script para mostrar el modal
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowMensaje", "showMensajeModal();", true);
         }
 
 
-        protected void gvRoles_RowCommand(object sender, GridViewCommandEventArgs e)
+
+        protected void gvEntrevistas_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
-                int id = Convert.ToInt32(e.CommandArgument);
                 hfEntrevistaId.Value = e.CommandArgument.ToString();
                 if (e.CommandName == "Editar")
                 {
@@ -100,6 +105,10 @@ namespace ADMExpedientePersonal.OFE
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowEliminar", "showEliminarModal();", true);
                 }
+                else if (e.CommandName == "CambiarEstado")
+                {
+                    cambiarEstado();
+                }
             }
             catch (Exception ex)
             {
@@ -107,17 +116,31 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
+        private void cambiarEstado()
+        {
+            this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
+            resultado = oferenteBLL.CambiarEstadoEntrevista(int.Parse(hfEntrevistaId.Value), usuario);
+            if (resultado != 1)
+            {
+                MostrarMensaje("Estado ya cambiado o falló al cambiarlo");
+                return;
+            }
+            CargarEntrevistas();
+        }
+
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
             lblMensajeError.Text = "";
             hfAccion.Value = "0";
-            txtIdentificacion.Text = "";
-            txtNombreCompleto.Text = "";
-            txtFechaNacimiento.Text = "";
-            txtIdentificacion.Enabled = true;
+            txtEntrevistaId.Text = "0";
+            txtFechaEntrevista.Text = "";
 
-            //Para los concursos, se cargan todos pero no se selecciona ninguno, ya que es un nuevo oferente
-            CargarConcursos();
+            ddlEmpleados.DataSource = oferenteBLL.ObtenerNombreEmpleados(); 
+            ddlEmpleados.DataBind();
+            ddlOferentes.DataSource = oferenteBLL.ObtenerNombreOferentes();
+            ddlOferentes.DataBind();
+
+            ddlOferentes.Enabled = true; // Permitir editar el campo de identificación del oferente al crear una nueva entrevista
 
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
         }
@@ -128,16 +151,23 @@ namespace ADMExpedientePersonal.OFE
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
                 hfAccion.Value = "1";
-                string identificacion = hfEntrevistaId.Value;
-                txtIdentificacion.Enabled = false;
-                var oferente = oferenteBLL.ObtenerOferente(usuario, identificacion);
-                if (oferente != null)
+                int EntrevistaId = int.Parse(hfEntrevistaId.Value);
+                var entrevista = oferenteBLL.ObtenerEntrevista(usuario, EntrevistaId);
+                ddlOferentes.Enabled = false; // No permitir editar el campo de identificación del oferente al editar una entrevista existente
+                if (entrevista != null)
                 {
-                    CargarOferente(oferente);
+                    // Campos simples
+                    txtEntrevistaId.Text = entrevista.EntrevistaId.ToString();
+                    ddlOferentes.Text = entrevista.OferenteIdentificacion;
+                    ddlEmpleados.SelectedValue = entrevista.EmpleadoId.ToString();
+                    txtFechaEntrevista.Text = entrevista.FechaEntrevista.ToString("yyyy-MM-dd");
+
+                    ddlEmpleados.DataSource = oferenteBLL.ObtenerNombreEmpleados();
+                    ddlEmpleados.DataBind();
                 }
                 else
                 {
-                    MostrarMensaje("No se encontró el oferente seleccionado.");
+                    MostrarMensaje("No se encontró la entrevista seleccionada.");
                     return;
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
@@ -148,139 +178,84 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        public void CargarConcursos()
-        {
-            this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-            var concursos = oferenteBLL.ObtenerConcursos(usuario); // devuelve List<Concurso>
-            chkConcursos.DataSource = concursos;
-            chkConcursos.DataTextField = "nombre"; // lo que se muestra
-            chkConcursos.DataValueField = "codigo_concurso"; // el ID que se guarda
-            chkConcursos.DataBind();
-        }
-
-        private void CargarOferente(Oferente oferente)
-        {
-            // Campos simples
-            txtIdentificacion.Text = oferente.identificacion;
-            ddlTipoIdentificacion.SelectedValue = oferente.tipo_identificacion;
-            txtNombreCompleto.Text = oferente.nombre_completo;
-            txtFechaNacimiento.Text = oferente.fecha_nacimiento.ToString("yyyy-MM-dd");
-
-            // Repeater: correos
-            rptCorreos.DataSource = oferente.email;
-            rptCorreos.DataBind();
-
-            // Repeater: teléfonos
-            rptTelefonos.DataSource = oferente.telefono;
-            rptTelefonos.DataBind();
-
-
-            // concursos
-            CargarConcursos();
-
-            // Activar los concursos que ya tiene el usuario
-            foreach (var codigo in oferente.codigo_concurso)
-            {
-                var item = chkConcursos.Items.FindByValue(codigo);
-                if (item != null) item.Selected = true;
-            }
-        }
-
-        protected void btnGuardarOferente_Click(object sender, EventArgs e)
+        protected void btnGuardarEntrevista_Click(object sender, EventArgs e)
         {
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
                 int Accion = Convert.ToInt32(hfAccion.Value);
 
-                if (string.IsNullOrEmpty(txtIdentificacion.Text) || string.IsNullOrWhiteSpace(ddlTipoIdentificacion.Text) 
-                    || string.IsNullOrEmpty(txtNombreCompleto.Text) || string.IsNullOrEmpty(txtFechaNacimiento.Text)
-                    || rptCorreos.Items.Cast<RepeaterItem>().Any(item => string.IsNullOrWhiteSpace((item.FindControl("txtCorreo") as TextBox)?.Text))
-                    || rptTelefonos.Items.Cast<RepeaterItem>().Any(item => string.IsNullOrWhiteSpace((item.FindControl("txtTelefono") as TextBox)?.Text))
-                    || chkConcursos.Items.Cast<ListItem>().All(i => !i.Selected))
+                if (string.IsNullOrEmpty(txtEntrevistaId.Text) || ddlEmpleados.SelectedIndex == -1
+                    || ddlOferentes.SelectedIndex == -1 || string.IsNullOrEmpty(txtFechaEntrevista.Text))
                 {
                     lblMensajeError.Text = "Todos los campos son requeridos.";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                     return;
                 }
-
-                var oferente = new Oferente
+                if (!DateTime.TryParse(txtFechaEntrevista.Text, out _))
                 {
-                    identificacion = txtIdentificacion.Text.Trim(),
-                    tipo_identificacion = ddlTipoIdentificacion.SelectedValue,
-                    nombre_completo = txtNombreCompleto.Text.Trim(),
-                    fecha_nacimiento = DateTime.Parse(txtFechaNacimiento.Text),
-                    email = new List<string>(),
-                    telefono = new List<string>(),
-                    codigo_concurso = new List<string>()
+                    lblMensajeError.Text = "La fecha de entrevista no es válida.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                    return;
+                }
+
+                var entrevista = new Entrevista
+                {
+                    EntrevistaId = Accion == 0 ? 0 : int.Parse(txtEntrevistaId.Text),
+                    EmpleadoId = int.Parse(ddlEmpleados.SelectedValue),
+                    OferenteIdentificacion = ddlOferentes.SelectedValue,
+                    FechaEntrevista = DateTime.Parse(txtFechaEntrevista.Text)
                 };
-
-                // Correos
-                foreach (RepeaterItem item in rptCorreos.Items)
-                {
-                    var txtCorreo = item.FindControl("txtCorreo") as TextBox;
-                    if (txtCorreo != null && !string.IsNullOrWhiteSpace(txtCorreo.Text))
-                        oferente.email.Add(txtCorreo.Text.Trim());
-                }
-
-                // Teléfonos
-                foreach (RepeaterItem item in rptTelefonos.Items)
-                {
-                    var txtTelefono = item.FindControl("txtTelefono") as TextBox;
-                    if (txtTelefono != null && !string.IsNullOrWhiteSpace(txtTelefono.Text))
-                        oferente.telefono.Add(txtTelefono.Text.Trim());
-                }
-
-                // Concursos seleccionados
-                oferente.codigo_concurso = chkConcursos.Items
-                    .Cast<ListItem>()
-                    .Where(i => i.Selected)
-                    .Select(i => i.Value)
-                    .ToList();
 
                 if (Accion == 0) // Nuevo
                 {
-                    this.resultado = oferenteBLL.InsertarOferente(oferente, usuario);
-                    if (resultado == 4)
+                    this.resultado = oferenteBLL.InsertarEntrevista(entrevista, usuario);
+                    if (resultado == 2)
                     {
-                        lblMensajeError.Text = "Todos los datos son obligatorios, ademas de una fecha y correo validos";
+                        lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                         return;
                     }
-                    if (resultado == 3)
+                    else if (resultado == 3)
                     {
-                        lblMensajeError.Text = "Todos los datos son obligatorios";
+                        lblMensajeError.Text = "La fecha de la entrevista no puede ser anterior a la fecha actual.";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                         return;
                     }
                     else if (resultado == 1)
                     {
-                        MostrarMensaje("El oferente ha sido registrado correctamente.");
+                        MostrarMensaje("La entrevista ha sido registrada correctamente.");
                     }
                     else
                     {
-                        lblMensajeError.Text = "Error desconocido al registrar el oferente";
+                        lblMensajeError.Text = "Error desconocido al registrar la entrevista";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                         return;
                     }
                 }
                 else // Editar
                 {
-                    this.resultado = oferenteBLL.ActualizarOferente(oferente, usuario);
-                    if (resultado == 4)
+                    this.resultado = oferenteBLL.ModificarEntrevista(entrevista, usuario);
+                    if (resultado == 2)
                     {
-                        lblMensajeError.Text = "Todos los datos son obligatorios, ademas de una fecha y correo validos";
+                        lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                         return;
                     }
-                    else if (resultado != 1 && resultado != 4)
+                    else if (resultado == 3)
                     {
-                        lblMensajeError.Text = "Error desconocido al modificar el oferente";
+                        lblMensajeError.Text = "La fecha de la entrevista no puede ser anterior a la fecha actual.";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                        return;
+                    }
+                    else if (resultado != 1 && resultado != 2 && resultado != 3)
+                    {
+                        lblMensajeError.Text = "Error desconocido al modificar la entrevista";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                         return;
                     }
                 }
-                CargarOferentes();
+                CargarEntrevistas();
             }
             catch (Exception ex)
             {
@@ -293,21 +268,16 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                string identificacionOferente = hfEntrevistaId.Value.ToString();
+                string entrevistaId = hfEntrevistaId.Value.ToString();
 
-                Oferente oferenteAntiguo = oferenteBLL.ObtenerOferente(usuario, identificacionOferente);
-                if (oferenteAntiguo == null)
+                if (string.IsNullOrEmpty(entrevistaId))
                 {
-                    MostrarMensaje("No se encontró el oferente seleccionado.");
+                    MostrarMensaje("No se reconocio el id de la entrevista");
                     return;
                 }
 
-                int resultado = oferenteBLL.EliminarOferente(oferenteAntiguo, usuario);
-                if (resultado == 2)
-                {
-                    MostrarMensaje("No se puede eliminar un registro con datos relacionados.");
-                }
-                else if (resultado == 1)
+                int resultado = oferenteBLL.EliminarEntrevista(int.Parse(entrevistaId), usuario);
+                if (resultado == 1)
                 {
                     MostrarMensaje("Eliminado correctamente");
                 }
@@ -315,7 +285,7 @@ namespace ADMExpedientePersonal.OFE
                 {
                     MostrarMensaje("No se ha eliminado");
                 }
-                CargarOferentes();
+                CargarEntrevistas();
             }
             catch (Exception ex)
             {
@@ -325,93 +295,6 @@ namespace ADMExpedientePersonal.OFE
             {
                 // Cerrar el modal
                 ScriptManager.RegisterStartupScript(this, GetType(), "HideEliminar", "hideEliminarModal();", true);
-            }
-        }
-
-        // Métodos para agregar dinámicamente campos en los Repeaters
-        protected void btnAgregarCorreo_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var lista = new List<string>();
-                foreach (RepeaterItem item in rptCorreos.Items)
-                {
-                    var txtCorreo = item.FindControl("txtCorreo") as TextBox;
-                    if (txtCorreo != null) lista.Add(txtCorreo.Text.Trim());
-                }
-                lista.Add(""); // nuevo campo vacío
-                rptCorreos.DataSource = lista;
-                rptCorreos.DataBind();
-            }
-            catch (Exception ex)
-            {
-                reportarFallos(ex);
-            }
-        }
-
-        protected void btnAgregarTelefono_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var lista = new List<string>();
-                foreach (RepeaterItem item in rptTelefonos.Items)
-                {
-                    var txtTelefono = item.FindControl("txtTelefono") as TextBox;
-                    if (txtTelefono != null) lista.Add(txtTelefono.Text.Trim());
-                }
-                lista.Add("");
-                rptTelefonos.DataSource = lista;
-                rptTelefonos.DataBind();
-            }
-            catch (Exception ex)
-            {
-                reportarFallos(ex);
-            }
-        }
-
-        protected void rptCorreos_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            try
-            {
-                if (e.CommandName == "EliminarCorreo")
-                {
-                    var lista = new List<string>();
-                    foreach (RepeaterItem item in rptCorreos.Items)
-                    {
-                        var txtCorreo = item.FindControl("txtCorreo") as TextBox;
-                        if (txtCorreo != null) lista.Add(txtCorreo.Text.Trim());
-                    }
-                    lista.RemoveAt(e.Item.ItemIndex);
-                    rptCorreos.DataSource = lista;
-                    rptCorreos.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                reportarFallos(ex);
-            }
-        }
-
-        protected void rptTelefonos_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            try
-            {
-                if (e.CommandName == "EliminarTelefono")
-                {
-                    var lista = new List<string>();
-                    foreach (RepeaterItem item in rptTelefonos.Items)
-                    {
-                        var txtTelefono = item.FindControl("txtTelefono") as TextBox;
-                        if (txtTelefono != null) lista.Add(txtTelefono.Text.Trim());
-                    }
-                    lista.RemoveAt(e.Item.ItemIndex);
-                    rptTelefonos.DataSource = lista;
-                    rptTelefonos.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                reportarFallos(ex);
             }
         }
     }

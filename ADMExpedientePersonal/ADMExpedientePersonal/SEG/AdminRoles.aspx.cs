@@ -27,7 +27,7 @@ namespace ADMExpedientePersonal.SEG
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });
@@ -39,16 +39,15 @@ namespace ADMExpedientePersonal.SEG
         {
             try
             {
-                string username = Request.QueryString["u"];
-                var usuario = AuthBLL.ObtenerUsuarioPorNombre(username);
-                gvRoles.DataSource = adminRolBLL.ObtenerRoles(usuario.nombre_completo);
+                string username = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
+                gvRoles.DataSource = adminRolBLL.ObtenerRoles(username);
                 gvRoles.DataBind();
             }
             catch (Exception ex)
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });
@@ -67,7 +66,7 @@ namespace ADMExpedientePersonal.SEG
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });
@@ -103,7 +102,7 @@ namespace ADMExpedientePersonal.SEG
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });
@@ -138,7 +137,7 @@ namespace ADMExpedientePersonal.SEG
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });
@@ -205,7 +204,7 @@ namespace ADMExpedientePersonal.SEG
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });
@@ -240,7 +239,7 @@ namespace ADMExpedientePersonal.SEG
             {
                 bitacoraBLL.RegistrarBitacora(new Bitacora
                 {
-                    Usuario = Request.QueryString["u"],
+                    Usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo,
                     Accion = AccionBitacora.ERROR,
                     DescripcionJson = bitacoraBLL.CrearJsonError("Error inesperado: " + ex)
                 });

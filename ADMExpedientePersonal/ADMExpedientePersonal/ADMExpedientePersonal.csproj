@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="OFE\MainOferentes.aspx.designer.cs">
       <DependentUpon>MainOferentes.aspx</DependentUpon>
+    </Compile>
     <Compile Include="OFE\RegistroConcursos.aspx.cs">
       <DependentUpon>RegistroConcursos.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -105,6 +105,15 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.HiddenField hfAccion;
 
         /// <summary>
+        /// Control ddlTipoIdentificacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoIdentificacion;
+
+        /// <summary>
         /// Control txtIdentificacion.
         /// </summary>
         /// <remarks>
@@ -114,13 +123,13 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.TextBox txtIdentificacion;
 
         /// <summary>
-        /// Control ddlTipoIdentificacion.
+        /// Control revIdentificacion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoIdentificacion;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator revIdentificacion;
 
         /// <summary>
         /// Control txtNombreCompleto.

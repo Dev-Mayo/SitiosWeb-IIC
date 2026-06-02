@@ -15,6 +15,7 @@ namespace ADMExpedientePersonal.DAL
     public class OferentesDAL
     {
         private string connectionStringOFE = ConfigurationManager.ConnectionStrings["OFE"].ConnectionString;
+        private string connectionStringEMP = ConfigurationManager.ConnectionStrings["EMP"].ConnectionString;
 
         public List<Oferente> ObtenerOferentes(string identificacion = null)
         {
@@ -27,7 +28,7 @@ namespace ADMExpedientePersonal.DAL
 
                 var oferentes = db.Query<Oferente, string, string, int?, Oferente>(
                     "sp_obtener_oferentes",
-                    (oferente, email, telefono, concurso) => 
+                    (oferente, email, telefono, concurso) =>
                     {
                         if (!lookup.TryGetValue(oferente.identificacion, out var entry))
                         {
@@ -55,6 +56,72 @@ namespace ADMExpedientePersonal.DAL
                 ).Distinct().ToList();
 
                 return lookup.Values.ToList();
+            }
+        }
+
+        /// <summary>
+        ///     Obtiene solo el nombre y identificacion de los oferentes
+        /// </summary>
+        /// <returns>Lista de oferentes con solo nombre e identificacion</returns>
+        public List<Oferente> ObtenerNombreOferentes()
+        {
+
+            using (var db = new MySqlConnection(connectionStringOFE))
+            {
+
+                var oferentes = new List<Oferente>();
+                using (var conn = new MySqlConnection(connectionStringOFE))
+                using (var cmd = new MySqlCommand("sp_obtener_nombre_oferentes", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            oferentes.Add(new Oferente
+                            {
+                                identificacion = reader["identificacion"].ToString(),
+                                nombre_completo = reader["nombre_completo"].ToString()
+                            });
+                        }
+                    }
+                }
+                return oferentes;
+            }
+        }
+
+        /// <summary>
+        ///     Obtiene solo el nombre y identificacion de los oferentes ************DEBERIA MOVERLO LUEGO A  LA SECCION DE EMPLEADOS DAL
+        /// </summary>
+        /// <returns>Lista de empleados con solo nombre e id </returns>
+        public List<EmpleadoTemporal> ObtenerNombreEmpleados()
+        {
+
+            using (var db = new MySqlConnection(connectionStringEMP))
+            {
+
+                var empleados = new List<EmpleadoTemporal>();
+                using (var conn = new MySqlConnection(connectionStringEMP))
+                using (var cmd = new MySqlCommand("sp_obtener_nombre_empleados", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            empleados.Add(new EmpleadoTemporal
+                            {
+                                EmpleadoId = Convert.ToInt32(reader["empleado_id"]),
+                                NombreEmpleado = reader["nombre_completo"].ToString()
+                            });
+                        }
+                    }
+                }
+                return empleados;
             }
         }
 
@@ -128,18 +195,19 @@ namespace ADMExpedientePersonal.DAL
         }
 
         // Obtener entrevistas
-        public List<Entrevista> ObtenerEntrevistas(string identificacion = null)
+        public List<Entrevista> ObtenerEntrevistas(int? EntrevistaId = null)
         {
             var entrevistas = new List<Entrevista>();
 
             using (var conn = new MySqlConnection(connectionStringOFE))
             using (var cmd = new MySqlCommand("sp_ObtenerEntrevistas", conn))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
                 // Parámetro de entrada
-                if (string.IsNullOrEmpty(identificacion))
-                    cmd.Parameters.AddWithValue("@p_identificacion", DBNull.Value);
+                if (!EntrevistaId.HasValue)
+                    cmd.Parameters.AddWithValue("@p_EntrevistaId", DBNull.Value);
                 else
-                    cmd.Parameters.AddWithValue("@p_identificacion", identificacion);
+                    cmd.Parameters.AddWithValue("@p_EntrevistaId", EntrevistaId);
 
                 conn.Open();
                 using (var reader = cmd.ExecuteReader())
@@ -225,16 +293,15 @@ namespace ADMExpedientePersonal.DAL
         /// <summary>
         /// Cambia el estado de una entrevista existente. El nuevo estado debe ser "Pendiente", "Realizada" o "Eliminada".
         /// </summary>
-        /// <param name="entrevista">Objeto entrevista que contiene el ID de entrevista y el nuevo estado</param>
+        /// <param name="entrevistaId">ID de la entrevista a modificar</param>
         /// <returns> 1:Exito, 0:Fallo </returns>
-        public int CambiarEstadoEntrevista(Entrevista entrevista)
+        public int CambiarEstadoEntrevista(int EntrevistaId)
         {
             using (var conn = new MySqlConnection(connectionStringOFE))
-            using (var cmd = new MySqlCommand("sp_CambiarEstadoEntrevista", conn))
+            using (var cmd = new MySqlCommand("sp_ModificarEstadoEntrevista", conn))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@p_id", entrevista.EntrevistaId);
-                cmd.Parameters.AddWithValue("@p_estado", entrevista.Estado);
+                cmd.Parameters.AddWithValue("@p_EntrevistaId", EntrevistaId);
 
                 conn.Open();
                 return Convert.ToInt32(cmd.ExecuteScalar()); // 1 si éxito, 0 si no

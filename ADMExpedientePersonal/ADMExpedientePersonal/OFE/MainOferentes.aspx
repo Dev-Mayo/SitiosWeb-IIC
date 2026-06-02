@@ -2,8 +2,22 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
-        .card-custom { max-width: 900px; margin: 40px auto; border-radius: 14px; box-shadow: 0 6px 28px rgba(0,0,0,.15); }
-        .card-header-custom { background: #1aad94; padding: 20px; text-align: center; color: white; }
+        .card-custom {
+            width: calc(100% - 80px);
+            max-width: none;
+            margin: 40px;
+            border-radius: 14px;
+            box-shadow: 0 6px 28px rgba(0,0,0,.15);
+        }
+        .card-header-custom {
+            background: #1aad94;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        .table {
+            width: 100%;
+        }
         .perm-toggle { min-width: 110px; }
         .grid-pager { text-align: center; padding-top: 10px; padding-bottom: 10px;}
         .no-select { pointer-events: none; /* Evita que el cursor interactúe */ background-color: #f8f9fa; /* Opcional: estilo visual */}
@@ -89,20 +103,29 @@
 
                             <asp:HiddenField ID="hfAccion" runat="server" />
 
-                            <!-- Identificación -->
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold">Identificación</label>
-                                <asp:TextBox ID="txtIdentificacion" runat="server" CssClass="form-control" />
-                            </div>
-
                             <!-- Tipo de identificación -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Tipo de identificación</label>
-                                <asp:DropDownList ID="ddlTipoIdentificacion" runat="server" CssClass="form-select">
+                                <asp:DropDownList ID="ddlTipoIdentificacion" runat="server" CssClass="form-select" AutoPostBack="true" OnSelectedIndexChanged="ddlTipoIdentificacion_SelectedIndexChanged">
                                     <asp:ListItem Text="Cédula de identidad" Value="Cedula" />
                                     <asp:ListItem Text="DIMEX" Value="Dimex" />
                                     <asp:ListItem Text="Pasaporte" Value="Pasaporte" />
                                 </asp:DropDownList>
+                            </div>
+
+                            <!-- Identificación -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Identificación</label>
+                                <asp:TextBox ID="txtIdentificacion" runat="server" CssClass="form-control" />
+    
+                                <!-- Validador dinámico -->
+                                <asp:RegularExpressionValidator 
+                                    ID="revIdentificacion" 
+                                    runat="server" 
+                                    ControlToValidate="txtIdentificacion"
+                                    ErrorMessage="Formato inválido para el tipo seleccionado"
+                                    CssClass="text-danger" 
+                                    Display="Dynamic" />
                             </div>
 
                             <div class="mb-3">

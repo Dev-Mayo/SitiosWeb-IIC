@@ -186,6 +186,27 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
+        protected void ddlTipoIdentificacion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (ddlTipoIdentificacion.SelectedValue)
+            {
+                case "Cedula":
+                    // cédula con 9 dígitos
+                    revIdentificacion.ValidationExpression = @"^\d{9}$";
+                    break;
+
+                case "Dimex":
+                    // DIMEX con 12 dígitos
+                    revIdentificacion.ValidationExpression = @"^\d{12}$";
+                    break;
+
+                case "Pasaporte":
+                    // pasaporte con letras y números, 6-12 caracteres
+                    revIdentificacion.ValidationExpression = @"^[A-Za-z0-9]{6,9}$";
+                    break;
+            }
+        }
+
         protected void btnGuardarOferente_Click(object sender, EventArgs e)
         {
             try

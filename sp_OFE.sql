@@ -31,6 +31,15 @@ END$$
 DELIMITER $$
 
 DELIMITER $$
+CREATE PROCEDURE sp_obtener_nombre_oferentes()
+BEGIN
+        -- Todos los oferentes
+        SELECT identificacion, nombre_completo
+        FROM oferentes;
+END$$
+DELIMITER $$
+
+DELIMITER $$
 CREATE PROCEDURE sp_GestionarOferente( -- devuelve 0:error 1:exito 2:ya asignado 3:ya existe
     IN accion INT, -- 0:Crear 1:Modificar 2:Eliminar
     IN p_identificacion VARCHAR(20),
@@ -294,16 +303,16 @@ DELIMITER $$
 -- Entrevistas
 -- =========================================
 DELIMITER $$
-CREATE PROCEDURE sp_ObtenerEntrevistas(IN p_identificacion VARCHAR(20))
+CREATE PROCEDURE sp_ObtenerEntrevistas(IN p_EntrevistaId int)
 BEGIN
-    IF p_identificacion IS NULL THEN
+    IF p_EntrevistaId IS NULL THEN
         SELECT * 
         FROM entrevistas 
         ORDER BY fecha_entrevista ASC;
     ELSE
         SELECT * 
         FROM entrevistas 
-        WHERE oferente_id = p_identificacion
+        WHERE entrevista_id = p_EntrevistaId
         ORDER BY fecha_entrevista ASC;
     END IF;
 END$$
@@ -345,10 +354,14 @@ END$$
 DELIMITER $$
 
 DELIMITER $$
-CREATE PROCEDURE sp_CambiarEstadoEntrevista(IN p_id INT, IN p_estado ENUM('Pendiente','Realizada','Eliminada'))
+CREATE PROCEDURE sp_ModificarEstadoEntrevista(IN p_EntrevistaId INT)
 BEGIN
-    UPDATE entrevistas SET estado = p_estado WHERE entrevista_id = p_id;
-    IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
+	if ((select estado from entrevistas where entrevista_id = p_EntrevistaId) = 'Realizada') then 
+		select 2;
+    else
+		UPDATE entrevistas SET estado = 'Realizada' WHERE entrevista_id = p_EntrevistaId;
+		IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
+    end if;
 END$$
 DELIMITER $$
 
