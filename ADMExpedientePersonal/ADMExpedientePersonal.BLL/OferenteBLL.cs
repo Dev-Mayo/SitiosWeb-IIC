@@ -46,8 +46,8 @@ namespace ADMExpedientePersonal.BLL
                 bitacora.Accion = AccionBitacora.ERROR;
                 bitacora.DescripcionJson = bitacoraBLL.CrearJsonError(detalles);
             }
-            //if (resultado == 1) //si cumplio lo esperado
-              //  bitacoraBLL.RegistrarBitacora(bitacora);
+            if (resultado == 1) //si cumplio lo esperado
+                bitacoraBLL.RegistrarBitacora(bitacora);
         }
 
         public List<Oferente> ObtenerOferentes(string Usuario) //Recuperar todos los ofertentes para mostrar, se registra la consulta en la bitácora
