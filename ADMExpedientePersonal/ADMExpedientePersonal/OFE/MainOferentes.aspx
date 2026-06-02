@@ -50,14 +50,28 @@
                             <asp:BoundField DataField="ConcursoDisplay" HeaderText="Concurso" />
                             <asp:TemplateField HeaderText="Acciones">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lnkEditar" runat="server" CommandName="Editar"
-                                        CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-warning me-2">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="lnkEliminar" runat="server" CommandName="Eliminar"
-                                        CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </asp:LinkButton>
+                                    <div class="d-flex flex-column">
+                                        <div class="mb-2">
+                                            <asp:LinkButton ID="lnkEditar" runat="server" CommandName="Editar"
+                                                CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-warning me-2">
+                                                <i class="bi bi-pencil"></i> Editar
+                                            </asp:LinkButton>
+                                            <asp:LinkButton ID="lnkEliminar" runat="server" CommandName="Eliminar"
+                                                CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i> Eliminar
+                                            </asp:LinkButton>
+                                        </div>
+                                        <div>
+                                        <asp:LinkButton ID="lnkPrepAcademica" runat="server" CommandName="PrepAcademica"
+                                            CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-primary me-2">
+                                            <i class="bi bi-book"></i> Preparación Académica
+                                        </asp:LinkButton>
+                                        <asp:LinkButton ID="lnkExpLaboral" runat="server" CommandName="ExpLaboral"
+                                            CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-primary">
+                                            <i class="bi bi-briefcase"></i> Experiencia Laboral
+                                        </asp:LinkButton>
+                                    </div>
+                                </div>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -140,7 +154,7 @@
                             <!-- Correos electrónicos -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Correos electrónicos</label>
-                                <asp:Repeater ID="rptCorreos" runat="server">
+                                <asp:Repeater ID="rptCorreos" runat="server" OnItemCommand="rptCorreos_ItemCommand">
                                     <ItemTemplate>
                                         <div class="input-group mb-2">
                                             <asp:TextBox ID="txtCorreo" runat="server" CssClass="form-control" Text='<%# Container.DataItem %>' />
@@ -154,7 +168,7 @@
                             <!-- Teléfonos -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Teléfonos de contacto</label>
-                                <asp:Repeater ID="rptTelefonos" runat="server">
+                                <asp:Repeater ID="rptTelefonos" runat="server" OnItemCommand="rptTelefonos_ItemCommand">
                                     <ItemTemplate>
                                         <div class="input-group mb-2">
                                             <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" Text='<%# Container.DataItem %>' />

@@ -1,4 +1,5 @@
 ﻿using ADMExpedientePersonal.BLL;
+using ADMExpedientePersonal.BLL.ModuloOferenteBLL;
 using ADMExpedientePersonal.Entities;
 using Microsoft.Ajax.Utilities;
 using System;
@@ -16,7 +17,9 @@ namespace ADMExpedientePersonal.OFE
 {
     public partial class AgendarEntrevista : System.Web.UI.Page
     {
+        private EntrevistaBLL entrevistaBLL = new EntrevistaBLL();
         private OferenteBLL oferenteBLL = new OferenteBLL();
+
         private AuthBLL AuthBLL = new AuthBLL();
         private string usuario = "Desconocido"; // Variable para almacenar el nombre de usuario
         private int resultado;
@@ -41,12 +44,12 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                oferenteBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: ("Error" + mensaje));
+                entrevistaBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: ("Error" + mensaje));
                 MostrarMensaje("Error inesperado: " + mensaje);
             }
             catch (Exception ex)
             {
-                oferenteBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: "Error no controlado: " + ex);
+                entrevistaBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: "Error no controlado: " + ex);
                 MostrarMensaje("Error no controlado: " + ex);
             }
         }
@@ -56,7 +59,7 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                gvEntrevistas.DataSource = oferenteBLL.ObtenerEntrevistas(usuario);
+                gvEntrevistas.DataSource = entrevistaBLL.ObtenerEntrevistas(usuario);
                 gvEntrevistas.DataBind();
             }
             catch (Exception ex)
@@ -119,7 +122,7 @@ namespace ADMExpedientePersonal.OFE
         private void cambiarEstado()
         {
             this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-            resultado = oferenteBLL.CambiarEstadoEntrevista(int.Parse(hfEntrevistaId.Value), usuario);
+            resultado = entrevistaBLL.CambiarEstadoEntrevista(int.Parse(hfEntrevistaId.Value), usuario);
             if (resultado != 1)
             {
                 MostrarMensaje("Estado ya cambiado o falló al cambiarlo");
@@ -135,7 +138,7 @@ namespace ADMExpedientePersonal.OFE
             txtEntrevistaId.Text = "0";
             txtFechaEntrevista.Text = "";
 
-            ddlEmpleados.DataSource = oferenteBLL.ObtenerNombreEmpleados(); 
+            ddlEmpleados.DataSource = entrevistaBLL.ObtenerNombreEmpleados(); 
             ddlEmpleados.DataBind();
             ddlOferentes.DataSource = oferenteBLL.ObtenerNombreOferentes();
             ddlOferentes.DataBind();
@@ -152,18 +155,20 @@ namespace ADMExpedientePersonal.OFE
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
                 hfAccion.Value = "1";
                 int EntrevistaId = int.Parse(hfEntrevistaId.Value);
-                var entrevista = oferenteBLL.ObtenerEntrevista(usuario, EntrevistaId);
+                var entrevista = entrevistaBLL.ObtenerEntrevista(usuario, EntrevistaId);
                 ddlOferentes.Enabled = false; // No permitir editar el campo de identificación del oferente al editar una entrevista existente
                 if (entrevista != null)
                 {
+                    ddlEmpleados.DataSource = entrevistaBLL.ObtenerNombreEmpleados();
+                    ddlEmpleados.DataBind();
+                    ddlOferentes.DataSource = oferenteBLL.ObtenerNombreOferentes();
+                    ddlOferentes.DataBind();
+
                     // Campos simples
                     txtEntrevistaId.Text = entrevista.EntrevistaId.ToString();
                     ddlOferentes.Text = entrevista.OferenteIdentificacion;
                     ddlEmpleados.SelectedValue = entrevista.EmpleadoId.ToString();
                     txtFechaEntrevista.Text = entrevista.FechaEntrevista.ToString("yyyy-MM-dd");
-
-                    ddlEmpleados.DataSource = oferenteBLL.ObtenerNombreEmpleados();
-                    ddlEmpleados.DataBind();
                 }
                 else
                 {
@@ -209,7 +214,7 @@ namespace ADMExpedientePersonal.OFE
 
                 if (Accion == 0) // Nuevo
                 {
-                    this.resultado = oferenteBLL.InsertarEntrevista(entrevista, usuario);
+                    this.resultado = entrevistaBLL.InsertarEntrevista(entrevista, usuario);
                     if (resultado == 2)
                     {
                         lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
@@ -235,7 +240,7 @@ namespace ADMExpedientePersonal.OFE
                 }
                 else // Editar
                 {
-                    this.resultado = oferenteBLL.ModificarEntrevista(entrevista, usuario);
+                    this.resultado = entrevistaBLL.ModificarEntrevista(entrevista, usuario);
                     if (resultado == 2)
                     {
                         lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
@@ -276,7 +281,7 @@ namespace ADMExpedientePersonal.OFE
                     return;
                 }
 
-                int resultado = oferenteBLL.EliminarEntrevista(int.Parse(entrevistaId), usuario);
+                int resultado = entrevistaBLL.EliminarEntrevista(int.Parse(entrevistaId), usuario);
                 if (resultado == 1)
                 {
                     MostrarMensaje("Eliminado correctamente");
