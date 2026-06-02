@@ -1,6 +1,7 @@
 ﻿using ADMExpedientePersonal.BLL;
 using ADMExpedientePersonal.BLL.ModuloOferenteBLL;
 using ADMExpedientePersonal.Entities;
+using ADMExpedientePersonal.Entities.ModuloOferenteEntities;
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,7 @@ namespace ADMExpedientePersonal.OFE
 {
     public partial class PreparacionAcademica : System.Web.UI.Page
     {
-        private EntrevistaBLL entrevistaBLL = new EntrevistaBLL();
-        private OferenteBLL oferenteBLL = new OferenteBLL();
+        private PrepAcademicaBLL preparacionAcadBLL = new PrepAcademicaBLL();
         private AuthBLL AuthBLL = new AuthBLL();
         private string usuario = "Desconocido"; // Variable para almacenar el nombre de usuario
         private int resultado;
@@ -29,7 +29,7 @@ namespace ADMExpedientePersonal.OFE
             {
                 if (!IsPostBack)
                 {
-                    CargarEntrevistas();
+                    CargarPreparacionAcademica();
                 }
             }
             catch (Exception ex)
@@ -43,23 +43,23 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                entrevistaBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: ("Error" + mensaje));
+                preparacionAcadBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: ("Error" + mensaje));
                 MostrarMensaje("Error inesperado: " + mensaje);
             }
             catch (Exception ex)
             {
-                entrevistaBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: "Error no controlado: " + ex);
+                preparacionAcadBLL.GenericoCrearBitacora(usuario, 4, 1, detalles: "Error no controlado: " + ex);
                 MostrarMensaje("Error no controlado: " + ex);
             }
         }
 
-        private void CargarEntrevistas()
+        private void CargarPreparacionAcademica()
         {
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                gvEntrevistas.DataSource = entrevistaBLL.ObtenerEntrevistas(usuario);
-                gvEntrevistas.DataBind();
+                gvPreparacionAcad.DataSource = preparacionAcadBLL.ObtenerPreparacionAcad(Request.QueryString["id"], usuario);
+                gvPreparacionAcad.DataBind();
             }
             catch (Exception ex)
             {
@@ -67,12 +67,12 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        protected void gvEntrevistas_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        protected void gvPreparacionAcad_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             try
             {
-                gvEntrevistas.PageIndex = e.NewPageIndex;
-                CargarEntrevistas(); // vuelve a enlazar los datos al GridView
+                gvPreparacionAcad.PageIndex = e.NewPageIndex;
+                CargarPreparacionAcademica(); // vuelve a enlazar los datos al GridView
             }
             catch (Exception ex)
             {
@@ -93,11 +93,11 @@ namespace ADMExpedientePersonal.OFE
 
 
 
-        protected void gvEntrevistas_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected void gvPreparacionAcad_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
-                hfEntrevistaId.Value = e.CommandArgument.ToString();
+                hfPreparacionAcadId.Value = e.CommandArgument.ToString();
                 if (e.CommandName == "Editar")
                 {
                     lblMensajeError.Text = "";
@@ -107,10 +107,6 @@ namespace ADMExpedientePersonal.OFE
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowEliminar", "showEliminarModal();", true);
                 }
-                else if (e.CommandName == "CambiarEstado")
-                {
-                    cambiarEstado();
-                }
             }
             catch (Exception ex)
             {
@@ -118,31 +114,16 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        private void cambiarEstado()
-        {
-            this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-            resultado = entrevistaBLL.CambiarEstadoEntrevista(int.Parse(hfEntrevistaId.Value), usuario);
-            if (resultado != 1)
-            {
-                MostrarMensaje("Estado ya cambiado o falló al cambiarlo");
-                return;
-            }
-            CargarEntrevistas();
-        }
-
         protected void btnNuevo_Click(object sender, EventArgs e)
         {
             lblMensajeError.Text = "";
             hfAccion.Value = "0";
-            txtEntrevistaId.Text = "0";
-            txtFechaEntrevista.Text = "";
+            txtOferente.Text = Request.QueryString["id"];
+            txtPreparacionAcadId.Text = "0";
+            txtTitulo.Text = "";
 
-            ddlEmpleados.DataSource = entrevistaBLL.ObtenerNombreEmpleados(); 
-            ddlEmpleados.DataBind();
-            ddlOferentes.DataSource = oferenteBLL.ObtenerNombreOferentes();
-            ddlOferentes.DataBind();
-
-            ddlOferentes.Enabled = true; // Permitir editar el campo de identificación del oferente al crear una nueva entrevista
+            ddlInstituciones.DataSource = preparacionAcadBLL.ObtenerInstituciones(usuario); 
+            ddlInstituciones.DataBind();
 
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
         }
@@ -153,23 +134,26 @@ namespace ADMExpedientePersonal.OFE
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
                 hfAccion.Value = "1";
-                int EntrevistaId = int.Parse(hfEntrevistaId.Value);
-                var entrevista = entrevistaBLL.ObtenerEntrevista(usuario, EntrevistaId);
-                ddlOferentes.Enabled = false; // No permitir editar el campo de identificación del oferente al editar una entrevista existente
-                if (entrevista != null)
-                {
-                    // Campos simples
-                    txtEntrevistaId.Text = entrevista.EntrevistaId.ToString();
-                    ddlOferentes.Text = entrevista.OferenteIdentificacion;
-                    ddlEmpleados.SelectedValue = entrevista.EmpleadoId.ToString();
-                    txtFechaEntrevista.Text = entrevista.FechaEntrevista.ToString("yyyy-MM-dd");
+                int prepAcadId = int.Parse(hfPreparacionAcadId.Value);
+                var preparacionAcad = preparacionAcadBLL.ObtenerPreparacionAcadPorId(prepAcadId, usuario);
+                lblMensajeError.Text = "";
 
-                    ddlEmpleados.DataSource = entrevistaBLL.ObtenerNombreEmpleados();
-                    ddlEmpleados.DataBind();
+                if (preparacionAcad != null)
+                {                
+                    txtPreparacionAcadId.Text = preparacionAcad.Id.ToString();
+                    txtOferente.Text = preparacionAcad.OferenteId;
+                    txtTitulo.Text = preparacionAcad.Titulo;
+                    txtFechaInicio.Text = preparacionAcad.FechaInicio.ToString("yyyy-MM-dd");
+                    txtFechaFin.Text = preparacionAcad.FechaFin.ToString("yyyy-MM-dd");
+
+                    ddlInstituciones.DataSource = preparacionAcadBLL.ObtenerInstituciones(usuario);
+
+                    ddlInstituciones.SelectedValue = preparacionAcad.CodigoInstitucion; 
+                    ddlInstituciones.DataBind();
                 }
                 else
                 {
-                    MostrarMensaje("No se encontró la entrevista seleccionada.");
+                    MostrarMensaje("No se encontró la preparación académica seleccionada.");
                     return;
                 }
                 ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
@@ -180,84 +164,82 @@ namespace ADMExpedientePersonal.OFE
             }
         }
 
-        protected void btnGuardarEntrevista_Click(object sender, EventArgs e)
+        protected void btnGuardarPreparacionAcad_Click(object sender, EventArgs e)
         {
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
                 int Accion = Convert.ToInt32(hfAccion.Value);
 
-                if (string.IsNullOrEmpty(txtEntrevistaId.Text) || ddlEmpleados.SelectedIndex == -1
-                    || ddlOferentes.SelectedIndex == -1 || string.IsNullOrEmpty(txtFechaEntrevista.Text))
+                if (string.IsNullOrEmpty(txtPreparacionAcadId.Text) || ddlInstituciones.SelectedIndex == -1
+                    || string.IsNullOrEmpty(txtTitulo.Text) || string.IsNullOrEmpty(txtFechaInicio.Text) || string.IsNullOrEmpty(txtFechaFin.Text))
                 {
                     lblMensajeError.Text = "Todos los campos son requeridos.";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                     return;
                 }
-                if (!DateTime.TryParse(txtFechaEntrevista.Text, out _))
+                if (!DateTime.TryParse(txtFechaInicio.Text, out _) || !DateTime.TryParse(txtFechaFin.Text, out _))
                 {
-                    lblMensajeError.Text = "La fecha de entrevista no es válida.";
+                    lblMensajeError.Text = "La fecha de inicio o fin no es válida.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                    return;
+                }
+                if (txtTitulo.Text.Length > 100 || !Regex.IsMatch(txtTitulo.Text, @"^[a-zA-Z\s]+$"))
+                {
+                    lblMensajeError.Text = "El título no puede superar los 100 caracteres y solo permite letras y espacios.";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
                     return;
                 }
 
-                var entrevista = new Entrevista
+
+                var prepAcad = new PreparacionAcad
                 {
-                    EntrevistaId = Accion == 0 ? 0 : int.Parse(txtEntrevistaId.Text),
-                    EmpleadoId = int.Parse(ddlEmpleados.SelectedValue),
-                    OferenteIdentificacion = ddlOferentes.SelectedValue,
-                    FechaEntrevista = DateTime.Parse(txtFechaEntrevista.Text)
+                    Id = int.Parse(txtPreparacionAcadId.Text),
+                    CodigoInstitucion = ddlInstituciones.SelectedValue,
+                    Titulo = txtTitulo.Text,
+                    OferenteId = txtOferente.Text,
+                    FechaInicio = DateTime.Parse(txtFechaInicio.Text),
+                    FechaFin = DateTime.Parse(txtFechaFin.Text)
                 };
 
                 if (Accion == 0) // Nuevo
                 {
-                    this.resultado = entrevistaBLL.InsertarEntrevista(entrevista, usuario);
-                    if (resultado == 2)
-                    {
-                        lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
-                        return;
-                    }
-                    else if (resultado == 3)
-                    {
-                        lblMensajeError.Text = "La fecha de la entrevista no puede ser anterior a la fecha actual.";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
-                        return;
-                    }
-                    else if (resultado == 1)
-                    {
-                        MostrarMensaje("La entrevista ha sido registrada correctamente.");
-                    }
-                    else
-                    {
-                        lblMensajeError.Text = "Error desconocido al registrar la entrevista";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
-                        return;
-                    }
+                    this.resultado = preparacionAcadBLL.CrearPreparacionAcad(prepAcad, usuario);
                 }
                 else // Editar
                 {
-                    this.resultado = entrevistaBLL.ModificarEntrevista(entrevista, usuario);
-                    if (resultado == 2)
-                    {
-                        lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
-                        return;
-                    }
-                    else if (resultado == 3)
-                    {
-                        lblMensajeError.Text = "La fecha de la entrevista no puede ser anterior a la fecha actual.";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
-                        return;
-                    }
-                    else if (resultado != 1 && resultado != 2 && resultado != 3)
-                    {
-                        lblMensajeError.Text = "Error desconocido al modificar la entrevista";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
-                        return;
-                    }
+                    this.resultado = preparacionAcadBLL.ModificarPreparacionAcad(prepAcad, usuario);
                 }
-                CargarEntrevistas();
+
+                if (resultado == 2)
+                {
+                    lblMensajeError.Text = "Verifica todos los espacios y datos ingresados.";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                    return;
+                }
+                else if (resultado == 3)
+                {
+                    lblMensajeError.Text = "Error en las fechas, recuerde que la fecha incial debe ser menor a la final";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                    return;
+                }
+                else if (resultado == 4)
+                {
+                    lblMensajeError.Text = "El titulo no puede superar los 100 caracteres y solo permite letras y espacios";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                    return;
+                }
+                if (resultado == 1)
+                {
+                    MostrarMensaje(Accion == 0 ? "Registrado correctamente" : "Modificado correctamente");
+                }
+                else
+                {
+                    lblMensajeError.Text = "Error desconocido al registrar la preparación académica";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
+                    return;
+                }
+                CargarPreparacionAcademica();
             }
             catch (Exception ex)
             {
@@ -270,24 +252,27 @@ namespace ADMExpedientePersonal.OFE
             try
             {
                 this.usuario = AuthBLL.ObtenerUsuarioPorNombre(Request.QueryString["u"]).nombre_completo;
-                string entrevistaId = hfEntrevistaId.Value.ToString();
-
-                if (string.IsNullOrEmpty(entrevistaId))
+                string preparacionAcadId = hfPreparacionAcadId.Value.ToString();
+                if (string.IsNullOrEmpty(preparacionAcadId))
                 {
-                    MostrarMensaje("No se reconocio el id de la entrevista");
+                    MostrarMensaje("No se reconocio el id de la preparación académica");
                     return;
                 }
 
-                int resultado = entrevistaBLL.EliminarEntrevista(int.Parse(entrevistaId), usuario);
+                int resultado = preparacionAcadBLL.EliminarPreparacionAcad(int.Parse(preparacionAcadId), usuario);
                 if (resultado == 1)
                 {
                     MostrarMensaje("Eliminado correctamente");
+                }
+                else if (resultado == 2)
+                {
+                    MostrarMensaje("No se puede eliminar un \r\nregistro con datos relacionados.");
                 }
                 else
                 {
                     MostrarMensaje("No se ha eliminado");
                 }
-                CargarEntrevistas();
+                CargarPreparacionAcademica();
             }
             catch (Exception ex)
             {

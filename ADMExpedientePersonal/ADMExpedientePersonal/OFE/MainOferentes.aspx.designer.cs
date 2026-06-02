@@ -42,24 +42,6 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.Button btnNuevo;
 
         /// <summary>
-        /// Control btnPrepAcademica.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPrepAcademica;
-
-        /// <summary>
-        /// Control btnExpLaboral.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnExpLaboral;
-
-        /// <summary>
         /// Control hfIdOferente.
         /// </summary>
         /// <remarks>

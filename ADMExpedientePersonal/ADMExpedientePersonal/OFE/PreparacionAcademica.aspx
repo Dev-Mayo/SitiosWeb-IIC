@@ -33,33 +33,30 @@
             <asp:ScriptManager ID="ScriptManager1" runat="server" />
             <asp:UpdatePanel ID="upMain" runat="server">
                 <ContentTemplate>
-                    <asp:Button ID="btnNuevo" runat="server" Text="Nueva Entrevista" CssClass="btn btn-primary mb-3 fw-semibold"
+                    <asp:Button ID="btnNuevo" runat="server" Text="Nueva Preparación Académica" CssClass="btn btn-primary mb-3 fw-semibold"
                         OnClick="btnNuevo_Click" />
 
-                    <asp:HiddenField ID="hfEntrevistaId" runat="server" />
+                    <asp:HiddenField ID="hfPreparacionAcadId" runat="server" />
 
-                    <asp:GridView ID="gvEntrevistas" runat="server" CssClass="table table-striped table-bordered"
-                        AutoGenerateColumns="False" DataKeyNames="EntrevistaId" OnRowCommand="gvEntrevistas_RowCommand"
-                        AllowPaging="true" PageSize="10" OnPageIndexChanging="gvEntrevistas_PageIndexChanging" PagerStyle-CssClass="grid-pager">
+                    <asp:GridView ID="gvPreparacionAcad" runat="server" CssClass="table table-striped table-bordered"
+                        AutoGenerateColumns="False" DataKeyNames="Id" OnRowCommand="gvPreparacionAcad_RowCommand"
+                        AllowPaging="true" PageSize="10" OnPageIndexChanging="gvPreparacionAcad_PageIndexChanging" PagerStyle-CssClass="grid-pager">
                         <Columns>
-                            <asp:BoundField DataField="EntrevistaId" HeaderText="Entrevista" />
-                            <asp:BoundField DataField="OferenteIdentificacion" HeaderText="Oferente" />
-                            <asp:BoundField DataField="EmpleadoId" HeaderText="Empleado" />
-                            <asp:BoundField DataField="FechaEntrevista" HeaderText="Fecha Entrevista" />
-                            <asp:BoundField DataField="Estado" HeaderText="Estado" />
+                            <asp:BoundField DataField="Id" HeaderText="Preparación Académica" />
+                            <asp:BoundField DataField="Institucion" HeaderText="Institución" />
+                            <asp:BoundField DataField="OferenteId" HeaderText="Oferente" />
+                            <asp:BoundField DataField="Titulo" HeaderText="Titulo" />
+                            <asp:BoundField DataField="FechaInicio" HeaderText="Fecha inicio" />
+                            <asp:BoundField DataField="FechaFin" HeaderText="Fecha fin" />
                             <asp:TemplateField HeaderText="Acciones">
                                 <ItemTemplate>
                                     <asp:LinkButton ID="lnkEditar" runat="server" CommandName="Editar"
-                                        CommandArgument='<%# Eval("EntrevistaId") %>' CssClass="btn btn-sm btn-warning me-2">
+                                        CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-warning me-2">
                                         <i class="bi bi-pencil"></i> Editar
                                     </asp:LinkButton>
                                     <asp:LinkButton ID="lnkEliminar" runat="server" CommandName="Eliminar"
-                                        CommandArgument='<%# Eval("EntrevistaId") %>' CssClass="btn btn-sm btn-danger">
+                                        CommandArgument='<%# Eval("Id") %>' CssClass="btn btn-sm btn-danger">
                                         <i class="bi bi-trash"></i> Eliminar
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="lnkCambiarEstado" runat="server" CommandName="CambiarEstado"
-                                        CommandArgument='<%# Eval("EntrevistaId") %>' CssClass="btn btn-sm btn-success">
-                                        <i class="bi bi-check"></i> Realizado
                                     </asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
@@ -80,7 +77,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>¿Está seguro que desea eliminar la entrevista?</p>
+                    <p>¿Está seguro que desea eliminar la preparación académica?</p>
                 </div>
                 <div class="modal-footer">
                     <asp:Button ID="btnConfirmarEliminar" runat="server" Text="Eliminar" CssClass="btn btn-danger"
@@ -91,45 +88,52 @@
         </div>
     </div>
 
-        <!-- Modal para Agregar / Editar Entrevistas -->
-    <div id="modalEntrevista" runat="server" class="modal fade" tabindex="-1" aria-hidden="true">
+        <!-- Modal para Agregar / Editar Preparacion academica -->
+    <div id="modalPreparacionAcad" runat="server" class="modal fade" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header card-header-custom text-white">
-                    <h5 class="modal-title" id="modalTitle">Formulario Entrevista</h5>
+                    <h5 class="modal-title" id="modalTitle">Formulario Preparación Académica</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
-                    <asp:UpdatePanel ID="upModalEntrevista" runat="server">
+                    <asp:UpdatePanel ID="upModalPreparacionAcad" runat="server">
                         <ContentTemplate>
 
                             <asp:HiddenField ID="hfAccion" runat="server" />
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Entrevista</label>
-                                <asp:TextBox ID="txtEntrevistaId" runat="server" CssClass="form-control" Enabled="false" />
+                                <label class="form-label fw-semibold">Preparación Académica</label>
+                                <asp:TextBox ID="txtPreparacionAcadId" runat="server" CssClass="form-control" Enabled="false" />
                             </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Institución</label>
+                                <asp:DropDownList ID="ddlInstituciones" runat="server" CssClass="form-select"
+                                    DataTextField="nombre" DataValueField="codigo_institucion" />
+                            </div>
+                            
 
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Oferente</label>
-                                <asp:DropDownList ID="ddlOferentes" runat="server" CssClass="form-select"
-                                    DataTextField="nombre_completo" DataValueField="identificacion" />
+                                <asp:TextBox ID="txtOferente" runat="server" CssClass="form-control" Enabled="false" />
                             </div>
                             
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Empleado</label>
-                                <asp:DropDownList ID="ddlEmpleados" runat="server" CssClass="form-select"
-                                    DataTextField="NombreEmpleado" DataValueField="EmpleadoId" />
+                                <label class="form-label fw-semibold">Titulo</label>
+                                <asp:TextBox ID="txtTitulo" runat="server" CssClass="form-control" />
                             </div>
-                            
 
                             <div class="mb-3">
-                                <label class="form-label fw-semibold">Fecha de entrevista</label>
-                                <asp:TextBox ID="txtFechaEntrevista" runat="server" CssClass="form-control" TextMode="Date" />
+                                <label class="form-label fw-semibold">Fecha Inicio</label>
+                                <asp:TextBox ID="txtFechaInicio" runat="server" CssClass="form-control" TextMode="Date" />
                             </div>
-
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Fecha Fin</label>
+                                <asp:TextBox ID="txtFechaFin" runat="server" CssClass="form-control" TextMode="Date" />
+                            </div>
                             <asp:Label ID="lblMensajeError" runat="server" CssClass="form-label fw-semibold text-danger" />
 
                         </ContentTemplate>
@@ -137,36 +141,36 @@
                 </div>
 
                 <div class="modal-footer">
-                    <asp:Button ID="btnGuardarEntrevista" runat="server" Text="Guardar" CssClass="btn btn-primary"
-                        OnClick="btnGuardarEntrevista_Click" CausesValidation="true" />
+                    <asp:Button ID="btnGuardarPreparacionAcad" runat="server" Text="Guardar" CssClass="btn btn-primary"
+                        OnClick="btnGuardarPreparacionAcad_Click" CausesValidation="true" />
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- UpdatePanel exclusivo para el modal -->
-<asp:UpdatePanel ID="upModalMensaje" runat="server" UpdateMode="Conditional">
-    <ContentTemplate>
-        <!-- Modal Mensaje -->
-        <div id="modalMensaje" runat="server" class="modal fade" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning text-dark">
-                        <h5 class="modal-title">Mensaje del sistema</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <asp:Literal ID="litMensajeModal" runat="server" />
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+    <!-- UpdatePanel exclusivo para el modal -->
+    <asp:UpdatePanel ID="upModalMensaje" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>
+            <!-- Modal Mensaje -->
+            <div id="modalMensaje" runat="server" class="modal fade" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-dark">
+                            <h5 class="modal-title">Mensaje del sistema</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <asp:Literal ID="litMensajeModal" runat="server" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </ContentTemplate>
-</asp:UpdatePanel>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
 
 
@@ -174,12 +178,12 @@
     <!-- Script para abrir/cerrar modal desde codigo -->
     <script type="text/javascript">
         function showModal() {
-            var modalEl = document.getElementById('<%= modalEntrevista.ClientID %>');
+            var modalEl = document.getElementById('<%= modalPreparacionAcad.ClientID %>');
             var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
             modal.show();
         }
         function hideModal() {
-            var modalEl = document.getElementById('<%= modalEntrevista.ClientID %>');
+            var modalEl = document.getElementById('<%= modalPreparacionAcad.ClientID %>');
                 var modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) modal.hide();
         }

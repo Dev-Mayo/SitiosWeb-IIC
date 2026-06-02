@@ -100,6 +100,14 @@ namespace ADMExpedientePersonal.OFE
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "ShowEliminar", "showEliminarModal();", true);
                 }
+                else if (e.CommandName == "PrepAcademica")
+                {
+                    Response.Redirect($"~/OFE/PreparacionAcademica.aspx?u={Request.QueryString["u"]}&id={hfIdOferente.Value}");
+                }
+                else if (e.CommandName == "ExpLaboral")
+                {
+                    Response.Redirect($"~/OFE/ExperienciaLaboral.aspx?u={Request.QueryString["u"]}&id={hfIdOferente.Value}");
+                }
             }
             catch (Exception ex)
             {
@@ -122,15 +130,15 @@ namespace ADMExpedientePersonal.OFE
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
         }
 
-        protected void btnPrepAcademica_Click(object sender, EventArgs e)
+        /*protected void btnPrepAcademica_Click(object sender, EventArgs e)
         {
-            Response.Redirect($"~/OFE/PreparacionAcademica.aspx?u={Request.QueryString["u"]}");
+            Response.Redirect($"~/OFE/PreparacionAcademica.aspx?u={Request.QueryString["u"]}&id={hfIdOferente.Value}");
         }
 
         protected void btnExpLaboral_Click(object sender, EventArgs e)
         {
-            Response.Redirect($"~/OFE/ExperienciaLaboral.aspx?u={Request.QueryString["u"]}");
-        }
+            Response.Redirect($"~/OFE/ExperienciaLaboral.aspx?u={Request.QueryString["u"]}&id={hfIdOferente.Value}");
+        }*/
 
         private void AbrirModalEditar()
         {

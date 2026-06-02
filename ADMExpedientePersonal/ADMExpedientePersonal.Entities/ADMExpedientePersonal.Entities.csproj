@@ -49,6 +49,8 @@
     <Compile Include="ModuloOferenteEntities\EmpleadoTemporal.cs" />
     <Compile Include="InstEducativa.cs" />
     <Compile Include="Modulo.cs" />
+    <Compile Include="ModuloOferenteEntities\ExpLaboral.cs" />
+    <Compile Include="ModuloOferenteEntities\PreparacionAcad.cs" />
     <Compile Include="Puesto.cs" />
     <Compile Include="Bitacora.cs" />
     <Compile Include="ModuloOferenteEntities\ConcursoTemporal.cs" />

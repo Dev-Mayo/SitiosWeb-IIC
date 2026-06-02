@@ -36,10 +36,6 @@
                 <ContentTemplate>
                     <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" CssClass="btn btn-primary mb-3 fw-semibold"
                         OnClick="btnNuevo_Click" />
-                    <asp:Button ID="btnPrepAcademica" runat="server" Text="Preparación Académica" CssClass="btn btn-primary mb-3 fw-semibold"
-    OnClick="btnPrepAcademica_Click" />
-                    <asp:Button ID="btnExpLaboral" runat="server" Text="Experiencia Laboral" CssClass="btn btn-primary mb-3 fw-semibold"
-    OnClick="btnExpLaboral_Click" />
 
                     <asp:HiddenField ID="hfIdOferente" runat="server" />
 
@@ -54,14 +50,28 @@
                             <asp:BoundField DataField="ConcursoDisplay" HeaderText="Concurso" />
                             <asp:TemplateField HeaderText="Acciones">
                                 <ItemTemplate>
-                                    <asp:LinkButton ID="lnkEditar" runat="server" CommandName="Editar"
-                                        CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-warning me-2">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </asp:LinkButton>
-                                    <asp:LinkButton ID="lnkEliminar" runat="server" CommandName="Eliminar"
-                                        CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </asp:LinkButton>
+                                    <div class="d-flex flex-column">
+                                        <div class="mb-2">
+                                            <asp:LinkButton ID="lnkEditar" runat="server" CommandName="Editar"
+                                                CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-warning me-2">
+                                                <i class="bi bi-pencil"></i> Editar
+                                            </asp:LinkButton>
+                                            <asp:LinkButton ID="lnkEliminar" runat="server" CommandName="Eliminar"
+                                                CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-danger">
+                                                <i class="bi bi-trash"></i> Eliminar
+                                            </asp:LinkButton>
+                                        </div>
+                                        <div>
+                                        <asp:LinkButton ID="lnkPrepAcademica" runat="server" CommandName="PrepAcademica"
+                                            CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-primary me-2">
+                                            <i class="bi bi-book"></i> Preparación Académica
+                                        </asp:LinkButton>
+                                        <asp:LinkButton ID="lnkExpLaboral" runat="server" CommandName="ExpLaboral"
+                                            CommandArgument='<%# Eval("identificacion") %>' CssClass="btn btn-sm btn-primary">
+                                            <i class="bi bi-briefcase"></i> Experiencia Laboral
+                                        </asp:LinkButton>
+                                    </div>
+                                </div>
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>

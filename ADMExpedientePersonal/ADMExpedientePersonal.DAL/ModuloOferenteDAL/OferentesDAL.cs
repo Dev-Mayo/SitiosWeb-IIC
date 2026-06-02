@@ -14,13 +14,13 @@ namespace ADMExpedientePersonal.DAL
 {
     public class OferentesDAL
     {
-        private string connectionStringOFE = ConfigurationManager.ConnectionStrings["OFE"].ConnectionString;
-        private string connectionStringEMP = ConfigurationManager.ConnectionStrings["EMP"].ConnectionString;
+        //private string conexion = ConfigurationManager.ConnectionStrings["OFE"].ConnectionString;
+        //private string connectionStringEMP = ConfigurationManager.ConnectionStrings["EMP"].ConnectionString;
 
         public List<Oferente> ObtenerOferentes(string identificacion = null)
         {
 
-            using (var db = new MySqlConnection(connectionStringOFE))
+            using (var db = ConexionOFE.ObtenerConexion())
             {
                 var parametros = new { p_identificacion = identificacion };
 
@@ -66,11 +66,11 @@ namespace ADMExpedientePersonal.DAL
         public List<Oferente> ObtenerNombreOferentes()
         {
 
-            using (var db = new MySqlConnection(connectionStringOFE))
+            using (var db = ConexionOFE.ObtenerConexion())
             {
 
                 var oferentes = new List<Oferente>();
-                using (var conn = new MySqlConnection(connectionStringOFE))
+                using (var conn = ConexionOFE.ObtenerConexion())
                 using (var cmd = new MySqlCommand("sp_obtener_nombre_oferentes", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
@@ -100,7 +100,7 @@ namespace ADMExpedientePersonal.DAL
         /// <returns>0 = fallo, 1 = éxito, 2 = ya asignado, 3 = ya existe</returns>
         public int GestionarOferente(int accion, Oferente oferente)
         {
-            using (var db = new MySqlConnection(connectionStringOFE))
+            using (var db = ConexionOFE.ObtenerConexion())
             {
                 var parametros = new
                 {
@@ -130,7 +130,7 @@ namespace ADMExpedientePersonal.DAL
         {
             var concursos = new List<ConcursoTemporal>();
 
-            using (var conn = new MySqlConnection(connectionStringOFE))
+            using (var conn = ConexionOFE.ObtenerConexion())
             using (var cmd = new MySqlCommand("sp_ObtenerConcursos", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;

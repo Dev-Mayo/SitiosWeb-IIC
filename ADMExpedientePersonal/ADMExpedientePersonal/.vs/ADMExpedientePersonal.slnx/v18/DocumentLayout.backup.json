@@ -1,118 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\modulooferentebll\\oferentebll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\modulooferentebll\\entrevistabll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\bitacorabll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3ECFB761-B399-4223-8D62-23271EC2E19F}|..\\ADMExpedientePersonal.DAL\\ADMExpedientePersonal.DAL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.dal\\modulooferentedal\\entrevistadal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal\\ofe\\agendarentrevista.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:ofe\\agendarentrevista.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal\\ofe\\preparacionacademica.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AA35C815-DECA-4BEF-95BA-4446D7D094A5}|ADMExpedientePersonal.csproj|solutionrelative:ofe\\preparacionacademica.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 4,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BitacoraBLL.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\BitacoraBLL.cs",
-              "ViewState": "AgIAAEcAAAAAAAAAAAAIwF8AAABgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T09:20:48.454Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PreparacionAcademica.aspx.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\OFE\\PreparacionAcademica.aspx.cs",
-              "RelativeDocumentMoniker": "OFE\\PreparacionAcademica.aspx.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\OFE\\PreparacionAcademica.aspx.cs",
-              "RelativeToolTip": "OFE\\PreparacionAcademica.aspx.cs",
-              "ViewState": "AgIAAHgAAAAAAAAAAAA8wIgAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T09:07:30.835Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AgendarEntrevista.aspx.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\OFE\\AgendarEntrevista.aspx.cs",
-              "RelativeDocumentMoniker": "OFE\\AgendarEntrevista.aspx.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\OFE\\AgendarEntrevista.aspx.cs",
-              "RelativeToolTip": "OFE\\AgendarEntrevista.aspx.cs",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAAwKQAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T09:05:59.212Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "EntrevistaDAL.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\EntrevistaDAL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\EntrevistaDAL.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\EntrevistaDAL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\EntrevistaDAL.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABQAAACJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T08:42:10.493Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "OferenteBLL.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T09:16:52.07Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "EntrevistaBLL.cs",
-              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\EntrevistaBLL.cs",
-              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\EntrevistaBLL.cs",
-              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\EntrevistaBLL.cs",
-              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\EntrevistaBLL.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-02T08:41:53.373Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }

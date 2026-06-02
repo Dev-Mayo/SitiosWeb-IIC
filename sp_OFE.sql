@@ -182,10 +182,28 @@ BEGIN
     FROM preparacion_acad pa
     INNER JOIN GEN.inst_educativas i 
         ON pa.codigo_institucion = i.codigo_institucion
-    WHERE pa.oferente_id = p_oferente_id
+    WHERE pa.oferente_id = p_identificacion
     ORDER BY pa.fecha_inicio ASC;
 END$$
 DELIMITER $$
+
+DELIMITER $$
+CREATE PROCEDURE sp_ObtenerPreparacionAcadPorId(IN p_id INT)
+BEGIN
+    SELECT pa.id,
+           pa.codigo_institucion,
+           i.nombre AS institucion,
+           pa.oferente_id,
+           pa.titulo,
+           pa.fecha_inicio,
+           pa.fecha_fin
+    FROM preparacion_acad pa
+    INNER JOIN GEN.inst_educativas i 
+        ON pa.codigo_institucion = i.codigo_institucion
+    WHERE pa.id = p_id;
+END$$
+DELIMITER ;
+
 
 DELIMITER $$
 CREATE PROCEDURE sp_CrearPreparacionAcad( 
@@ -209,6 +227,7 @@ DELIMITER $$
 DELIMITER $$
 CREATE PROCEDURE sp_ModificarPreparacionAcad( -- separado para evitar enrredo de parametros
     IN p_id INT,
+    in p_codigo_institucion VARCHAR(50),
     IN p_titulo VARCHAR(100),
     IN p_fecha_inicio DATE,
     IN p_fecha_fin DATE
@@ -216,7 +235,7 @@ CREATE PROCEDURE sp_ModificarPreparacionAcad( -- separado para evitar enrredo de
 BEGIN
     IF p_titulo REGEXP '^[A-Za-z ]+$' AND p_fecha_fin >= p_fecha_inicio THEN
         UPDATE preparacion_acad
-        SET titulo = p_titulo, fecha_inicio = p_fecha_inicio, fecha_fin = p_fecha_fin
+        SET titulo = p_titulo, fecha_inicio = p_fecha_inicio, fecha_fin = p_fecha_fin, codigo_institucion = p_codigo_institucion
         WHERE id = p_id;
         IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
     ELSE

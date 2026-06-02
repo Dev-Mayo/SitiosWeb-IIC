@@ -42,22 +42,22 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.Button btnNuevo;
 
         /// <summary>
-        /// Control hfEntrevistaId.
+        /// Control hfPreparacionAcadId.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfEntrevistaId;
+        protected global::System.Web.UI.WebControls.HiddenField hfPreparacionAcadId;
 
         /// <summary>
-        /// Control gvEntrevistas.
+        /// Control gvPreparacionAcad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvEntrevistas;
+        protected global::System.Web.UI.WebControls.GridView gvPreparacionAcad;
 
         /// <summary>
         /// Control modalEliminar.
@@ -78,22 +78,22 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.Button btnConfirmarEliminar;
 
         /// <summary>
-        /// Control modalEntrevista.
+        /// Control modalPreparacionAcad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl modalEntrevista;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl modalPreparacionAcad;
 
         /// <summary>
-        /// Control upModalEntrevista.
+        /// Control upModalPreparacionAcad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upModalEntrevista;
+        protected global::System.Web.UI.UpdatePanel upModalPreparacionAcad;
 
         /// <summary>
         /// Control hfAccion.
@@ -105,40 +105,58 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.HiddenField hfAccion;
 
         /// <summary>
-        /// Control txtEntrevistaId.
+        /// Control txtPreparacionAcadId.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEntrevistaId;
+        protected global::System.Web.UI.WebControls.TextBox txtPreparacionAcadId;
 
         /// <summary>
-        /// Control ddlOferentes.
+        /// Control ddlInstituciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlOferentes;
+        protected global::System.Web.UI.WebControls.DropDownList ddlInstituciones;
 
         /// <summary>
-        /// Control ddlEmpleados.
+        /// Control txtOferente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEmpleados;
+        protected global::System.Web.UI.WebControls.TextBox txtOferente;
 
         /// <summary>
-        /// Control txtFechaEntrevista.
+        /// Control txtTitulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFechaEntrevista;
+        protected global::System.Web.UI.WebControls.TextBox txtTitulo;
+
+        /// <summary>
+        /// Control txtFechaInicio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFechaInicio;
+
+        /// <summary>
+        /// Control txtFechaFin.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFechaFin;
 
         /// <summary>
         /// Control lblMensajeError.
@@ -150,13 +168,13 @@ namespace ADMExpedientePersonal.OFE
         protected global::System.Web.UI.WebControls.Label lblMensajeError;
 
         /// <summary>
-        /// Control btnGuardarEntrevista.
+        /// Control btnGuardarPreparacionAcad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGuardarEntrevista;
+        protected global::System.Web.UI.WebControls.Button btnGuardarPreparacionAcad;
 
         /// <summary>
         /// Control upModalMensaje.
