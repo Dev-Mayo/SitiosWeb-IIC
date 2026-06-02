@@ -58,7 +58,6 @@
     <Compile Include="BitacoraBLL.cs" />
     <Compile Include="InstEducativaBLL.cs" />
     <Compile Include="MenuBLL.cs" />
-    <Compile Include="OferenteBLL.cs" />
     <Compile Include="ModuloOferenteBLL\EntrevistaBLL.cs" />
     <Compile Include="ModuloOferenteBLL\ExpLaboralBLL.cs" />
     <Compile Include="ModuloOferenteBLL\OferenteBLL.cs" />

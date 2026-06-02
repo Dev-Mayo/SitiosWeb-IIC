@@ -107,7 +107,6 @@
     <Compile Include="BitacoraDAL.cs" />
     <Compile Include="InstEducativaDAL.cs" />
     <Compile Include="MenuDAL.cs" />
-    <Compile Include="OferentesDAL.cs" />
     <Compile Include="ModuloOferenteDAL\EntrevistaDAL.cs" />
     <Compile Include="ModuloOferenteDAL\ExpLaboralDAL.cs" />
     <Compile Include="ModuloOferenteDAL\OferentesDAL.cs" />
