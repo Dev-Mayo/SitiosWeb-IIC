@@ -126,6 +126,8 @@
     <Content Include="GEN\AdminInsEducativas.aspx" />
     <Content Include="GEN\VerBitacoras.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="OFE\AgendarEntrevista.aspx" />
+    <Content Include="OFE\MainOferentes.aspx" />
     <Content Include="OFE\RegistroConcursos.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -229,6 +231,20 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="OFE\AgendarEntrevista.aspx.cs">
+      <DependentUpon>AgendarEntrevista.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OFE\AgendarEntrevista.aspx.designer.cs">
+      <DependentUpon>AgendarEntrevista.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OFE\MainOferentes.aspx.cs">
+      <DependentUpon>MainOferentes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OFE\MainOferentes.aspx.designer.cs">
+      <DependentUpon>MainOferentes.aspx</DependentUpon>
     </Compile>
     <Compile Include="OFE\RegistroConcursos.aspx.cs">
       <DependentUpon>RegistroConcursos.aspx</DependentUpon>
