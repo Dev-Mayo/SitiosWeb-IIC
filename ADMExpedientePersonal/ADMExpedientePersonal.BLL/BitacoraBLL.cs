@@ -39,6 +39,23 @@ namespace ADMExpedientePersonal.BLL
             }
         }
 
+        public List<BitacoraDisplay> ObtenerBitacoras(string usuarioActual,
+            string filtroUsuario = null, string filtroDescripcion = null, string orden = "fecha_desc")
+        {
+            var bitacoras = bitacoraDAL.ObtenerBitacoras(filtroUsuario, filtroDescripcion, orden);
+
+            RegistrarBitacora(new Bitacora
+            {
+                Usuario = usuarioActual,
+                Accion = AccionBitacora.READ,
+                DescripcionJson = CrearJsonConsulta("Bitácoras")
+            });
+
+            return bitacoras;
+        }
+
+
+
         #region Métodos para crear JSON de bitácora
         /// <summary>
         /// Metodos dedicados para crear los json y seguir mismo formato en la bitacora

@@ -91,7 +91,7 @@ namespace ADMExpedientePersonal
                         lnkEntrevista.Visible = true;
                         lnkEntrevista.NavigateUrl = $"~/OFE/AgendarEntrevista.aspx?u={username}";
                         break;
-                    case "Contratar empleado":
+                    case "Contratar Empleado":
                         lnkOfeEmpleado.Visible = true;
                         lnkOfeEmpleado.NavigateUrl = $"~/EMP/Oferente-a-Empleado.aspx?u={username}";
                         break;
