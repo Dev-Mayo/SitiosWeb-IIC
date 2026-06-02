@@ -36,6 +36,10 @@
                 <ContentTemplate>
                     <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" CssClass="btn btn-primary mb-3 fw-semibold"
                         OnClick="btnNuevo_Click" />
+                    <asp:Button ID="btnPrepAcademica" runat="server" Text="Preparación Académica" CssClass="btn btn-primary mb-3 fw-semibold"
+    OnClick="btnPrepAcademica_Click" />
+                    <asp:Button ID="btnExpLaboral" runat="server" Text="Experiencia Laboral" CssClass="btn btn-primary mb-3 fw-semibold"
+    OnClick="btnExpLaboral_Click" />
 
                     <asp:HiddenField ID="hfIdOferente" runat="server" />
 
@@ -140,7 +144,7 @@
                             <!-- Correos electrónicos -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Correos electrónicos</label>
-                                <asp:Repeater ID="rptCorreos" runat="server">
+                                <asp:Repeater ID="rptCorreos" runat="server" OnItemCommand="rptCorreos_ItemCommand">
                                     <ItemTemplate>
                                         <div class="input-group mb-2">
                                             <asp:TextBox ID="txtCorreo" runat="server" CssClass="form-control" Text='<%# Container.DataItem %>' />
@@ -154,7 +158,7 @@
                             <!-- Teléfonos -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Teléfonos de contacto</label>
-                                <asp:Repeater ID="rptTelefonos" runat="server">
+                                <asp:Repeater ID="rptTelefonos" runat="server" OnItemCommand="rptTelefonos_ItemCommand">
                                     <ItemTemplate>
                                         <div class="input-group mb-2">
                                             <asp:TextBox ID="txtTelefono" runat="server" CssClass="form-control" Text='<%# Container.DataItem %>' />

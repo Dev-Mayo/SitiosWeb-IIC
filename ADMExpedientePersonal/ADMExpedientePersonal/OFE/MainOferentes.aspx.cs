@@ -122,6 +122,16 @@ namespace ADMExpedientePersonal.OFE
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showModal();", true);
         }
 
+        protected void btnPrepAcademica_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"~/OFE/PreparacionAcademica.aspx?u={Request.QueryString["u"]}");
+        }
+
+        protected void btnExpLaboral_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"~/OFE/ExperienciaLaboral.aspx?u={Request.QueryString["u"]}");
+        }
+
         private void AbrirModalEditar()
         {
             try

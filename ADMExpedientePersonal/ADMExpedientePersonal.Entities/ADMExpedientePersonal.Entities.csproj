@@ -46,15 +46,15 @@
   <ItemGroup>
     <Compile Include="Compania.cs" />
     <Compile Include="Concurso.cs" />
-    <Compile Include="EmpleadoTemporal.cs" />
+    <Compile Include="ModuloOferenteEntities\EmpleadoTemporal.cs" />
     <Compile Include="InstEducativa.cs" />
     <Compile Include="Modulo.cs" />
     <Compile Include="Puesto.cs" />
     <Compile Include="Bitacora.cs" />
-    <Compile Include="ConcursoTemporal.cs" />
-    <Compile Include="Entrevista.cs" />
+    <Compile Include="ModuloOferenteEntities\ConcursoTemporal.cs" />
+    <Compile Include="ModuloOferenteEntities\Entrevista.cs" />
     <Compile Include="Modulo.cs" />
-    <Compile Include="Oferente.cs" />
+    <Compile Include="ModuloOferenteEntities\Oferente.cs" />
     <Compile Include="Rol.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

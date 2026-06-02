@@ -15,11 +15,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace ADMExpedientePersonal.OFE
 {
-    public partial class AgendarEntrevista : System.Web.UI.Page
+    public partial class PreparacionAcademica : System.Web.UI.Page
     {
         private EntrevistaBLL entrevistaBLL = new EntrevistaBLL();
         private OferenteBLL oferenteBLL = new OferenteBLL();
-
         private AuthBLL AuthBLL = new AuthBLL();
         private string usuario = "Desconocido"; // Variable para almacenar el nombre de usuario
         private int resultado;
@@ -159,16 +158,14 @@ namespace ADMExpedientePersonal.OFE
                 ddlOferentes.Enabled = false; // No permitir editar el campo de identificación del oferente al editar una entrevista existente
                 if (entrevista != null)
                 {
-                    ddlEmpleados.DataSource = entrevistaBLL.ObtenerNombreEmpleados();
-                    ddlEmpleados.DataBind();
-                    ddlOferentes.DataSource = oferenteBLL.ObtenerNombreOferentes();
-                    ddlOferentes.DataBind();
-
                     // Campos simples
                     txtEntrevistaId.Text = entrevista.EntrevistaId.ToString();
                     ddlOferentes.Text = entrevista.OferenteIdentificacion;
                     ddlEmpleados.SelectedValue = entrevista.EmpleadoId.ToString();
                     txtFechaEntrevista.Text = entrevista.FechaEntrevista.ToString("yyyy-MM-dd");
+
+                    ddlEmpleados.DataSource = entrevistaBLL.ObtenerNombreEmpleados();
+                    ddlEmpleados.DataBind();
                 }
                 else
                 {

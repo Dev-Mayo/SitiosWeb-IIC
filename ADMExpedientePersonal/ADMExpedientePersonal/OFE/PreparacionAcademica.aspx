@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" MasterPageFile="~/Site.Master" CodeBehind="AgendarEntrevista.aspx.cs" Inherits="ADMExpedientePersonal.OFE.AgendarEntrevista" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" Async="true" MasterPageFile="~/Site.Master" CodeBehind="PreparacionAcademica.aspx.cs" Inherits="ADMExpedientePersonal.OFE.PreparacionAcademica" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
@@ -26,7 +26,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="card-custom bg-white">
         <div class="card-header-custom">
-            <h5 class="fw-bold mb-0">Administración de entrevistas</h5>
+            <h5 class="fw-bold mb-0">Administración de preparación académica</h5>
         </div>
 
         <div class="p-4">

@@ -126,6 +126,7 @@
     <Content Include="GEN\AdminInsEducativas.aspx" />
     <Content Include="GEN\VerBitacoras.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="OFE\PreparacionAcademica.aspx" />
     <Content Include="OFE\AgendarEntrevista.aspx" />
     <Content Include="OFE\MainOferentes.aspx" />
     <Content Include="OFE\RegistroConcursos.aspx" />
@@ -231,6 +232,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="OFE\PreparacionAcademica.aspx.cs">
+      <DependentUpon>PreparacionAcademica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OFE\PreparacionAcademica.aspx.designer.cs">
+      <DependentUpon>PreparacionAcademica.aspx</DependentUpon>
     </Compile>
     <Compile Include="OFE\AgendarEntrevista.aspx.cs">
       <DependentUpon>AgendarEntrevista.aspx</DependentUpon>
