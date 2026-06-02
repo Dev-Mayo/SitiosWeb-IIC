@@ -105,6 +105,7 @@
     <Compile Include="Conexiones\ConexionSEG.cs" />
     <Compile Include="AdminRolDAL.cs" />
     <Compile Include="BitacoraDAL.cs" />
+    <Compile Include="InstEducativaDAL.cs" />
     <Compile Include="MenuDAL.cs" />
     <Compile Include="PuestoDAL.cs" />
     <Compile Include="UsuarioDAL.cs" />

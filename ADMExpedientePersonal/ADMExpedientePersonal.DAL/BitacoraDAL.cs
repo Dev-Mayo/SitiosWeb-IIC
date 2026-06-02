@@ -1,12 +1,14 @@
-﻿using MySql.Data.MySqlClient;
+﻿using ADMExpedientePersonal.Entities;
+using Dapper;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ADMExpedientePersonal.Entities;
 
 namespace ADMExpedientePersonal.DAL
 {
@@ -48,6 +50,22 @@ namespace ADMExpedientePersonal.DAL
             }
         }
 
+        public List<BitacoraDisplay> ObtenerBitacoras(string usuario, string descripcion, string orden)
+        {
+            using (var db = new MySqlConnection(connectionString))
+            {
+                return db.Query<BitacoraDisplay>(
+                    "sp_listar_bitacoras",
+                    new
+                    {
+                        p_usuario = string.IsNullOrEmpty(usuario) ? null : usuario,
+                        p_descripcion = string.IsNullOrEmpty(descripcion) ? null : descripcion,
+                        p_orden = string.IsNullOrEmpty(orden) ? "fecha_desc" : orden
+                    },
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+            }
+        }
 
     }
 }

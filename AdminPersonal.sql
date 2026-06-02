@@ -179,7 +179,7 @@ INSERT INTO roles (nombre_rol) VALUES
 
 -- Modulos
 INSERT INTO modulos (nombre_modulo) VALUES
-('Inicio'),
+('Contratar'),
 ('Roles'),
 ('Pantallas'),
 ('Usuarios'),
@@ -198,11 +198,16 @@ INSERT INTO modulos (nombre_modulo) VALUES
 INSERT INTO roles_modulos (id_rol, id_modulo)
 SELECT 1, id_modulo FROM modulos; -- Admin has all
 INSERT INTO roles_modulos (id_rol, id_modulo)
-SELECT 2, id_modulo FROM modulos
+SELECT 22, id_modulo FROM modulos
 WHERE nombre_modulo IN (
-    'Inicio',
+    'Inst. Educativas',
     'Oferentes',
-    'Entrevistas'
+    'Concursos',
+    'Entrevistas',
+    'Contratar Empleado',
+    'Puestos',
+    'Áreas',
+    'Acciones Personal'
 );
 
 -- Usuarios
@@ -323,8 +328,11 @@ BEGIN
         estado
     FROM usuarios
     WHERE nombreusuario = p_username
-      AND password = AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!');
+      AND password = AES_ENCRYPT(p_password, 'SEG_KEY_2026_32CHARS!!')
+      AND estado = 'Activo';
 END$$
+
+DELIMITER ;
 
 DELIMITER ;
 USE SEG;
@@ -448,20 +456,112 @@ END$$
 
 DELIMITER $$
 
+DELIMITER $$
+
 CREATE PROCEDURE sp_eliminar_usuario(IN p_id_usuario INT)
 BEGIN
+    DECLARE v_nombre_completo VARCHAR(100);
+    DECLARE v_count INT;
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
         RESIGNAL;
     END;
 
+    SELECT nombre_completo INTO v_nombre_completo
+    FROM SEG.usuarios WHERE id_usuario = p_id_usuario;
+
+    SELECT COUNT(*) INTO v_count
+    FROM BIT.bitacoras WHERE usuario = v_nombre_completo LIMIT 1;
+
+    IF v_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se puede eliminar un registro con datos relacionados.';
+    END IF;
+
     START TRANSACTION;
-
-        DELETE FROM usuarios_roles WHERE id_usuario = p_id_usuario;
-
-        DELETE FROM usuarios WHERE id_usuario = p_id_usuario;
+        DELETE FROM SEG.usuarios_roles WHERE id_usuario = p_id_usuario;
+        DELETE FROM SEG.usuarios WHERE id_usuario = p_id_usuario;
     COMMIT;
+
+END$$
+
+DELIMITER ;
+USE BIT;
+DELIMITER $$
+
+CREATE PROCEDURE sp_listar_bitacoras(
+    IN p_usuario VARCHAR(100),
+    IN p_descripcion VARCHAR(500),
+    IN p_orden VARCHAR(50)
+)
+BEGIN
+    SELECT id, fecha, usuario, accion, 
+           CAST(descripcion AS CHAR) AS descripcion
+    FROM BIT.bitacoras
+    WHERE
+        (p_usuario IS NULL OR usuario LIKE CONCAT('%', p_usuario, '%'))
+        AND (p_descripcion IS NULL OR CAST(descripcion AS CHAR) 
+             LIKE CONCAT('%', p_descripcion, '%'))
+    ORDER BY
+        CASE WHEN p_orden = 'fecha_asc'    THEN fecha   END ASC,
+        CASE WHEN p_orden = 'usuario_asc'  THEN usuario END ASC,
+        CASE WHEN p_orden = 'usuario_desc' THEN usuario END DESC,
+        CASE WHEN p_orden = 'fecha_desc' 
+              OR p_orden IS NULL            THEN fecha   END DESC
+    LIMIT 100;
+END$$
+
+DELIMITER ;
+
+USE GEN;
+DELIMITER $$
+
+CREATE PROCEDURE sp_listar_inst_educativas()
+BEGIN
+    SELECT codigo_institucion, nombre
+    FROM GEN.inst_educativas
+    ORDER BY nombre;
+END$$
+
+CREATE PROCEDURE sp_crear_inst_educativa(
+    IN p_codigo VARCHAR(50),
+    IN p_nombre VARCHAR(150)
+)
+BEGIN
+    INSERT INTO GEN.inst_educativas (codigo_institucion, nombre)
+    VALUES (p_codigo, p_nombre);
+END$$
+
+CREATE PROCEDURE sp_actualizar_inst_educativa(
+    IN p_codigo VARCHAR(50),
+    IN p_nombre VARCHAR(150)
+)
+BEGIN
+    UPDATE GEN.inst_educativas
+    SET nombre = COALESCE(NULLIF(p_nombre, ''), nombre)
+    WHERE codigo_institucion = p_codigo;
+END$$
+
+DELIMITER $$
+
+CREATE PROCEDURE sp_eliminar_inst_educativa(
+    IN p_codigo VARCHAR(50)
+)
+BEGIN
+    
+    IF EXISTS (
+        SELECT 1 FROM OFE.preparacion_acad
+        WHERE codigo_institucion = p_codigo
+        LIMIT 1
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'No se puede eliminar un registro con datos relacionados.';
+    END IF;
+
+    DELETE FROM GEN.inst_educativas
+    WHERE codigo_institucion = p_codigo;
 END$$
 
 DELIMITER ;

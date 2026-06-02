@@ -123,6 +123,8 @@
     <Content Include="GEN\AdminCompanias.aspx">
       <BrowseToURL>~/GEN/AdminCompanias.aspx</BrowseToURL>
     </Content>
+    <Content Include="GEN\AdminInsEducativas.aspx" />
+    <Content Include="GEN\VerBitacoras.aspx" />
     <Content Include="Global.asax" />
     <Content Include="OFE\RegistroConcursos.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -210,6 +212,20 @@
     </Compile>
     <Compile Include="GEN\AdminCompanias.aspx.designer.cs">
       <DependentUpon>AdminCompanias.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GEN\AdminInsEducativas.aspx.cs">
+      <DependentUpon>AdminInsEducativas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GEN\AdminInsEducativas.aspx.designer.cs">
+      <DependentUpon>AdminInsEducativas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GEN\VerBitacoras.aspx.cs">
+      <DependentUpon>VerBitacoras.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GEN\VerBitacoras.aspx.designer.cs">
+      <DependentUpon>VerBitacoras.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

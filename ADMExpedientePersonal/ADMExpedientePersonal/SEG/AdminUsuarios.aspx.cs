@@ -258,8 +258,6 @@ namespace ADMExpedientePersonal.SEG
                 int resultado = adminUsuarioBLL.EliminarUsuario(idUsuario, usuarioActual.nombre_completo);
                 if (resultado == 2)
                     MostrarMensajeExito("Usuario eliminado correctamente.");
-                else if (resultado == 0)
-                    MostrarError("No se puede eliminar un registro con datos relacionados.");
                 else
                     MostrarError("No se pudo eliminar el usuario.");
 
@@ -267,8 +265,15 @@ namespace ADMExpedientePersonal.SEG
             }
             catch (Exception ex)
             {
-                RegistrarError(ex);
-                MostrarError("Error al eliminar usuario: " + ex.Message);
+
+                if (ex.Message.Contains("No se puede eliminar el usuario por tener registros relacionados"))
+                    MostrarError(ex.Message);
+                else
+                {
+                    RegistrarError(ex);
+                    MostrarError("Error al eliminar usuario: " + ex.Message);
+                }
+                CargarUsuarios();
             }
             finally
             {
