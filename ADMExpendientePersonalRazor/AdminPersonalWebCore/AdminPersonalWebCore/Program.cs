@@ -32,6 +32,9 @@ builder.Services.AddSingleton<BitacoraRepository>(_ => new BitacoraRepository(bi
 builder.Services.AddSingleton<AdminUsuarioRepository>(_ => new AdminUsuarioRepository(segConn));
 builder.Services.AddSingleton<InstEducativaRepository>(_ => new InstEducativaRepository(genConn));
 builder.Services.AddSingleton<RequisitoPuestoRepository>(_ => new RequisitoPuestoRepository(empConn)); //emp3
+builder.Services.AddScoped<AreaRepository>(sp =>new AreaRepository(empConn)); //emp4
+
+builder.Services.AddScoped<AreaService>();
 
 // Services (BLL) 
 builder.Services.AddSingleton<BitacoraService>();
