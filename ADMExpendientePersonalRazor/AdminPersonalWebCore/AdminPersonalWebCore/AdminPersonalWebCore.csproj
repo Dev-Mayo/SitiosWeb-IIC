@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Pages\GEN\" />
-    <Folder Include="Pages\EMP\" />
     <Folder Include="Pages\OFE\" />
   </ItemGroup>
 
