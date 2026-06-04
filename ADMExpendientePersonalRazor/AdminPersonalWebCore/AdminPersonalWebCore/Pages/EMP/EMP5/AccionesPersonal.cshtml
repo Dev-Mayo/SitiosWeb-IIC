@@ -1,0 +1,357 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.EMP.EMP5.AccionesPersonalModel
+
+@{
+    ViewData["Title"] = "Administración de Acciones de Personal";
+}
+
+<div class="container-fluid mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+
+            <h4 class="fw-bold mb-4">Administración de Acciones de Personal</h4>
+
+            @if (!string.IsNullOrEmpty(Model.MensajeExito))
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @Model.MensajeExito
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.MensajeError))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @Model.MensajeError
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <button type="button"
+                    class="btn btn-primary mb-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalNuevaAccion">
+                Nuevo
+            </button>
+
+            <table class="table table-striped table-bordered align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Código</th>
+                        <th>Fecha</th>
+                        <th>Descripción</th>
+                        <th>Empleado</th>
+                        <th>Jefatura</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Acciones)
+                    {
+                        <tr>
+                            <td>@item.CodigoAccion</td>
+                            <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
+                            <td>@item.Descripcion</td>
+                            <td>@item.NombreEmpleado</td>
+                            <td>@item.NombreJefatura</td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarAccion"
+                                        data-id="@item.AccionId"
+                                        data-codigo="@item.CodigoAccion"
+                                        data-fecha="@item.Fecha.ToString("yyyy-MM-dd")"
+                                        data-descripcion="@item.Descripcion"
+                                        data-empleado="@item.EmpleadoId"
+                                        data-jefatura="@item.JefaturaId">
+                                    Editar
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminarAccion"
+                                        data-id="@item.AccionId"
+                                        data-descripcion="@item.Descripcion">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.TotalPaginas > 1)
+            {
+                <nav>
+                    <ul class="pagination">
+
+                        <li class="page-item @(Model.PaginaActual == 1 ? "disabled" : "")">
+                            <a class="page-link"
+                               asp-page="./AccionesPersonal"
+                               asp-route-pagina="@(Model.PaginaActual - 1)"
+                               asp-route-u="@Request.Query["u"]">
+                                Anterior
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Model.TotalPaginas; i++)
+                        {
+                            <li class="page-item @(Model.PaginaActual == i ? "active" : "")">
+                                <a class="page-link"
+                                   asp-page="./AccionesPersonal"
+                                   asp-route-pagina="@i"
+                                   asp-route-u="@Request.Query["u"]">
+                                    @i
+                                </a>
+                            </li>
+                        }
+
+                        <li class="page-item @(Model.PaginaActual == Model.TotalPaginas ? "disabled" : "")">
+                            <a class="page-link"
+                               asp-page="./AccionesPersonal"
+                               asp-route-pagina="@(Model.PaginaActual + 1)"
+                               asp-route-u="@Request.Query["u"]">
+                                Siguiente
+                            </a>
+                        </li>
+
+                    </ul>
+                </nav>
+            }
+
+        </div>
+    </div>
+</div>
+
+@* modales
+ *@
+ <div class="modal fade" id="modalNuevaAccion" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form method="post"
+                  asp-page-handler="Crear"
+                  asp-route-u="@Request.Query["u"]">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Nueva Acción de Personal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Código Acción</label>
+                        <input asp-for="NuevaAccion.CodigoAccion" class="form-control" required min="1" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input asp-for="NuevaAccion.Fecha" type="date" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea asp-for="NuevaAccion.Descripcion"
+                                  class="form-control"
+                                  maxlength="500"
+                                  required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Empleado</label>
+                        <select asp-for="NuevaAccion.EmpleadoId" class="form-select" required>
+                            <option value="">Seleccione...</option>
+                            @foreach (var emp in Model.Empleados)
+                            {
+                                <option value="@emp.EmpleadoId">@emp.NombreCompleto</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Jefatura que aprueba</label>
+                        <select asp-for="NuevaAccion.JefaturaId" class="form-select" required>
+                            <option value="">Seleccione...</option>
+                            @foreach (var emp in Model.Empleados)
+                            {
+                                <option value="@emp.EmpleadoId">@emp.NombreCompleto</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+@* eidtar *@
+<div class="modal fade" id="modalEditarAccion" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form method="post"
+                  asp-page-handler="Editar"
+                  asp-route-u="@Request.Query["u"]">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Acción de Personal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" asp-for="AccionEditar.AccionId" id="editarAccionId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Código Acción</label>
+                        <input asp-for="AccionEditar.CodigoAccion"
+                               id="editarCodigoAccion"
+                               class="form-control"
+                               required
+                               min="1"
+                               />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha</label>
+                        <input asp-for="AccionEditar.Fecha"
+                               id="editarFecha"
+                               type="date"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Descripción</label>
+                        <textarea asp-for="AccionEditar.Descripcion"
+                                  id="editarDescripcion"
+                                  class="form-control"
+                                  maxlength="500"
+                                  required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Empleado</label>
+                        <select asp-for="AccionEditar.EmpleadoId"
+                                id="editarEmpleado"
+                                class="form-select"
+                        required>
+                            <option value="">Seleccione...</option>
+                            @foreach (var emp in Model.Empleados)
+                            {
+                                <option value="@emp.EmpleadoId">@emp.NombreCompleto</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Jefatura que aprueba</label>
+                        <select asp-for="AccionEditar.JefaturaId"
+                                id="editarJefatura"
+                                class="form-select"
+                                required>
+                            <option value="">Seleccione...</option>
+                            @foreach (var emp in Model.Empleados)
+                            {
+                                <option value="@emp.EmpleadoId">@emp.NombreCompleto</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+@* modal eliminar *@
+<div class="modal fade" id="modalEliminarAccion" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form method="post"
+                  asp-page-handler="Eliminar"
+                  asp-route-u="@Request.Query["u"]">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" asp-for="AccionEliminarId" id="eliminarAccionId" />
+
+                    <p>¿Realmente desea eliminar el elemento seleccionado?</p>
+
+                    <p class="fw-bold" id="eliminarDescripcion"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+  
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const modalEditarAccion = document.getElementById('modalEditarAccion');
+
+            modalEditarAccion.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                document.getElementById('editarAccionId').value = button.getAttribute('data-id');
+                document.getElementById('editarCodigoAccion').value = button.getAttribute('data-codigo');
+                document.getElementById('editarFecha').value = button.getAttribute('data-fecha');
+                document.getElementById('editarDescripcion').value = button.getAttribute('data-descripcion');
+                document.getElementById('editarEmpleado').value = button.getAttribute('data-empleado');
+                document.getElementById('editarJefatura').value = button.getAttribute('data-jefatura');
+            });
+
+            const modalEliminarAccion = document.getElementById('modalEliminarAccion');
+
+            modalEliminarAccion.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+
+                document.getElementById('eliminarAccionId').value = button.getAttribute('data-id');
+                document.getElementById('eliminarDescripcion').innerText = button.getAttribute('data-descripcion');
+            });
+
+        });
+    </script>
+
+
+    <script>
+        const modalEliminarAccion = document.getElementById('modalEliminarAccion');
+
+        modalEliminarAccion.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+
+            document.getElementById('eliminarAccionId').value = button.getAttribute('data-id');
+            document.getElementById('eliminarDescripcion').innerText = button.getAttribute('data-descripcion');
+        });
+    </script>
+    }
