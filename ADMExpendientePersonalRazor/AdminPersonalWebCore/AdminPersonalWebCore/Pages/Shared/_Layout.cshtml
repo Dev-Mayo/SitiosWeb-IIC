@@ -94,7 +94,7 @@
         <aside class="sidebar">
 
             <div class="brand">
-                <img src="/img/miniLogo.png" alt="Logo" onerror="this.style.display='none'" />
+                <img src="/img/logoempresa.jpg" alt="Logo" onerror="this.style.display='none'" />
                 <h5>Shirofy</h5>
             </div>
 
@@ -103,7 +103,7 @@
             <nav class="nav flex-column">
                 @if (modulos.Contains("Inicio"))
                 {
-                    <a class="nav-link" href="/SEG/Bienvenida?u=@u">🏠 Inicio</a>
+                    <a class="nav-link" href="/SEG/Bienvenida?u=@u">Inicio</a>
                 }
 
                 @if (modulos.Any(m => new[] { "Roles", "Pantallas", "Usuarios" }.Contains(m)))

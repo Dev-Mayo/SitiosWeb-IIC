@@ -498,20 +498,20 @@ CREATE PROCEDURE sp_listar_bitacoras(
     IN p_orden VARCHAR(50)
 )
 BEGIN
-    SELECT id, fecha, usuario, accion, 
+    SELECT id, fecha, usuario, accion,
            CAST(descripcion AS CHAR) AS descripcion
     FROM BIT.bitacoras
     WHERE
         (p_usuario IS NULL OR usuario LIKE CONCAT('%', p_usuario, '%'))
-        AND (p_descripcion IS NULL OR CAST(descripcion AS CHAR) 
+        AND (p_descripcion IS NULL OR CAST(descripcion AS CHAR)
              LIKE CONCAT('%', p_descripcion, '%'))
     ORDER BY
         CASE WHEN p_orden = 'fecha_asc'    THEN fecha   END ASC,
         CASE WHEN p_orden = 'usuario_asc'  THEN usuario END ASC,
         CASE WHEN p_orden = 'usuario_desc' THEN usuario END DESC,
-        CASE WHEN p_orden = 'fecha_desc' 
-              OR p_orden IS NULL            THEN fecha   END DESC
-    LIMIT 100;
+        CASE WHEN p_orden = 'fecha_desc'
+              OR p_orden IS NULL            THEN fecha   END DESC;
+        -- No LIMIT here — pagination handled in C#
 END$$
 
 DELIMITER ;

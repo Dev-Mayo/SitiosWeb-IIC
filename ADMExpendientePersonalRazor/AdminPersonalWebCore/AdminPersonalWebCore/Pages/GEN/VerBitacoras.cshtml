@@ -1,0 +1,197 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.GEN.VerBitacorasModel
+@{
+    ViewData["Title"] = "Bitácora del Sistema";
+}
+
+@section Styles {
+    <style>
+        .card-custom {
+            border-radius: 14px;
+            box-shadow: 0 6px 28px rgba(0,0,0,.15);
+            overflow: hidden;
+        }
+        .card-header-custom {
+            background: #1aad94;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        .descripcion-cell {
+            max-width: 400px;
+            word-break: break-word;
+            font-size: 0.85rem;
+        }
+    </style>
+}
+
+<div class="card-custom bg-white">
+    <div class="card-header-custom">
+        <h5 class="fw-bold mb-0">Bitácora del Sistema</h5>
+    </div>
+
+    <div class="p-4">
+
+        @if (!string.IsNullOrEmpty(Model.MensajeError))
+        {
+            <div class="alert alert-danger alert-dismissible fade show">
+                @Model.MensajeError
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+
+        <form method="get" class="row mb-3">
+            
+            <input type="hidden" name="u" value="@Model.UsuarioActual" />
+
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Filtrar por usuario</label>
+                <input type="text" name="filtroUsuario" value="@Model.FiltroUsuario"
+                       class="form-control" placeholder="Nombre de usuario..." />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-semibold">Filtrar por descripción</label>
+                <input type="text" name="filtroDescripcion" value="@Model.FiltroDescripcion"
+                       class="form-control" placeholder="Texto en descripción..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-semibold">Ordenar por</label>
+                <select name="orden" class="form-select">
+                    <option value="fecha_desc" selected="@(Model.Orden == "fecha_desc" ? "selected" : null)">Fecha (más reciente)</option>
+                    <option value="fecha_asc" selected="@(Model.Orden == "fecha_asc" ? "selected" : null)">Fecha (más antigua)</option>
+                    <option value="usuario_asc" selected="@(Model.Orden == "usuario_asc" ? "selected" : null)">Usuario A-Z</option>
+                    <option value="usuario_desc" selected="@(Model.Orden == "usuario_desc" ? "selected" : null)">Usuario Z-A</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+            </div>
+        </form>
+
+        @* Table *@
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width:160px">Fecha</th>
+                        <th style="width:150px">Usuario</th>
+                        <th style="width:90px">Acción</th>
+                        <th>Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var b in Model.Bitacoras)
+                    {
+                        <tr>
+                            <td>@b.fecha.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@b.usuario</td>
+                            <td>
+                                <span class="badge @(b.accion == "CREATE" ? "bg-success" :
+                                                                          b.accion == "UPDATE" ? "bg-warning text-dark" :
+                                                                          b.accion == "DELETE" ? "bg-danger" :
+                                                                          b.accion == "ERROR" ? "bg-dark" : "bg-info")">
+                                @b.accion
+                            </span>
+                        </td>
+                        <td>
+                            <div class="descripcion-cell">
+                                @Html.Raw(AdminPersonalWebCore.Pages.GEN.VerBitacorasModel
+                                    .FormatearDescripcion(b.descripcion))
+                            </div>
+                        </td>
+
+                    </tr>
+                                        }
+                    @if (!Model.Bitacoras.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">
+                                No se encontraron registros.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        @if (Model.TotalPaginas > 1)
+        {
+            <nav>
+                <ul class="pagination justify-content-center flex-wrap">
+
+                   
+                    <li class="page-item @(Model.PaginaActual == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           href="/GEN/VerBitacoras?u=@Model.UsuarioActual
+                            &filtroUsuario=@Model.FiltroUsuario
+                            &filtroDescripcion=@Model.FiltroDescripcion
+                            &orden=@Model.Orden&page=@(Model.PaginaActual - 1)">
+                            &laquo;
+                        </a>
+                    </li>
+
+                   
+                    @if (Model.PaginaActual > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="/GEN/VerBitacoras?u=@Model.UsuarioActual
+                                    &filtroUsuario=@Model.FiltroUsuario
+                                    &filtroDescripcion=@Model.FiltroDescripcion
+                                    &orden=@Model.Orden&page=1">1</a>
+                        </li>
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    }
+
+                   
+                    @for (int i = Math.Max(1, Model.PaginaActual - 2);
+                                    i <= Math.Min(Model.TotalPaginas, Model.PaginaActual + 2); i++)
+                    {
+                        <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                            <a class="page-link"
+                               href="/GEN/VerBitacoras?u=@Model.UsuarioActual
+                                    &filtroUsuario=@Model.FiltroUsuario
+                                    &filtroDescripcion=@Model.FiltroDescripcion
+                                    &orden=@Model.Orden&page=@i">@i</a>
+                        </li>
+                    }
+
+                    
+                    @if (Model.PaginaActual < Model.TotalPaginas - 2)
+                    {
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="/GEN/VerBitacoras?u=@Model.UsuarioActual
+                                    &filtroUsuario=@Model.FiltroUsuario
+                                    &filtroDescripcion=@Model.FiltroDescripcion
+                                    &orden=@Model.Orden&page=@Model.TotalPaginas">
+                                @Model.TotalPaginas
+                            </a>
+                        </li>
+                    }
+
+                   
+                    <li class="page-item @(Model.PaginaActual == Model.TotalPaginas ? "disabled" : "")">
+                        <a class="page-link"
+                           href="/GEN/VerBitacoras?u=@Model.UsuarioActual
+                            &filtroUsuario=@Model.FiltroUsuario
+                            &filtroDescripcion=@Model.FiltroDescripcion
+                            &orden=@Model.Orden&page=@(Model.PaginaActual + 1)">
+                            &raquo;
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+            <p class="text-muted text-center small">
+                Página @Model.PaginaActual de @Model.TotalPaginas
+                (@Model.TotalRegistros registros totales)
+            </p>
+        }
+
+    </div>
+</div>
