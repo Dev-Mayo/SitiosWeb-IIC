@@ -142,7 +142,12 @@
 
                 @if (modulos.Any(m => new[] { "Contratar empleado", "Puestos", "Áreas", "Acciones Personal" }.Contains(m)))
                 {
+                    
                     <span class="section-label">Empleados</span>
+                    @if (modulos.Contains("Contratar Empleado"))
+                    {
+                        <a class="nav-link" href="/EMP/ContratarEmpleado?u=@u">Contratar Empleado</a>
+                    }
                     @if (modulos.Contains("Puestos"))
                     {
                         <a class="nav-link" href="/EMP/AdminPuestos?u=@u">Puestos</a>

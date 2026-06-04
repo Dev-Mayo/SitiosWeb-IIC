@@ -235,10 +235,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         private void RegistrarBitacora(AccionBitacora accion, object datos)
         {
-            string usuario = Request.Query["u"].ToString();
-
-            if (string.IsNullOrWhiteSpace(usuario))
-                usuario = "Sistema";
+            string usuario = ObtenerUsuarioActual();
 
             var bitacora = new Bitacora
             {
@@ -248,6 +245,21 @@ namespace AdminPersonalWebCore.Pages.EMP
             };
 
             _bitacoraRepository.Registrar(bitacora);
+        }
+
+        private string ObtenerUsuarioActual()
+        {
+            var usuario = Request.Query["u"].ToString();
+
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                usuario = HttpContext.Session.GetString("usuario")
+                       ?? HttpContext.Session.GetString("nombreusuario")
+                       ?? User.Identity?.Name
+                       ?? "UsuarioDesconocido";
+            }
+
+            return usuario;
         }
     }
 }

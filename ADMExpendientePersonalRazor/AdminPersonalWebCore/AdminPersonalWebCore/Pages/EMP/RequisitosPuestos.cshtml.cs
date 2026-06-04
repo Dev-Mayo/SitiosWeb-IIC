@@ -173,21 +173,20 @@ namespace AdminPersonalWebCore.Pages.EMP
                 .Take(TamanoPagina)
                 .ToList();
         }
-
         private string ObtenerUsuarioActual()
         {
-            // Primero intenta obtener el usuario enviado por QueryString.
-            // Ejemplo: ?u=JuPerez
-            var usuarioQuery = Request.Query["u"].ToString();
+            var usuario = Request.Query["u"].ToString();
 
-            if (!string.IsNullOrWhiteSpace(usuarioQuery))
+            if (string.IsNullOrWhiteSpace(usuario))
             {
-                return usuarioQuery;
+                usuario = HttpContext.Session.GetString("usuario")
+                       ?? HttpContext.Session.GetString("nombreusuario")
+                       ?? HttpContext.Session.GetString("Usuario")
+                       ?? User.Identity?.Name
+                       ?? "UsuarioDesconocido";
             }
 
-            // Si no existe en QueryString, intenta obtenerlo desde la sesión.
-            // Si tampoco existe en sesión, usa "Sistema" como valor por defecto.
-            return HttpContext.Session.GetString("Usuario") ?? "Sistema";
+            return usuario;
         }
     }
 }
