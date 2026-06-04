@@ -148,12 +148,18 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         private string ObtenerUsuarioActual()
         {
-            var usuarioQuery = Request.Query["u"].ToString();
+            var usuario = Request.Query["u"].ToString();
 
-            if (!string.IsNullOrWhiteSpace(usuarioQuery))
-                return usuarioQuery;
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                usuario = HttpContext.Session.GetString("usuario")
+                       ?? HttpContext.Session.GetString("nombreusuario")
+                       ?? HttpContext.Session.GetString("Usuario")
+                       ?? User.Identity?.Name
+                       ?? "UsuarioDesconocido";
+            }
 
-            return HttpContext.Session.GetString("Usuario") ?? "Sistema";
+            return usuario;
         }
     }
 }
