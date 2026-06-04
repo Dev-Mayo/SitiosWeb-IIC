@@ -143,21 +143,17 @@
                 @if (modulos.Any(m => new[] { "Contratar empleado", "Puestos", "Áreas", "Acciones Personal" }.Contains(m)))
                 {
                     <span class="section-label">Empleados</span>
-                    @if (modulos.Contains("Contratar empleado"))
-                    {
-                        <a class="nav-link" href="/EMP/OferenteEmpleado?u=@u">Contratar empleado</a>
-                    }
                     @if (modulos.Contains("Puestos"))
                     {
                         <a class="nav-link" href="/EMP/AdminPuestos?u=@u">Puestos</a>
                     }
                     @if (modulos.Contains("Áreas"))
                     {
-                        <a class="nav-link" href="/EMP/AdminAreas?u=@u">Áreas</a>
+                        <a class="nav-link" href="/EMP/Areas?u=@u">Áreas</a>
                     }
                     @if (modulos.Contains("Acciones Personal"))
                     {
-                        <a class="nav-link" href="/EMP/AdminAccionesPersonal?u=@u">Acciones de Personal</a>
+                        <a class="nav-link" href="/EMP/AccionesPersonal?u=@u">Acciones de Personal</a>
                     }
                 }
 
