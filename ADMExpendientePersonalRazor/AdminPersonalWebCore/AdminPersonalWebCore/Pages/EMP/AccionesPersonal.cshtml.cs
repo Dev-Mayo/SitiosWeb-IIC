@@ -5,7 +5,7 @@ using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Repository;
 using System.Text.Json;
 
-namespace AdminPersonalWebCore.Pages.EMP.EMP5
+namespace AdminPersonalWebCore.Pages.EMP
 {
     public class AccionesPersonalModel : PageModel
     {

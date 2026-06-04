@@ -44,7 +44,8 @@ builder.Services.AddSingleton<AdminUsuarioService>();
 builder.Services.AddSingleton<InstEducativaService>();
 builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<RequisitoPuestoService>();//emp3
-
+builder.Services.AddSingleton<AreaService>(); // EMP4
+builder.Services.AddSingleton<AccionPersonalService>(); // EMP5
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

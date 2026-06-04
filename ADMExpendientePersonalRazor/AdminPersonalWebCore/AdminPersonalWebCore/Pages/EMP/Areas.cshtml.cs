@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Services;
 
-namespace AdminPersonalWebCore.Pages.EMP.EMP4
+namespace AdminPersonalWebCore.Pages.EMP
 {
     public class AreasModel : PageModel
     {
