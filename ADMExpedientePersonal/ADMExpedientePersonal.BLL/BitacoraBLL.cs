@@ -54,6 +54,7 @@ namespace ADMExpedientePersonal.BLL
             return bitacoras;
         }
 
+
         /// <summary>
         /// Metodo generico para llamadas mas directas y crear las bitacoras
         /// </summary>

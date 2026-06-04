@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\img\**" />
+    <Content Remove="Pages\img\**" />
+    <EmbeddedResource Remove="Pages\img\**" />
+    <None Remove="Pages\img\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdminPersonalWebCore.Entities\AdminPersonalWebCore.Entities.csproj" />
+    <ProjectReference Include="..\AdminPersonalWebCore.Repositories\AdminPersonalWebCore.Repository.csproj" />
+    <ProjectReference Include="..\AdminPersonalWebCore.Services\AdminPersonalWebCore.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\OFE\" />
+  </ItemGroup>
+
+</Project>
