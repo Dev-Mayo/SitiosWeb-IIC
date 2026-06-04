@@ -4,7 +4,7 @@ using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Services;
 using System.Linq;
 
-namespace AdminPersonalWebCore.Pages.EMP.EMP3
+namespace AdminPersonalWebCore.Pages.EMP
 {
     public class RequisitosPuestosModel : PageModel
     {
