@@ -1,5 +1,8 @@
 using AdminPersonalWebCore.Repository;
+using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
 using AdminPersonalWebCore.Services;
+using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
+using AdminPersonalWebCore.Services.ModuloOferenteServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +28,8 @@ string genConn = builder.Configuration.GetConnectionString("GEN");
 
 string empConn = builder.Configuration.GetConnectionString("EMP");//st
 
+builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>(); // Inyectar la fábrica de conexiones para que los repositorios puedan usarla
+
 // Repository (DAL)
 builder.Services.AddSingleton<UsuarioRepository>(_ => new UsuarioRepository(segConn));
 builder.Services.AddSingleton<MenuRepository>(_ => new MenuRepository(segConn));
@@ -34,6 +39,9 @@ builder.Services.AddSingleton<InstEducativaRepository>(_ => new InstEducativaRep
 builder.Services.AddSingleton<RequisitoPuestoRepository>(_ => new RequisitoPuestoRepository(empConn)); //emp3
 builder.Services.AddSingleton<AreaRepository>(_ => new AreaRepository(empConn)); // EMP4
 builder.Services.AddSingleton<AccionPersonalRepository>(_ => new AccionPersonalRepository(empConn)); // EMP5
+
+builder.Services.AddScoped<OferenteRepository>();
+builder.Services.AddScoped<AdminRolRepository>();
 builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
 builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
 
@@ -49,8 +57,16 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<RequisitoPuestoService>();//emp3
 builder.Services.AddSingleton<AreaService>(); // EMP4
 builder.Services.AddSingleton<AccionPersonalService>(); // EMP5
+
+builder.Services.AddScoped<IOferenteService, OferenteService>();
+builder.Services.AddScoped<IAdminRolService, AdminRolService>();
+
+
+
 builder.Services.AddSingleton<ModuloService>(); // SEG5
 builder.Services.AddSingleton<ContratacionService>();// EMP1
+
+
 var app = builder.Build();
 
 

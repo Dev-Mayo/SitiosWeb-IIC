@@ -1,4 +1,5 @@
 using AdminPersonalWebCore.Entities;
+using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -37,7 +38,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 _service.ContratarEmpleado(Contratacion, usuarioActual);
 
-                TempData["MensajeExito"] = "Empleado creado con éxito";
+                TempData["MensajeExito"] = "Empleado creado con ï¿½xito";
 
                 return RedirectToPage(new { u = usuarioActual });
             }

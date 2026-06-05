@@ -9,9 +9,9 @@ CREATE PROCEDURE sp_obtener_oferentes(IN p_identificacion VARCHAR(20))
 BEGIN
     IF p_identificacion IS NOT NULL THEN
         -- Un solo oferente
-        SELECT o.identificacion, o.tipo_identificacion, o.nombre_completo, 
-               o.fecha_nacimiento, o.contratado,
-               e.email, t.telefono, c.codigo_concurso
+        SELECT o.identificacion as Identificacion, o.tipo_identificacion as TipoIdentificacion, o.nombre_completo as NombreCompleto, 
+               o.fecha_nacimiento as FechaNacimiento, o.contratado as Contratado,
+               e.email as Email, t.telefono as Telefono, c.codigo_concurso as CodigoConcurso
         FROM oferentes o
         LEFT JOIN oferente_emails e ON o.identificacion = e.identificacion
         LEFT JOIN oferente_telefonos t ON o.identificacion = t.identificacion
@@ -19,9 +19,9 @@ BEGIN
         WHERE o.identificacion = p_identificacion;
     ELSE
         -- Todos los oferentes
-        SELECT o.identificacion, o.tipo_identificacion, o.nombre_completo, 
-               o.fecha_nacimiento, o.contratado,
-               e.email, t.telefono, c.codigo_concurso
+        SELECT o.identificacion as Identificacion, o.tipo_identificacion as TipoIdentificacion, o.nombre_completo as NombreCompleto, 
+               o.fecha_nacimiento as FechaNacimiento, o.contratado as Contratado,
+               e.email as Email, t.telefono as Telefono, c.codigo_concurso as CodigoConcurso
         FROM oferentes o
         LEFT JOIN oferente_emails e ON o.identificacion = e.identificacion
         LEFT JOIN oferente_telefonos t ON o.identificacion = t.identificacion
@@ -60,6 +60,7 @@ proc: BEGIN
         SELECT COUNT(*) INTO existe FROM oferentes WHERE identificacion = p_identificacion;
         IF existe > 0 THEN
             SELECT 3; -- Ya existe
+            LEAVE proc;
         ELSE
             INSERT INTO oferentes(identificacion,tipo_identificacion,nombre_completo,fecha_nacimiento,contratado)
             VALUES(p_identificacion,p_tipo_identificacion,p_nombre_completo,p_fecha_nacimiento,p_contratado);
@@ -89,6 +90,7 @@ proc: BEGIN
             END IF;
 
             SELECT 1; -- Éxito
+            LEAVE proc;
         END IF;
 
     -- MODIFICAR
@@ -128,6 +130,7 @@ proc: BEGIN
         END IF;
 
         SELECT 1;
+        LEAVE proc;
 
     -- ELIMINAR
     ELSEIF accion = 2 THEN
@@ -143,10 +146,11 @@ proc: BEGIN
         Delete from oferente_telefonos where identificacion = p_identificacion;
         delete from oferente_emails where identificacion = p_identificacion;
         DELETE FROM oferentes WHERE identificacion = p_identificacion;
-        IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
+        IF ROW_COUNT() > 0 THEN SELECT 1; LEAVE proc; ELSE SELECT 0; LEAVE proc; END IF;
 
     ELSE
         SELECT 0;
+        LEAVE proc;
     END IF;
 END$$
 DELIMITER $$
@@ -158,9 +162,9 @@ DELIMITER $$
 CREATE PROCEDURE sp_ObtenerConcursos(IN p_identificacion VARCHAR(20))
 BEGIN
     IF p_identificacion IS NULL THEN
-        SELECT * FROM concursos;
+        SELECT codigo_concurso as CodigoConcurso, nombre as Nombre FROM concursos;
     ELSE
-        SELECT c.* FROM concursos c
+        SELECT c.codigo_concurso as CodigoConcurso, c.nombre as Nombre FROM concursos c
         INNER JOIN oferente_concursos oc ON c.codigo_concurso = oc.codigo_concurso
         WHERE oc.identificacion = p_identificacion;
     END IF;

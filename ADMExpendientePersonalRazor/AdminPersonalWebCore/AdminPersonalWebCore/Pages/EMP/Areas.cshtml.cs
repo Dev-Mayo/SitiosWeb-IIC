@@ -54,7 +54,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
                 _service.Insertar(area, usuarioActual);
 
-                TempData["MensajeExito"] = "El área ha sido registrada correctamente.";
+                TempData["MensajeExito"] = "El ï¿½rea ha sido registrada correctamente.";
 
                 return RedirectToPage(new
                 {
@@ -71,7 +71,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             }
         }
 
-        public IActionResult OnPostEditar(int codigoArea, string nombre, int jefatura) //editar por código de área, no por id
+        public IActionResult OnPostEditar(int codigoArea, string nombre, int jefatura) //editar por cï¿½digo de ï¿½rea, no por id
         {
             var usuarioActual = ObtenerUsuarioActual();
 
@@ -86,7 +86,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
                 _service.Actualizar(area, usuarioActual);
 
-                TempData["MensajeExito"] = "Área actualizada correctamente.";
+                TempData["MensajeExito"] = "ï¿½rea actualizada correctamente.";
 
                 return RedirectToPage(new
                 {
@@ -103,7 +103,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             }
         }
 
-        public IActionResult OnPostEliminar(int codigoArea) //eliminar por código de área, no por id
+        public IActionResult OnPostEliminar(int codigoArea) //eliminar por cï¿½digo de ï¿½rea, no por id
         {
             var usuarioActual = ObtenerUsuarioActual();
 
@@ -111,7 +111,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 _service.Eliminar(codigoArea, usuarioActual);
 
-                TempData["MensajeExito"] = "Área eliminada correctamente.";
+                TempData["MensajeExito"] = "ï¿½rea eliminada correctamente.";
 
                 return RedirectToPage(new
                 {
@@ -148,6 +148,12 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         private string ObtenerUsuarioActual()
         {
+            var usuarioQuery = Request.Query["u"].ToString();
+
+            if (!string.IsNullOrWhiteSpace(usuarioQuery))
+                return usuarioQuery;
+
+            return HttpContext.Session.GetString("Usuario") ?? "Sistema";
             var usuario = Request.Query["u"].ToString();
 
             if (string.IsNullOrWhiteSpace(usuario))
