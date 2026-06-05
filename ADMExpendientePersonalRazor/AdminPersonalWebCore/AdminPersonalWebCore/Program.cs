@@ -61,10 +61,10 @@ builder.Services.AddScoped<IOferenteService, OferenteTemporalService>();
 
 
 
-var app = builder.Build();
-
 builder.Services.AddSingleton<ModuloService>(); // SEG5
 builder.Services.AddSingleton<ContratacionService>();// EMP1
+
+
 var app = builder.Build();
 
 

@@ -239,7 +239,6 @@ namespace AdminPersonalWebCore.Pages.EMP
 
             if (string.IsNullOrWhiteSpace(usuario))
                 usuario = "Sistema";
-            string usuario = ObtenerUsuarioActual();
 
             var bitacora = new Bitacora
             {
