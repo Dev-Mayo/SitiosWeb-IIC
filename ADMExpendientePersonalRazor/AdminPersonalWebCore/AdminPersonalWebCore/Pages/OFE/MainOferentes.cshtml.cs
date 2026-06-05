@@ -57,8 +57,8 @@ namespace AdminPersonalWebCore.Pages.OFE
                 TempData["Mensaje"] = resultado switch
                 {
                     1 => "Oferente eliminado correctamente.",
-                    3 => "No se puede eliminar: tiene datos relacionados.",
-                    _ => "No se ha podido eliminar."
+                    2 => "No se puede eliminar un registro con datos relacionados.",
+                    _ => "No se ha podido eliminar." + resultado
                 };
             }
             catch (Exception ex)

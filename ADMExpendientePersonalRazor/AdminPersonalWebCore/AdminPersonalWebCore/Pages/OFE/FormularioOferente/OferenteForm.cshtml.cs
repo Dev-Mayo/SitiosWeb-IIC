@@ -91,8 +91,8 @@ namespace AdminPersonalWebCore.Pages.OFE.FormularioOferente
                 ModelState.AddModelError("", "Debe ingresar al menos un correo.");
             if (!Oferente.Telefono.Any(t => !string.IsNullOrWhiteSpace(t)))
                 ModelState.AddModelError("", "Debe ingresar al menos un teléfono.");
-            if (!Oferente.CodigoConcurso.Any())
-                ModelState.AddModelError("", "Debe seleccionar al menos un concurso.");
+            //if (!Oferente.CodigoConcurso.Any())
+               // ModelState.AddModelError("", "Debe seleccionar al menos un concurso.");
 
             // Si ModelState tiene errores, devolver la misma página con los datos que el usuario ingresó
             if (!ModelState.IsValid)

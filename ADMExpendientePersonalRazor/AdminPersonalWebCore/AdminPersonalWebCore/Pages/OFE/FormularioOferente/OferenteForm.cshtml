@@ -225,12 +225,6 @@
                 mostrarModalValidacion('Debe ingresar al menos un correo y un teléfono.');
                 e.preventDefault(); return;
             }
-
-            const alguno = Array.from(document.querySelectorAll('[name="Oferente.CodigoConcurso"]')).some(c => c.checked);
-            if (!alguno) {
-                mostrarModalValidacion('Seleccione al menos un concurso.');
-                e.preventDefault();
-            }
         });
 
 </script>

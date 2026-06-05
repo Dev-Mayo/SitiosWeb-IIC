@@ -86,8 +86,8 @@ namespace AdminPersonalWebCore.Services
                 bitacora.Accion = AccionBitacora.ERROR;
                 bitacora.DescripcionJson = CrearJsonError(detalles);
             }
-           // if (resultado == 1) //si cumplio lo esperado / Se puede comentar para no saturar de bittacoras de prueba
-             //   Registrar(bitacora);
+            if (resultado == 1) //si cumplio lo esperado / Se puede comentar para no saturar de bittacoras de prueba
+                Registrar(bitacora);
         }
     }
 }
