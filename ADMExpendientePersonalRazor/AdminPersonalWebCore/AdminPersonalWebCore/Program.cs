@@ -41,6 +41,9 @@ builder.Services.AddSingleton<AreaRepository>(_ => new AreaRepository(empConn));
 builder.Services.AddSingleton<AccionPersonalRepository>(_ => new AccionPersonalRepository(empConn)); // EMP5
 
 builder.Services.AddScoped<OferenteTemporalRepository>();
+builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
+builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
+
 
 
 // Services (BLL) 
@@ -59,6 +62,11 @@ builder.Services.AddScoped<IOferenteService, OferenteTemporalService>();
 
 
 var app = builder.Build();
+
+builder.Services.AddSingleton<ModuloService>(); // SEG5
+builder.Services.AddSingleton<ContratacionService>();// EMP1
+var app = builder.Build();
+
 
 if (!app.Environment.IsDevelopment())
 {

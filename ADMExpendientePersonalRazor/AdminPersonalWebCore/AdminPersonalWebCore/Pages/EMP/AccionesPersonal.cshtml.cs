@@ -59,7 +59,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
                 Empleados = _accionRepository.ObtenerEmpleados();
 
-                // Aquí guardamos los READ en bitácora
+                // Aquï¿½ guardamos los READ en bitï¿½cora
                 RegistrarBitacora(AccionBitacora.READ, new
                 {
                     Mensaje = "El usuario consulta acciones de personal"
@@ -67,13 +67,13 @@ namespace AdminPersonalWebCore.Pages.EMP
             }
             catch
             {
-                // Aquí guardamos los ERROR en bitácora si falla la consulta
+                // Aquï¿½ guardamos los ERROR en bitï¿½cora si falla la consulta
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
                     Mensaje = "Error al consultar acciones de personal"
                 });
 
-                MensajeError = "Ocurrió un error al consultar las acciones de personal.";
+                MensajeError = "Ocurriï¿½ un error al consultar las acciones de personal.";
             }
         }
 
@@ -88,24 +88,24 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 _accionRepository.Insertar(NuevaAccion);
 
-                // Aquí guardamos los CREATE en bitácora
+                // Aquï¿½ guardamos los CREATE en bitï¿½cora
                 RegistrarBitacora(AccionBitacora.CREATE, new
                 {
                     Nuevo = NuevaAccion
                 });
 
-                MensajeExito = "La acción de personal se registró correctamente.";
+                MensajeExito = "La acciï¿½n de personal se registrï¿½ correctamente.";
             }
             catch
             {
-                // Aquí guardamos los ERROR en bitácora si falla el registro
+                // Aquï¿½ guardamos los ERROR en bitï¿½cora si falla el registro
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
-                    Mensaje = "Error al registrar acción de personal",
+                    Mensaje = "Error al registrar acciï¿½n de personal",
                     Datos = NuevaAccion
                 });
 
-                MensajeError = "Ocurrió un error al registrar la acción de personal.";
+                MensajeError = "Ocurriï¿½ un error al registrar la acciï¿½n de personal.";
             }
 
             return RedirectToPage(new { u = Request.Query["u"].ToString() });
@@ -120,30 +120,30 @@ namespace AdminPersonalWebCore.Pages.EMP
 
             try
             {
-                // Aquí obtenemos el registro anterior para guardar el antes y después
+                // Aquï¿½ obtenemos el registro anterior para guardar el antes y despuï¿½s
                 var accionAnterior = _accionRepository.ObtenerPorId(AccionEditar.AccionId);
 
                 _accionRepository.Actualizar(AccionEditar);
 
-                // Aquí guardamos los UPDATE en bitácora
+                // Aquï¿½ guardamos los UPDATE en bitï¿½cora
                 RegistrarBitacora(AccionBitacora.UPDATE, new
                 {
                     Antes = accionAnterior,
                     Despues = AccionEditar
                 });
 
-                MensajeExito = "La acción de personal se actualizó correctamente.";
+                MensajeExito = "La acciï¿½n de personal se actualizï¿½ correctamente.";
             }
             catch
             {
-                // Aquí guardamos los ERROR en bitácora si falla la actualización
+                // Aquï¿½ guardamos los ERROR en bitï¿½cora si falla la actualizaciï¿½n
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
-                    Mensaje = "Error al actualizar acción de personal",
+                    Mensaje = "Error al actualizar acciï¿½n de personal",
                     Datos = AccionEditar
                 });
 
-                MensajeError = "Ocurrió un error al actualizar la acción de personal.";
+                MensajeError = "Ocurriï¿½ un error al actualizar la acciï¿½n de personal.";
             }
 
             return RedirectToPage(new { u = Request.Query["u"].ToString() });
@@ -153,22 +153,22 @@ namespace AdminPersonalWebCore.Pages.EMP
         {
             try
             {
-                // Aquí obtenemos el registro antes de eliminarlo
+                // Aquï¿½ obtenemos el registro antes de eliminarlo
                 var accionEliminada = _accionRepository.ObtenerPorId(AccionEliminarId);
 
                 _accionRepository.Eliminar(AccionEliminarId);
 
-                // Aquí guardamos los DELETE en bitácora
+                // Aquï¿½ guardamos los DELETE en bitï¿½cora
                 RegistrarBitacora(AccionBitacora.DELETE, new
                 {
                     Eliminado = accionEliminada
                 });
 
-                MensajeExito = "La acción de personal se eliminó correctamente.";
+                MensajeExito = "La acciï¿½n de personal se eliminï¿½ correctamente.";
             }
             catch (MySql.Data.MySqlClient.MySqlException)
             {
-                // Aquí guardamos los ERROR en bitácora cuando MySQL no permite eliminar por datos relacionados
+                // Aquï¿½ guardamos los ERROR en bitï¿½cora cuando MySQL no permite eliminar por datos relacionados
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
                     Mensaje = "No se puede eliminar un registro con datos relacionados",
@@ -179,14 +179,14 @@ namespace AdminPersonalWebCore.Pages.EMP
             }
             catch
             {
-                // Aquí guardamos los ERROR en bitácora si falla la eliminación
+                // Aquï¿½ guardamos los ERROR en bitï¿½cora si falla la eliminaciï¿½n
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
-                    Mensaje = "Error al eliminar acción de personal",
+                    Mensaje = "Error al eliminar acciï¿½n de personal",
                     Id = AccionEliminarId
                 });
 
-                MensajeError = "Ocurrió un error al eliminar la acción de personal.";
+                MensajeError = "Ocurriï¿½ un error al eliminar la acciï¿½n de personal.";
             }
 
             return RedirectToPage(new { u = Request.Query["u"].ToString() });
@@ -196,7 +196,7 @@ namespace AdminPersonalWebCore.Pages.EMP
         {
             if (accion.CodigoAccion <= 0)
             {
-                MensajeError = "El código de acción es requerido.";
+                MensajeError = "El cï¿½digo de acciï¿½n es requerido.";
                 return false;
             }
 
@@ -208,13 +208,13 @@ namespace AdminPersonalWebCore.Pages.EMP
 
             if (string.IsNullOrWhiteSpace(accion.Descripcion))
             {
-                MensajeError = "La descripción es requerida.";
+                MensajeError = "La descripciï¿½n es requerida.";
                 return false;
             }
 
             if (accion.Descripcion.Length > 500)
             {
-                MensajeError = "La descripción no puede superar los 500 caracteres.";
+                MensajeError = "La descripciï¿½n no puede superar los 500 caracteres.";
                 return false;
             }
 
@@ -239,6 +239,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
             if (string.IsNullOrWhiteSpace(usuario))
                 usuario = "Sistema";
+            string usuario = ObtenerUsuarioActual();
 
             var bitacora = new Bitacora
             {
@@ -248,6 +249,21 @@ namespace AdminPersonalWebCore.Pages.EMP
             };
 
             _bitacoraRepository.Registrar(bitacora);
+        }
+
+        private string ObtenerUsuarioActual()
+        {
+            var usuario = Request.Query["u"].ToString();
+
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                usuario = HttpContext.Session.GetString("usuario")
+                       ?? HttpContext.Session.GetString("nombreusuario")
+                       ?? User.Identity?.Name
+                       ?? "UsuarioDesconocido";
+            }
+
+            return usuario;
         }
     }
 }
