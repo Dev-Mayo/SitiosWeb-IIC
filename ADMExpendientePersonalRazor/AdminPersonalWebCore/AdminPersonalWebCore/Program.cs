@@ -40,7 +40,7 @@ builder.Services.AddSingleton<RequisitoPuestoRepository>(_ => new RequisitoPuest
 builder.Services.AddSingleton<AreaRepository>(_ => new AreaRepository(empConn)); // EMP4
 builder.Services.AddSingleton<AccionPersonalRepository>(_ => new AccionPersonalRepository(empConn)); // EMP5
 
-builder.Services.AddScoped<OferenteTemporalRepository>();
+builder.Services.AddScoped<OferenteRepository>();
 builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
 builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
 
@@ -57,7 +57,7 @@ builder.Services.AddSingleton<RequisitoPuestoService>();//emp3
 builder.Services.AddSingleton<AreaService>(); // EMP4
 builder.Services.AddSingleton<AccionPersonalService>(); // EMP5
 
-builder.Services.AddScoped<IOferenteService, OferenteTemporalService>();
+builder.Services.AddScoped<IOferenteService, OferenteService>();
 
 
 

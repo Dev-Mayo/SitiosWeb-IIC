@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AdminPersonalWebCore.Services.ModuloOferenteServices
 {
-    public class OferenteTemporalService : IOferenteService
+    public class OferenteService : IOferenteService
     {
-        private readonly OferenteTemporalRepository _oferenteRepository;
+        private readonly OferenteRepository _oferenteRepository;
         private readonly BitacoraService _bitacoraService; // tu nueva capa de bitácora
 
-        public OferenteTemporalService(OferenteTemporalRepository oferenteRepository, BitacoraService bitacoraService)
+        public OferenteService(OferenteRepository oferenteRepository, BitacoraService bitacoraService)
         {
             _oferenteRepository = oferenteRepository;
             _bitacoraService = bitacoraService;
@@ -33,26 +33,27 @@ namespace AdminPersonalWebCore.Services.ModuloOferenteServices
             return concursos;
         }
 
-        public async Task<IEnumerable<OferenteTemporal>> ObtenerOferentesAsync(string usuario)
+        public async Task<IEnumerable<Oferente>> ObtenerOferentesAsync(string usuario)
         {
             var oferentes = await _oferenteRepository.ObtenerOferentesAsync();
             GenericoCrearBitacora(usuario, 3, 1, detalles: "Oferentes");
             return oferentes;
         }
 
-        public async Task<IEnumerable<OferenteTemporal>> ObtenerNombreOferentesAsync()
+        public async Task<IEnumerable<Oferente>> ObtenerNombreOferentesAsync()
         {
             return await _oferenteRepository.ObtenerNombreOferentesAsync();
         }
 
-        public async Task<OferenteTemporal> ObtenerOferenteAsync(string usuario, string identificacion)
+        public async Task<Oferente> ObtenerOferenteAsync(string usuario, string identificacion)
         {
             var oferente = (await _oferenteRepository.ObtenerOferentesAsync(identificacion)).FirstOrDefault();
             GenericoCrearBitacora(usuario, 3, 1, detalles: $"Oferente {identificacion}");
             return oferente;
         }
 
-        public async Task<int> InsertarOferenteAsync(OferenteTemporal oferente, string usuario)
+        /// <returns>0 = fallo, 1 = éxito, 2 = ya asignado, 3 = ya existe, 4 = datos inválidos</returns>
+        public async Task<int> InsertarOferenteAsync(Oferente oferente, string usuario)
         {
             if (!oferente.ValidarDatos())
                 return 4; // Datos inválidos
@@ -62,7 +63,7 @@ namespace AdminPersonalWebCore.Services.ModuloOferenteServices
             return resultado;
         }
 
-        public async Task<int> ActualizarOferenteAsync(OferenteTemporal oferente, string usuario)
+        public async Task<int> ActualizarOferenteAsync(Oferente oferente, string usuario)
         {
             if (!oferente.ValidarDatos())
                 return 4; // Datos inválidos
@@ -73,7 +74,7 @@ namespace AdminPersonalWebCore.Services.ModuloOferenteServices
             return resultado;
         }
 
-        public async Task<int> EliminarOferenteAsync(OferenteTemporal oferente, string usuario)
+        public async Task<int> EliminarOferenteAsync(Oferente oferente, string usuario)
         {
             var resultado = await _oferenteRepository.GestionarOferenteAsync(2, oferente);
             GenericoCrearBitacora(usuario, 2, resultado, objetoOriginal: oferente);

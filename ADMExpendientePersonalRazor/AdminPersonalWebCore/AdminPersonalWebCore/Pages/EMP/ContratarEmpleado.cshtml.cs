@@ -1,4 +1,5 @@
 using AdminPersonalWebCore.Entities;
+using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

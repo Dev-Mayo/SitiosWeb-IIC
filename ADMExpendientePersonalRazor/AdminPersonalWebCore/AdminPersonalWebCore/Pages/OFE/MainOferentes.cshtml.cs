@@ -1,137 +1,79 @@
-using System.Collections.Generic;
-using System.Linq;
 using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
-using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
+using AdminPersonalWebCore.Services;
 using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AdminPersonalWebCore.Pages.OFE
 {
-    public class MainOferentes : PageModel
+    public class MainOferentesModel : PageModel
     {
         private readonly IOferenteService _oferenteService;
+       // private readonly IAuthService _authService;
+        private const int TamPagina = 10;
 
-        public MainOferentes(IOferenteService oferenteService)
+        public MainOferentesModel(IOferenteService oferenteService)//, IAuthService authService)
         {
             _oferenteService = oferenteService;
+            //_authService = authService;
         }
 
-        // Propiedades para la vista
-        public List<OferenteTemporal> Oferentes { get; set; } = new();
-        [BindProperty] public OferenteTemporal Oferente { get; set; } = new();
-        [BindProperty] public string IdOferente { get; set; }
-        [BindProperty] public string Accion { get; set; }
-        public string MensajeError { get; set; }
-        public string MensajeModal { get; set; }
-        public bool MostrarModal { get; set; }
+        public IEnumerable<Oferente> OferentesPaginados { get; set; } = Enumerable.Empty<Oferente>();
+        public int PaginaActual { get; set; } = 1;
+        public int TotalPaginas { get; set; } = 1;
 
-        public string FormUsuario = "Desconocido";
-
-        public List<SelectListItem> TiposIdentificacion => new List<SelectListItem>
+        public async Task<IActionResult> OnGetAsync(string u, int pagina = 1)
         {
-            new SelectListItem { Value = "DIMEX", Text = "DIMEX" },
-            new SelectListItem { Value = "Pasaporte", Text = "Pasaporte" },
-            new SelectListItem { Value = "Cedula", Text = "Cedula" }
-        };
+            try
+            {
+                var usuario = await ObtenerUsuarioAsync(u);
+                var todos = (await _oferenteService.ObtenerOferentesAsync(usuario)).ToList();
 
-        public int CurrentPage { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
-        public int TotalPages { get; set; }
-
-
-
-        // Listar oferentes
-        public async Task OnGetAsync(string u, int page = 1)
-        {
-            FormUsuario = u;
-
-            Oferentes = (await _oferenteService.ObtenerOferentesAsync(FormUsuario)).ToList();
-
-            CurrentPage = page;
-            TotalPages = (int)Math.Ceiling(Oferentes.Count() / (double)PageSize);
-
-            Oferentes = Oferentes
-                .Skip((CurrentPage - 1) * PageSize)
-                .Take(PageSize)
-                .ToList();
-        }
-
-        // Abrir modal Nuevo
-        public IActionResult OnPostNuevo()
-        {
-            Oferente = new OferenteTemporal();
-            Accion = "Nuevo";
-            MostrarModal = true;
+                TotalPaginas = (int)Math.Ceiling(todos.Count / (double)TamPagina);
+                PaginaActual = Math.Clamp(pagina, 1, Math.Max(1, TotalPaginas));
+                OferentesPaginados = todos.Skip((PaginaActual - 1) * TamPagina).Take(TamPagina);
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "Error inesperado: " + ex.Message;
+            }
             return Page();
         }
 
-        // Abrir modal Editar
-        public async Task<IActionResult> OnPostEditar(string id)
+        public async Task<IActionResult> OnPostEliminarAsync(string u, string identificacion)
         {
-            Oferente = await _oferenteService.ObtenerOferenteAsync(FormUsuario, id);
-            Accion = "Editar";
-            MostrarModal = true;
-            return Page();
+            try
+            {
+                var usuario = await ObtenerUsuarioAsync(u);
+                var oferente = await _oferenteService.ObtenerOferenteAsync(usuario, identificacion);
+
+                if (oferente == null)
+                {
+                    TempData["Mensaje"] = "No se encontró el oferente.";
+                    return RedirectToPage(new { u });
+                }
+
+                int resultado = await _oferenteService.EliminarOferenteAsync(oferente, usuario);
+                TempData["Mensaje"] = resultado switch
+                {
+                    1 => "Oferente eliminado correctamente.",
+                    3 => "No se puede eliminar: tiene datos relacionados.",
+                    _ => "No se ha podido eliminar."
+                };
+            }
+            catch (Exception ex)
+            {
+                TempData["Mensaje"] = "Error inesperado: " + ex.Message;
+            }
+
+            return RedirectToPage(new { u });
         }
 
-        // Guardar (Insertar o Actualizar)
-        public async Task<IActionResult> OnPostGuardarOferente()
+        private async Task<string> ObtenerUsuarioAsync(string u)
         {
-            if (Accion == "Nuevo")
-                await _oferenteService.InsertarOferenteAsync(Oferente, FormUsuario);
-            else if (Accion == "Editar")
-                await _oferenteService.ActualizarOferenteAsync(Oferente, FormUsuario);
-
-            return RedirectToPage();
-        }
-
-        // Abrir modal Eliminar
-        public IActionResult OnPostEliminar(string id)
-        {
-            IdOferente = id;
-            MostrarModal = true;
-            return Page();
-        }
-
-        // Confirmar eliminación
-        public async Task<IActionResult> OnPostConfirmarEliminar()
-        {
-            var oferente = await _oferenteService.ObtenerOferenteAsync(FormUsuario, IdOferente);
-            await _oferenteService.EliminarOferenteAsync(oferente, FormUsuario);
-            return RedirectToPage();
-        }
-
-        // Handlers para correos y teléfonos
-        public IActionResult OnPostAgregarCorreo()
-        {
-            Oferente.Email.Add(string.Empty);
-            MostrarModal = true;
-            return Page();
-        }
-
-        public IActionResult OnPostEliminarCorreo(int index)
-        {
-            if (index >= 0 && index < Oferente.Email.Count)
-                Oferente.Email.RemoveAt(index);
-            MostrarModal = true;
-            return Page();
-        }
-
-        public IActionResult OnPostAgregarTelefono()
-        {
-            Oferente.Telefono.Add(string.Empty);
-            MostrarModal = true;
-            return Page();
-        }
-
-        public IActionResult OnPostEliminarTelefono(int index)
-        {
-            if (index >= 0 && index < Oferente.Telefono.Count)
-                Oferente.Telefono.RemoveAt(index);
-            MostrarModal = true;
-            return Page();
+            /*var user = await _authService.ObtenerUsuarioPorNombreAsync(u);
+            return user?.NombreCompleto ?? "Desconocido";*/
+            return u;
         }
     }
 }

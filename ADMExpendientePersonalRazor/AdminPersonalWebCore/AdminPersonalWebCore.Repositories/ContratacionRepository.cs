@@ -1,4 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
+using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using Dapper;
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
@@ -90,7 +91,7 @@ namespace AdminPersonalWebCore.Repository
                 if (oferente == null)
                     throw new Exception("El oferente seleccionado no existe.");
 
-                if (oferente.Contratado)
+                if (oferente.Contratado == 1)
                     throw new Exception("El oferente seleccionado ya fue contratado.");
 
                 string sqlInsertEmpleado = @"

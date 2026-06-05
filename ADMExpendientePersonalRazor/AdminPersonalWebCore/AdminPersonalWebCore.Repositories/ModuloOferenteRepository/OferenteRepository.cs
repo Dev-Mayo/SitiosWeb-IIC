@@ -10,24 +10,24 @@ using System.Threading.Tasks;
 
 namespace AdminPersonalWebCore.Repository.ModuloOferenteRepository
 {
-    public class OferenteTemporalRepository
+    public class OferenteRepository
     {
         private readonly IDbConnectionFactory _dbConnectionFactory;
 
-        public OferenteTemporalRepository(IDbConnectionFactory dbConnectionFactory)
+        public OferenteRepository(IDbConnectionFactory dbConnectionFactory)
         {
             _dbConnectionFactory = dbConnectionFactory;
         }
 
-        public async Task<IEnumerable<OferenteTemporal>> ObtenerOferentesAsync(string identificacion = null)
+        public async Task<IEnumerable<Oferente>> ObtenerOferentesAsync(string identificacion = null)
         {
             using (var connection = _dbConnectionFactory.CreateConnection("OFE"))
             {
                 var parametros = new { p_identificacion = identificacion };
 
-                var lookup = new Dictionary<string, OferenteTemporal>();
+                var lookup = new Dictionary<string, Oferente>();
 
-                var oferentes = await connection.QueryAsync<OferenteTemporal, string, string, int?, OferenteTemporal>(
+                var oferentes = await connection.QueryAsync<Oferente, string, string, int?, Oferente>(
                     "sp_obtener_oferentes",
                     (oferente, email, telefono, concurso) =>
                     {
@@ -65,11 +65,11 @@ namespace AdminPersonalWebCore.Repository.ModuloOferenteRepository
         /// </summary>
         /// <returns>Lista de oferentes con solo nombre e identificacion</returns>
         /// 
-        public async Task<IEnumerable<OferenteTemporal>> ObtenerNombreOferentesAsync()
+        public async Task<IEnumerable<Oferente>> ObtenerNombreOferentesAsync()
         {
             using (var connection = _dbConnectionFactory.CreateConnection("OFE"))
             {
-                var oferentes = await connection.QueryAsync<OferenteTemporal>(
+                var oferentes = await connection.QueryAsync<Oferente>(
                     "sp_obtener_nombre_oferentes",
                     commandType: CommandType.StoredProcedure
                 );
@@ -85,13 +85,13 @@ namespace AdminPersonalWebCore.Repository.ModuloOferenteRepository
         /// <param name="oferente">Objeto con la información del oferente. Si va a eliminar solo importa la identificacion</param>
         /// <returns>0 = fallo, 1 = éxito, 2 = ya asignado, 3 = ya existe</returns>
         /// 
-        public async Task<int> GestionarOferenteAsync(int accion, OferenteTemporal oferente)
+        public async Task<int> GestionarOferenteAsync(int accion, Oferente oferente)
         {
             using (var connection = _dbConnectionFactory.CreateConnection("OFE"))
             {
                 var parametros = new
                 {
-                    accion,
+                    accion = accion,
                     p_identificacion = oferente.Identificacion,
                     p_tipo_identificacion = oferente.TipoIdentificacion,
                     p_nombre_completo = oferente.NombreCompleto,

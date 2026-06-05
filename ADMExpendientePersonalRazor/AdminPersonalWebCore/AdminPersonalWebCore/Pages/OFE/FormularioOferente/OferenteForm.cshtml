@@ -1,0 +1,237 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.OFE.FormularioOferente.OferenteFormModel
+@{
+    ViewData["Title"] = Model.Accion == "nuevo" ? "Nuevo Oferente" : "Editar Oferente";
+}
+
+<style>
+    .card-custom {
+        width: calc(100% - 80px);
+        margin: 40px auto;
+        border-radius: 14px;
+        box-shadow: 0 6px 28px rgba(0,0,0,.15);
+        max-width: 860px;
+    }
+    .card-header-custom {
+        background: #1aad94;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        border-radius: 14px 14px 0 0;
+    }
+</style>
+
+<div class="card-custom bg-white">
+    <div class="card-header-custom">
+        <h5 class="fw-bold mb-0">@ViewData["Title"]</h5>
+    </div>
+    <div class="p-4">
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var err in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@err.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <form method="post">
+            <input type="hidden" name="u" value="@Request.Query["u"]" />
+
+            <!-- Tipo de identificación -->
+            <select asp-for="Oferente.TipoIdentificacion" class="form-select"
+                    onchange="actualizarValidador(this.value)">
+                <option value="Cedula">Cédula de identidad</option>
+                <option value="Dimex">DIMEX</option>
+                <option value="Pasaporte">Pasaporte</option>
+            </select>
+
+            <!-- Identificación -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Identificación</label>
+                <input type="text" id="txtIdentificacion" name="Oferente.Identificacion"
+                       class="form-control" value="@Model.Oferente.Identificacion"
+                       @(Model.Accion == "nuevo" ? "" : "readonly") required />
+                <div id="errorIdentificacion" class="text-danger small" style="display:none;"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre completo</label>
+                <input type="text" name="Oferente.NombreCompleto" class="form-control"
+                       value="@Model.Oferente.NombreCompleto" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Fecha de nacimiento</label>
+                <input type="date" name="Oferente.FechaNacimiento" class="form-control"
+                       value="@Model.Oferente.FechaNacimiento.ToString("yyyy-MM-dd")"
+                       required />
+            </div>
+
+            <!-- Correos -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Correos electrónicos</label>
+                <div id="listaCorreos">
+                    @for (int i = 0; i < Model.Oferente.Email.Count; i++)
+                    {
+                        <div class="input-group mb-2">
+                            <input type="text" name="Oferente.Email[@i]" class="form-control"
+                                   value="@Model.Oferente.Email[i]" />
+                            <button type="button" class="btn btn-danger"
+                                    onclick="eliminarCampo(this,'listaCorreos','email')">X</button>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-sm btn-success mt-1"
+                        onclick="agregarCampo('listaCorreos','email')">
+                    Agregar correo
+                </button>
+            </div>
+
+            <!-- Teléfonos -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Teléfonos de contacto</label>
+                <div id="listaTelefonos">
+                    @for (int i = 0; i < Model.Oferente.Telefono.Count; i++)
+                    {
+                        <div class="input-group mb-2">
+                            <input type="text" name="Oferente.Telefono[@i]" class="form-control"
+                                   value="@Model.Oferente.Telefono[i]" />
+                            <button type="button" class="btn btn-danger"
+                                    onclick="eliminarCampo(this,'listaTelefonos','telefono')">X</button>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-sm btn-success mt-1"
+                        onclick="agregarCampo('listaTelefonos','telefono')">
+                    Agregar teléfono
+                </button>
+            </div>
+
+            <!-- Concursos -->
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Concursos</label>
+                @foreach (var c in Model.Concursos)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               name="Oferente.CodigoConcurso"
+                               value="@c.CodigoConcurso"
+                               id="chk_@c.CodigoConcurso"
+                               @(Model.Oferente.CodigoConcurso.Contains(c.CodigoConcurso.ToString()) ? "checked" : "") />
+                        <label class="form-check-label" for="chk_@c.CodigoConcurso">@c.Nombre</label>
+                    </div>
+                }
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary fw-semibold">Guardar</button>
+                <a href="/OFE/MainOferentes?u=@Request.Query["u"]" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+
+    </div>
+
+    <!-- Modal de validación -->
+    <div class="modal fade" id="modalValidacion" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Validación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" id="modalValidacionMensaje">
+                    <!-- Aquí se inserta el mensaje dinámico -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+<script>
+    // Inicial según el tipo cargado
+    const tipoInicial = document.querySelector('[name="Oferente.TipoIdentificacion"]').value;
+    actualizarValidador(tipoInicial);
+
+    const patrones = {
+        Cedula:    { regex: /^\d{9}$/,          msg: 'Cédula: exactamente 9 dígitos.' },
+        Dimex:     { regex: /^\d{12}$/,         msg: 'DIMEX: exactamente 12 dígitos.' },
+        Pasaporte: { regex: /^[A-Za-z0-9]{6,9}$/, msg: 'Pasaporte: 6-9 caracteres alfanuméricos.' }
+    };
+
+    function actualizarValidador(tipo) {
+        // Guarda el patrón activo para validar al submit
+        window._tipoActivo = tipo;
+    }
+
+    function agregarCampo(contenedorId, nombre) {
+        const cont = document.getElementById(contenedorId);
+        const idx  = cont.querySelectorAll('.input-group').length;
+        const cap  = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+        const div  = document.createElement('div');
+        div.className = 'input-group mb-2';
+        div.innerHTML = `
+            <input type="text" name="Oferente.${cap}[${idx}]" class="form-control" />
+            <button type="button" class="btn btn-danger"
+                onclick="eliminarCampo(this,'${contenedorId}','${nombre}')">X</button>`;
+        cont.appendChild(div);
+    }
+
+    function eliminarCampo(btn, contenedorId, nombre) {
+        btn.closest('.input-group').remove();
+        renumerar(contenedorId, nombre);
+    }
+
+    function renumerar(contenedorId, nombre) {
+        const cap = nombre.charAt(0).toUpperCase() + nombre.slice(1);
+        document.getElementById(contenedorId)
+            .querySelectorAll('input[type="text"]')
+            .forEach((inp, i) => { inp.name = `Oferente.${cap}[${i}]`; });
+    }
+
+            function mostrarModalValidacion(mensaje) {
+            const msg = document.getElementById('modalValidacionMensaje');
+            msg.textContent = mensaje;
+            const modalEl = document.getElementById('modalValidacion');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        }
+
+
+            document.querySelector('form').addEventListener('submit', function(e) {
+            const txtId = document.getElementById('txtIdentificacion');
+            if (!txtId.readOnly && window._tipoActivo) {
+                const patron = patrones[window._tipoActivo];
+                const err    = document.getElementById('errorIdentificacion');
+                if (!patron.regex.test(txtId.value)) {
+                    err.textContent = patron.msg;
+                    err.style.display = 'block';
+                    e.preventDefault(); return;
+                }
+                err.style.display = 'none';
+            }
+
+            const correos = document.querySelectorAll('#listaCorreos input[type="text"]');
+            const tels    = document.querySelectorAll('#listaTelefonos input[type="text"]');
+            if (!correos.length || !tels.length) {
+                mostrarModalValidacion('Debe ingresar al menos un correo y un teléfono.');
+                e.preventDefault(); return;
+            }
+
+            const alguno = Array.from(document.querySelectorAll('[name="Oferente.CodigoConcurso"]')).some(c => c.checked);
+            if (!alguno) {
+                mostrarModalValidacion('Seleccione al menos un concurso.');
+                e.preventDefault();
+            }
+        });
+
+</script>
+}

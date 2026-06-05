@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AdminPersonalWebCore.Entities.ModuloOferenteEntities
 {
-    public class OferenteTemporal
+    public class Oferente
     {
-        public string Identificacion { get; set; }
-        public string TipoIdentificacion { get; set; } // Cédula, DIMEX, Pasaporte
-        public string NombreCompleto { get; set; }
+        public string Identificacion { get; set; } = string.Empty;
+        public string TipoIdentificacion { get; set; } = string.Empty;
+        public string NombreCompleto { get; set; } = string.Empty;
         public DateTime FechaNacimiento { get; set; }
-        public int Contratado { get; set; }
+        public int Contratado { get; set; } = 0;
 
         // Listas para múltiples valores
         public List<string> Email { get; set; } = new List<string>();
@@ -41,10 +41,6 @@ namespace AdminPersonalWebCore.Entities.ModuloOferenteEntities
                 return false;
             }
             if (FechaNacimiento == default)
-            {
-                return false;
-            }
-            if (Contratado < 0 || Contratado > 1)
             {
                 return false;
             }

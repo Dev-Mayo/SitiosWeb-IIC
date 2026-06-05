@@ -8,7 +8,7 @@ namespace AdminPersonalWebCore.Entities.ModuloOferenteEntities
 {
     public class ConcursoTemporal
     {
-        public string CodigoConcurso { get; set; }
+        public int CodigoConcurso { get; set; }
         public string Nombre { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
