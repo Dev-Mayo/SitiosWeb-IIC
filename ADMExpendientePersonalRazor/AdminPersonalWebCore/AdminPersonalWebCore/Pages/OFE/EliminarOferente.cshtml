@@ -1,0 +1,14 @@
+﻿@page "{id}"
+@model AdminPersonalWebCore.Pages.OFE.EliminarOferenteModel
+@{
+    ViewData["Title"] = "Eliminar Oferente";
+}
+
+<h4>Confirmar eliminación</h4>
+<p>¿Está seguro que desea eliminar este oferente?</p>
+
+<form method="post">
+    <input type="hidden" asp-for="IdOferente" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-page="MainOferentes" class="btn btn-secondary">Cancelar</a>
+</form>
