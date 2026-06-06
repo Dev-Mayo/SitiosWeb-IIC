@@ -9,7 +9,8 @@ namespace AdminPersonalWebCore.Entities
     public class Puesto
     {
         public int PuestoId { get; set; }
-        public string Nombre { get; set; } = string.Empty;
+        public string Nombre { get; set; }
         public decimal Salario { get; set; }
+        public int? JefePuestoId { get; set; }
     }
 }

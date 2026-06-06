@@ -1,5 +1,6 @@
 using AdminPersonalWebCore.Repository;
 using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
+using AdminPersonalWebCore.Repository;
 using AdminPersonalWebCore.Services;
 using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using AdminPersonalWebCore.Services.ModuloOferenteServices;
@@ -25,7 +26,7 @@ builder.Services.AddSession(options =>
 string segConn = builder.Configuration.GetConnectionString("SEG");
 string bitConn = builder.Configuration.GetConnectionString("BIT");
 string genConn = builder.Configuration.GetConnectionString("GEN");
-
+string ofeConn = builder.Configuration.GetConnectionString("OFE");
 string empConn = builder.Configuration.GetConnectionString("EMP");//st
 
 builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>(); // Inyectar la fábrica de conexiones para que los repositorios puedan usarla
@@ -44,6 +45,12 @@ builder.Services.AddScoped<OferenteRepository>();
 builder.Services.AddScoped<AdminRolRepository>();
 builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
 builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
+builder.Services.AddSingleton<CompaniaRepository>(_ => new CompaniaRepository(genConn));
+builder.Services.AddSingleton<ConcursoRepository>(_ => new ConcursoRepository(ofeConn));
+builder.Services.AddSingleton<PuestoRepository>(_ => new PuestoRepository(empConn));
+builder.Services.AddSingleton<ParametroRepository>(_ => new ParametroRepository(genConn));
+builder.Services.AddSingleton<UbicacionRepository>(_ => new UbicacionRepository(genConn));
+
 
 
 
@@ -67,6 +74,11 @@ builder.Services.AddSingleton<ModuloService>(); // SEG5
 builder.Services.AddSingleton<ContratacionService>();// EMP1
 
 
+builder.Services.AddSingleton<CompaniaService>();
+builder.Services.AddSingleton<ConcursoService>();
+builder.Services.AddSingleton<PuestoService>();
+builder.Services.AddSingleton<ParametroService>();
+builder.Services.AddSingleton<UbicacionService>();
 var app = builder.Build();
 
 
