@@ -19,4 +19,8 @@
     <ProjectReference Include="..\AdminPersonalWebCore.Services\AdminPersonalWebCore.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\OFE\" />
+  </ItemGroup>
+
 </Project>
