@@ -34,7 +34,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_obtener_nombre_oferentes()
 BEGIN
         -- Todos los oferentes
-        SELECT identificacion, nombre_completo
+        SELECT identificacion as Identificacion, nombre_completo as NombreCompleto
         FROM oferentes;
 END$$
 DELIMITER $$
@@ -174,15 +174,16 @@ DELIMITER $$
 -- =========================================
 -- Preparación Académica
 -- =========================================
+use OFE;
 DELIMITER $$
 CREATE PROCEDURE sp_ObtenerPreparacionAcad(IN p_identificacion VARCHAR(20))
 BEGIN
     SELECT pa.id,
-           pa.codigo_institucion,
-           i.nombre AS institucion,
-           pa.titulo,
-           pa.fecha_inicio,
-           pa.fecha_fin
+           pa.codigo_institucion as CodigoInstitucion,
+           i.nombre AS Institucion,
+           pa.titulo as Titulo,
+           pa.fecha_inicio as FechaInicio,
+           pa.fecha_fin as FechaFin
     FROM preparacion_acad pa
     INNER JOIN GEN.inst_educativas i 
         ON pa.codigo_institucion = i.codigo_institucion
@@ -195,12 +196,11 @@ DELIMITER $$
 CREATE PROCEDURE sp_ObtenerPreparacionAcadPorId(IN p_id INT)
 BEGIN
     SELECT pa.id,
-           pa.codigo_institucion,
-           i.nombre AS institucion,
-           pa.oferente_id,
-           pa.titulo,
-           pa.fecha_inicio,
-           pa.fecha_fin
+           pa.codigo_institucion as CodigoInstitucion,
+           i.nombre AS Institucion,
+           pa.titulo as Titulo,
+           pa.fecha_inicio as FechaInicio,
+           pa.fecha_fin as FechaFin
     FROM preparacion_acad pa
     INNER JOIN GEN.inst_educativas i 
         ON pa.codigo_institucion = i.codigo_institucion
@@ -251,13 +251,9 @@ DELIMITER $$
 DELIMITER $$
 CREATE PROCEDURE sp_EliminarPreparacionAcad(IN p_id INT) -- separado por comodidad
 BEGIN
-    DECLARE v_count INT;
-    SELECT COUNT(*) INTO v_count FROM preparacion_acad WHERE id = p_id AND oferente_id IS NOT NULL;
-    IF v_count > 0 THEN SELECT 2;
-    ELSE
         DELETE FROM preparacion_acad WHERE id = p_id;
         IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
-    END IF;
+
 END$$
 DELIMITER $$
 
@@ -329,7 +325,11 @@ DELIMITER $$
 CREATE PROCEDURE sp_ObtenerEntrevistas(IN p_EntrevistaId int)
 BEGIN
     IF p_EntrevistaId IS NULL THEN
-        SELECT * 
+        SELECT entrevista_id as EntrevistaId,
+        oferente_id as OferenteIdentificacion,
+        empleado_id as EmpleadoId,
+        fecha_entrevista as FechaEntrevista,
+        estado as Estado
         FROM entrevistas 
         ORDER BY fecha_entrevista ASC;
     ELSE
@@ -380,7 +380,8 @@ DELIMITER $$
 CREATE PROCEDURE sp_ModificarEstadoEntrevista(IN p_EntrevistaId INT)
 BEGIN
 	if ((select estado from entrevistas where entrevista_id = p_EntrevistaId) = 'Realizada') then 
-		select 2;
+		UPDATE entrevistas SET estado = 'Pendiente' WHERE entrevista_id = p_EntrevistaId;
+		IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
     else
 		UPDATE entrevistas SET estado = 'Realizada' WHERE entrevista_id = p_EntrevistaId;
 		IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
