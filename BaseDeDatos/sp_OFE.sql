@@ -178,11 +178,11 @@ DELIMITER $$
 CREATE PROCEDURE sp_ObtenerPreparacionAcad(IN p_identificacion VARCHAR(20))
 BEGIN
     SELECT pa.id,
-           pa.codigo_institucion,
-           i.nombre AS institucion,
-           pa.titulo,
-           pa.fecha_inicio,
-           pa.fecha_fin
+           pa.codigo_institucion as CodigoInstitucion,
+           i.nombre AS Institucion,
+           pa.titulo as Titulo,
+           pa.fecha_inicio as FechaInicio,
+           pa.fecha_fin as FechaFin
     FROM preparacion_acad pa
     INNER JOIN GEN.inst_educativas i 
         ON pa.codigo_institucion = i.codigo_institucion
@@ -195,12 +195,11 @@ DELIMITER $$
 CREATE PROCEDURE sp_ObtenerPreparacionAcadPorId(IN p_id INT)
 BEGIN
     SELECT pa.id,
-           pa.codigo_institucion,
-           i.nombre AS institucion,
-           pa.oferente_id,
-           pa.titulo,
-           pa.fecha_inicio,
-           pa.fecha_fin
+           pa.codigo_institucion as CodigoInstitucion,
+           i.nombre AS Institucion,
+           pa.titulo as Titulo,
+           pa.fecha_inicio as FechaInicio,
+           pa.fecha_fin as FechaFin
     FROM preparacion_acad pa
     INNER JOIN GEN.inst_educativas i 
         ON pa.codigo_institucion = i.codigo_institucion

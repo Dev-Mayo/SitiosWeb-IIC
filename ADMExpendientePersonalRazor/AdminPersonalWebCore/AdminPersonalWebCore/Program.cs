@@ -42,6 +42,7 @@ builder.Services.AddSingleton<AccionPersonalRepository>(_ => new AccionPersonalR
 
 builder.Services.AddScoped<OferenteRepository>();
 builder.Services.AddScoped<AdminRolRepository>();
+builder.Services.AddScoped<PrepAcademicaRepository>();
 builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
 builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
 
@@ -60,7 +61,7 @@ builder.Services.AddSingleton<AccionPersonalService>(); // EMP5
 
 builder.Services.AddScoped<IOferenteService, OferenteService>();
 builder.Services.AddScoped<IAdminRolService, AdminRolService>();
-
+builder.Services.AddScoped<IPrepAcademicaService, PrepAcademicaService>();
 
 
 builder.Services.AddSingleton<ModuloService>(); // SEG5
