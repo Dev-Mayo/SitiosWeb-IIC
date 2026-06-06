@@ -8,11 +8,11 @@ using System.Text.Json;
 
 namespace AdminPersonalWebCore.Pages.OFE
 {
-    public class AgendarEntrevistaModel : PageModel
+    public class AgendarEntrevistaModel : SecurePageModel
     {
         private readonly IEntrevistaService _entrevistaService;
         private readonly IOferenteService _oferenteService;
-        //private readonly IAuthService _authService;
+        private readonly AuthService _authService;
 
         private const int PageSize = 10;
 
@@ -35,11 +35,22 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string EmpleadoIdActual { get; private set; } = "";
         public string FechaActual { get; private set; } = "";
 
-        public AgendarEntrevistaModel( IEntrevistaService entrevistaService, IOferenteService oferenteService) //IAuthService authService)
+        public AgendarEntrevistaModel( IEntrevistaService entrevistaService, IOferenteService oferenteService, AuthService authService)
         {
             _entrevistaService = entrevistaService;
             _oferenteService = oferenteService;
-           // _authService = authService;
+           _authService = authService;
+        }
+
+        private IActionResult? ValidarSession()
+        {
+            var check = CheckSession();
+            if (check != null) return check;
+
+            var usuario = _authService.ObtenerPorNombre(UsuarioActual);
+            if (usuario == null)
+                return Redirect("/SEG/Login?msg=login");
+            return null;
         }
 
         // ────────────────────────────────────────────────────────────────────
@@ -49,6 +60,9 @@ namespace AdminPersonalWebCore.Pages.OFE
         {
             try
             {
+                var check = ValidarSession();
+                if (check != null) return check;
+
                 await CargarDatosBaseAsync();
                 await CargarEntrevistasAsync(pagina);
 
@@ -88,7 +102,8 @@ namespace AdminPersonalWebCore.Pages.OFE
         {
             try
             {
-                var usuario = await ObtenerUsuarioAsync();
+                var check = ValidarSession();
+                if (check != null) return check;
 
                 // Validación básica
                 if (string.IsNullOrEmpty(OferenteIdentificacion) ||
@@ -99,7 +114,7 @@ namespace AdminPersonalWebCore.Pages.OFE
                     GuardarTempDataError(
                         Accion == 0 ? "Todos los campos son requeridos." : "Todos los campos son requeridos.",
                         Accion, EntrevistaId, OferenteIdentificacion, EmpleadoId, FechaEntrevista);
-                    return RedirectToPage(new { u = Request.Query["u"] });
+                    return RedirectToPage(new { u = UsuarioActual });
                 }
 
                 var entrevista = new Entrevista
@@ -112,9 +127,9 @@ namespace AdminPersonalWebCore.Pages.OFE
 
                 int resultado;
                 if (Accion == 0)
-                    resultado = await _entrevistaService.InsertarEntrevistaAsync(entrevista, usuario);
+                    resultado = await _entrevistaService.InsertarEntrevistaAsync(entrevista, NombreCompleto);
                 else
-                    resultado = await _entrevistaService.ModificarEntrevistaAsync(entrevista, usuario);
+                    resultado = await _entrevistaService.ModificarEntrevistaAsync(entrevista, NombreCompleto);
 
                 string? errorMsg = resultado switch
                 {
@@ -138,12 +153,12 @@ namespace AdminPersonalWebCore.Pages.OFE
                         : "La entrevista ha sido modificada correctamente.";
                 }
 
-                return RedirectToPage(new { u = Request.Query["u"] });
+                return RedirectToPage(new { u = UsuarioActual });
             }
             catch (Exception ex)
             {
                 await ReportarFallosAsync(ex);
-                return RedirectToPage(new { u = Request.Query["u"] });
+                return RedirectToPage(new { u = UsuarioActual });
             }
         }
 
@@ -154,25 +169,26 @@ namespace AdminPersonalWebCore.Pages.OFE
         {
             try
             {
-                var usuario = await ObtenerUsuarioAsync();
+                var check = ValidarSession();
+                if (check != null) return check;
 
                 if (entrevistaId == 0)
                 {
                     TempData["MensajeSistema"] = "No se reconoció el id de la entrevista.";
-                    return RedirectToPage(new { u = Request.Query["u"] });
+                    return RedirectToPage(new { u = UsuarioActual });
                 }
 
-                int resultado = await _entrevistaService.EliminarEntrevistaAsync(entrevistaId, usuario);
+                int resultado = await _entrevistaService.EliminarEntrevistaAsync(entrevistaId, NombreCompleto);
                 TempData["MensajeSistema"] = resultado == 1
                     ? "Eliminado correctamente."
                     : "No se ha podido eliminar la entrevista.";
 
-                return RedirectToPage(new { u = Request.Query["u"] });
+                return RedirectToPage(new { u = UsuarioActual });
             }
             catch (Exception ex)
             {
                 await ReportarFallosAsync(ex);
-                return RedirectToPage(new { u = Request.Query["u"] });
+                return RedirectToPage(new { u = UsuarioActual });
             }
         }
 
@@ -183,19 +199,21 @@ namespace AdminPersonalWebCore.Pages.OFE
         {
             try
             {
-                var usuario = await ObtenerUsuarioAsync();
-                int resultado = await _entrevistaService.CambiarEstadoEntrevistaAsync(entrevistaId, usuario);
+                var check = ValidarSession();
+                if (check != null) return check;
+
+                int resultado = await _entrevistaService.CambiarEstadoEntrevistaAsync(entrevistaId, NombreCompleto);
 
                 TempData["MensajeSistema"] = resultado == 1
                     ? "Estado actualizado correctamente."
                     : "Estado ya cambiado o falló al cambiarlo.";
 
-                return RedirectToPage(new { u = Request.Query["u"] });
+                return RedirectToPage(new { u = UsuarioActual });
             }
             catch (Exception ex)
             {
                 await ReportarFallosAsync(ex);
-                return RedirectToPage(new { u = Request.Query["u"] });
+                return RedirectToPage(new { u = UsuarioActual });
             }
         }
 
@@ -210,8 +228,7 @@ namespace AdminPersonalWebCore.Pages.OFE
 
         private async Task CargarEntrevistasAsync(int pagina)
         {
-            var usuario = await ObtenerUsuarioAsync();
-            var todas = (await _entrevistaService.ObtenerEntrevistasAsync(usuario)).ToList();
+            var todas = (await _entrevistaService.ObtenerEntrevistasAsync(NombreCompleto)).ToList();
 
             TotalPaginas = (int)Math.Ceiling(todas.Count / (double)PageSize);
             PaginaActual = Math.Max(1, Math.Min(pagina, TotalPaginas));
@@ -231,19 +248,11 @@ namespace AdminPersonalWebCore.Pages.OFE
             }), new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
         }
 
-        private async Task<string> ObtenerUsuarioAsync()
-        {
-            var u = Request.Query["u"].ToString();
-            //var usuario = await _authService.ObtenerUsuarioPorNombreAsync(u);
-            return u ?? "Desconocido";
-        }
-
         private async Task ReportarFallosAsync(Exception ex)
         {
             try
             {
-                var usuario = await ObtenerUsuarioAsync();
-                _entrevistaService.GenericoCrearBitacora(usuario, 4, 1, $"Error: {ex}");
+                _entrevistaService.GenericoCrearBitacora(NombreCompleto, 4, 1, $"Error: {ex}");
                 MensajeSistema = $"Error inesperado: {ex.Message}";
             }
             catch
