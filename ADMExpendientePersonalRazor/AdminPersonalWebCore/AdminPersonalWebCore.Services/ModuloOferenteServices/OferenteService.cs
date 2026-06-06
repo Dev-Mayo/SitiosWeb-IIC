@@ -13,7 +13,7 @@ namespace AdminPersonalWebCore.Services.ModuloOferenteServices
     public class OferenteService : IOferenteService
     {
         private readonly OferenteRepository _oferenteRepository;
-        private readonly BitacoraService _bitacoraService; // tu nueva capa de bitácora
+        private readonly BitacoraService _bitacoraService;
 
         public OferenteService(OferenteRepository oferenteRepository, BitacoraService bitacoraService)
         {

@@ -45,6 +45,8 @@ builder.Services.AddScoped<OferenteRepository>();
 builder.Services.AddScoped<AdminRolRepository>();
 builder.Services.AddScoped<PrepAcademicaRepository>();
 builder.Services.AddScoped<EntrevistaRepository>();
+builder.Services.AddScoped<ExpLaboralRepository>();
+
 builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
 builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
 builder.Services.AddSingleton<CompaniaRepository>(_ => new CompaniaRepository(genConn));
@@ -71,6 +73,7 @@ builder.Services.AddScoped<IOferenteService, OferenteService>();
 builder.Services.AddScoped<IAdminRolService, AdminRolService>();
 builder.Services.AddScoped<IPrepAcademicaService, PrepAcademicaService>();
 builder.Services.AddScoped<IEntrevistaService, EntrevistaService>();
+builder.Services.AddScoped<IExpLaboralService, ExpLaboralService>();
 
 
 builder.Services.AddSingleton<ModuloService>(); // SEG5

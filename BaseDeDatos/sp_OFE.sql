@@ -261,11 +261,29 @@ DELIMITER $$
 -- Experiencia Laboral
 -- =========================================
 DELIMITER $$
-CREATE PROCEDURE sp_ObtenerExpLaboral(IN p_identificacion VARCHAR(20))
+CREATE PROCEDURE sp_ObtenerExpLaboral(IN p_oferente_identificacion VARCHAR(20))
 BEGIN
-    SELECT * 
+    SELECT id as Id, empresa as Empresa,
+    oferente_id as OferenteId,
+    puesto as Puesto,
+    fecha_inicio as FechaInicio,
+    fecha_fin as FechaFin
     FROM exp_laboral 
-    WHERE oferente_id = p_oferente_id
+    WHERE oferente_id = p_oferente_identificacion
+    ORDER BY fecha_inicio ASC;
+END$$
+DELIMITER $$
+
+DELIMITER $$
+CREATE PROCEDURE sp_ObtenerExpLaboralPorId(IN p_Id int)
+BEGIN
+    SELECT id as Id, empresa as Empresa,
+    oferente_id as OferenteId,
+    puesto as Puesto,
+    fecha_inicio as FechaInicio,
+    fecha_fin as FechaFin
+    FROM exp_laboral 
+    WHERE id = p_Id
     ORDER BY fecha_inicio ASC;
 END$$
 DELIMITER $$
@@ -287,7 +305,9 @@ BEGIN
         SELECT 0;
     END IF;
 END$$
+DELIMITER $$
 
+DELIMITER $$
 CREATE PROCEDURE sp_ModificarExpLaboral(
     IN p_id INT,
     IN p_empresa VARCHAR(100),
@@ -305,16 +325,13 @@ BEGIN
         SELECT 0;
     END IF;
 END$$
+DELIMITER $$
 
+DELIMITER $$
 CREATE PROCEDURE sp_EliminarExpLaboral(IN p_id INT)
 BEGIN
-    DECLARE v_count INT;
-    SELECT COUNT(*) INTO v_count FROM exp_laboral WHERE id = p_id AND oferente_id IS NOT NULL;
-    IF v_count > 0 THEN SELECT 2;
-    ELSE
         DELETE FROM exp_laboral WHERE id = p_id;
         IF ROW_COUNT() > 0 THEN SELECT 1; ELSE SELECT 0; END IF;
-    END IF;
 END$$
 DELIMITER $$
 
