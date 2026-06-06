@@ -11,6 +11,7 @@ namespace AdminPersonalWebCore.Pages.OFE
     public class ExpLaboralModel : SecurePageModel
     {
         private readonly IExpLaboralService _expLaboralService;
+        private readonly AuthService _authService;
 
         private const int PageSize = 10;
 
@@ -33,9 +34,10 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string FechaInicioActual { get; private set; } = "";
         public string FechaFinActual { get; private set; } = "";
 
-        public ExpLaboralModel(IExpLaboralService expLaboralService)
+        public ExpLaboralModel(IExpLaboralService expLaboralService, AuthService authService)
         {
             _expLaboralService = expLaboralService;
+            _authService = authService;
         }
 
         private IActionResult? ValidarSession(string? id = null) //La primera vez en el get de la pagina se debe pasar id para guardar en la session y no redirecionar
@@ -54,6 +56,10 @@ namespace AdminPersonalWebCore.Pages.OFE
 
             if (!TieneIdGeneral)
                 return RedirectToPage("/OFE/MainOferentes"); //redireccion si no hay id
+
+            var usuario = _authService.ObtenerPorNombre(UsuarioActual);
+            if (usuario == null)
+                return Redirect("/SEG/Login?msg=login");
 
             return null;
         }
