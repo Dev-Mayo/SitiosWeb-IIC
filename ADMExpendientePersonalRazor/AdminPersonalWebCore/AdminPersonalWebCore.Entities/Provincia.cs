@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace AdminPersonalWebCore.Entities
 {
-    public class Puesto
+    public class Provincia
     {
-        public int PuestoId { get; set; }
+        public string CodigoProvincia { get; set; }
         public string Nombre { get; set; }
-        public decimal Salario { get; set; }
-        public int? JefePuestoId { get; set; }
     }
 }

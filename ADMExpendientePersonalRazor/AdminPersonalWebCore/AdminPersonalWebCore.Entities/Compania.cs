@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AdminPersonalWebCore.Entities
 {
-    public class Puesto
+    public class Compania
     {
-        public int PuestoId { get; set; }
+        [Required]
+        public string CodigoCompania { get; set; }
+
+        [Required]
         public string Nombre { get; set; }
-        public decimal Salario { get; set; }
-        public int? JefePuestoId { get; set; }
     }
 }

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace AdminPersonalWebCore.Entities
 {
-    public class Puesto
+    public class Concurso
     {
-        public int PuestoId { get; set; }
+        public string CodigoConcurso { get; set; }
         public string Nombre { get; set; }
-        public decimal Salario { get; set; }
-        public int? JefePuestoId { get; set; }
+        public DateTime FechaInicio { get; set; }
+        public DateTime FechaFin { get; set; }
+        public string Estado { get; set; }
     }
 }
