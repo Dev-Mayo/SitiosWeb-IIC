@@ -145,5 +145,22 @@ namespace AdminPersonalWebCore.Repository
 
             return db.ExecuteScalar<int>(sql, new { idModulo }) > 0;
         }
+
+        public bool ExisteNombre(string nombreModulo, int? idModuloExcluir = null)
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            string sql = @"
+        SELECT COUNT(1)
+        FROM SEG.modulos
+        WHERE LOWER(TRIM(nombre_modulo)) = LOWER(TRIM(@nombreModulo))
+          AND (@idModuloExcluir IS NULL OR id_modulo <> @idModuloExcluir);";
+
+            return db.ExecuteScalar<int>(sql, new
+            {
+                nombreModulo,
+                idModuloExcluir
+            }) > 0;
+        }
     }
 }

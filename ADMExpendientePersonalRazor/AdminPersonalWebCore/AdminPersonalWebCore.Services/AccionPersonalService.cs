@@ -46,6 +46,9 @@ namespace AdminPersonalWebCore.Services
 
         private void ValidarAccionPersonal(AccionPersonal accion)
         {
+            if (_repository.ExisteCodigoAccion(accion.CodigoAccion))
+                throw new Exception("Ya existe una acción de personal con ese código.");
+
             if (accion.CodigoAccion <= 0)
                 throw new Exception("El código de acción es requerido.");
 
