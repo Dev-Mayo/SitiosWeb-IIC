@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Repository;
+using AdminPersonalWebCore.Services;
 using System.Text.Json;
 
 namespace AdminPersonalWebCore.Pages.EMP
@@ -11,13 +11,16 @@ namespace AdminPersonalWebCore.Pages.EMP
     {
         private readonly AccionPersonalRepository _accionRepository;
         private readonly BitacoraRepository _bitacoraRepository;
+        private readonly ParametroService _parametroService;
 
         public AccionesPersonalModel(
             AccionPersonalRepository accionRepository,
-            BitacoraRepository bitacoraRepository)
+            BitacoraRepository bitacoraRepository,
+            ParametroService parametroService)
         {
             _accionRepository = accionRepository;
             _bitacoraRepository = bitacoraRepository;
+            _parametroService = parametroService;
         }
 
         public int PaginaActual { get; set; } = 1;
@@ -46,20 +49,8 @@ namespace AdminPersonalWebCore.Pages.EMP
         {
             try
             {
-                PaginaActual = pagina;
+                CargarDatos(pagina);
 
-                var todas = _accionRepository.ObtenerTodos();
-
-                TotalPaginas = (int)Math.Ceiling(todas.Count / (double)TamanoPagina);
-
-                Acciones = todas
-                    .Skip((PaginaActual - 1) * TamanoPagina)
-                    .Take(TamanoPagina)
-                    .ToList();
-
-                Empleados = _accionRepository.ObtenerEmpleados();
-
-                // Aqu� guardamos los READ en bit�cora
                 RegistrarBitacora(AccionBitacora.READ, new
                 {
                     Mensaje = "El usuario consulta acciones de personal"
@@ -67,108 +58,105 @@ namespace AdminPersonalWebCore.Pages.EMP
             }
             catch
             {
-                // Aqu� guardamos los ERROR en bit�cora si falla la consulta
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
                     Mensaje = "Error al consultar acciones de personal"
                 });
 
-                MensajeError = "Ocurri� un error al consultar las acciones de personal.";
+                MensajeError = "Ocurrió un error al consultar las acciones de personal.";
             }
         }
 
         public IActionResult OnPostCrear()
         {
+            var usuarioActual = ObtenerUsuarioActual();
+
             if (!ValidarAccion(NuevaAccion))
             {
-                return RedirectToPage(new { u = Request.Query["u"].ToString() });
+                return RedirectToPage(new { u = usuarioActual, pagina = 1 });
             }
 
             try
             {
                 _accionRepository.Insertar(NuevaAccion);
 
-                // Aqu� guardamos los CREATE en bit�cora
                 RegistrarBitacora(AccionBitacora.CREATE, new
                 {
                     Nuevo = NuevaAccion
                 });
 
-                MensajeExito = "La acci�n de personal se registr� correctamente.";
+                MensajeExito = "La acción de personal se registró correctamente.";
             }
             catch
             {
-                // Aqu� guardamos los ERROR en bit�cora si falla el registro
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
-                    Mensaje = "Error al registrar acci�n de personal",
+                    Mensaje = "Error al registrar acción de personal",
                     Datos = NuevaAccion
                 });
 
-                MensajeError = "Ocurri� un error al registrar la acci�n de personal.";
+                MensajeError = "Ocurrió un error al registrar la acción de personal.";
             }
 
-            return RedirectToPage(new { u = Request.Query["u"].ToString() });
+            return RedirectToPage(new { u = usuarioActual, pagina = 1 });
         }
 
         public IActionResult OnPostEditar()
         {
+            var usuarioActual = ObtenerUsuarioActual();
+
             if (!ValidarAccion(AccionEditar))
             {
-                return RedirectToPage(new { u = Request.Query["u"].ToString() });
+                return RedirectToPage(new { u = usuarioActual, pagina = 1 });
             }
 
             try
             {
-                // Aqu� obtenemos el registro anterior para guardar el antes y despu�s
                 var accionAnterior = _accionRepository.ObtenerPorId(AccionEditar.AccionId);
 
                 _accionRepository.Actualizar(AccionEditar);
 
-                // Aqu� guardamos los UPDATE en bit�cora
                 RegistrarBitacora(AccionBitacora.UPDATE, new
                 {
                     Antes = accionAnterior,
                     Despues = AccionEditar
                 });
 
-                MensajeExito = "La acci�n de personal se actualiz� correctamente.";
+                MensajeExito = "La acción de personal se actualizó correctamente.";
             }
             catch
             {
-                // Aqu� guardamos los ERROR en bit�cora si falla la actualizaci�n
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
-                    Mensaje = "Error al actualizar acci�n de personal",
+                    Mensaje = "Error al actualizar acción de personal",
                     Datos = AccionEditar
                 });
 
-                MensajeError = "Ocurri� un error al actualizar la acci�n de personal.";
+                MensajeError = "Ocurrió un error al actualizar la acción de personal.";
             }
 
-            return RedirectToPage(new { u = Request.Query["u"].ToString() });
+            return RedirectToPage(new { u = usuarioActual, pagina = 1 });
         }
 
         public IActionResult OnPostEliminar()
         {
+            var usuarioActual = ObtenerUsuarioActual();
+
             try
             {
-                // Aqu� obtenemos el registro antes de eliminarlo
                 var accionEliminada = _accionRepository.ObtenerPorId(AccionEliminarId);
 
                 _accionRepository.Eliminar(AccionEliminarId);
 
-                // Aqu� guardamos los DELETE en bit�cora
                 RegistrarBitacora(AccionBitacora.DELETE, new
                 {
                     Eliminado = accionEliminada
                 });
 
-                MensajeExito = "La acci�n de personal se elimin� correctamente.";
+                MensajeExito = "La acción de personal se eliminó correctamente.";
             }
             catch (MySql.Data.MySqlClient.MySqlException)
             {
-                // Aqu� guardamos los ERROR en bit�cora cuando MySQL no permite eliminar por datos relacionados
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
                     Mensaje = "No se puede eliminar un registro con datos relacionados",
@@ -179,24 +167,53 @@ namespace AdminPersonalWebCore.Pages.EMP
             }
             catch
             {
-                // Aqu� guardamos los ERROR en bit�cora si falla la eliminaci�n
                 RegistrarBitacora(AccionBitacora.ERROR, new
                 {
-                    Mensaje = "Error al eliminar acci�n de personal",
+                    Mensaje = "Error al eliminar acción de personal",
                     Id = AccionEliminarId
                 });
 
-                MensajeError = "Ocurri� un error al eliminar la acci�n de personal.";
+                MensajeError = "Ocurrió un error al eliminar la acción de personal.";
             }
 
-            return RedirectToPage(new { u = Request.Query["u"].ToString() });
+            return RedirectToPage(new { u = usuarioActual, pagina = 1 });
+        }
+
+        private void CargarDatos(int pagina = 1)
+        {
+            TamanoPagina = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var todas = _accionRepository.ObtenerTodos();
+
+            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)TamanoPagina);
+
+            if (TotalPaginas == 0)
+                TotalPaginas = 1;
+
+            if (pagina < 1)
+                pagina = 1;
+
+            if (pagina > TotalPaginas)
+                pagina = TotalPaginas;
+
+            PaginaActual = pagina;
+
+            Acciones = todas
+                .Skip((PaginaActual - 1) * TamanoPagina)
+                .Take(TamanoPagina)
+                .ToList();
+
+            Empleados = _accionRepository.ObtenerEmpleados();
         }
 
         private bool ValidarAccion(AccionPersonal accion)
         {
             if (accion.CodigoAccion <= 0)
             {
-                MensajeError = "El c�digo de acci�n es requerido.";
+                MensajeError = "El código de acción es requerido.";
                 return false;
             }
 
@@ -208,13 +225,13 @@ namespace AdminPersonalWebCore.Pages.EMP
 
             if (string.IsNullOrWhiteSpace(accion.Descripcion))
             {
-                MensajeError = "La descripci�n es requerida.";
+                MensajeError = "La descripción es requerida.";
                 return false;
             }
 
             if (accion.Descripcion.Length > 500)
             {
-                MensajeError = "La descripci�n no puede superar los 500 caracteres.";
+                MensajeError = "La descripción no puede superar los 500 caracteres.";
                 return false;
             }
 
@@ -235,10 +252,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         private void RegistrarBitacora(AccionBitacora accion, object datos)
         {
-            string usuario = Request.Query["u"].ToString();
-
-            if (string.IsNullOrWhiteSpace(usuario))
-                usuario = "Sistema";
+            var usuario = ObtenerUsuarioActual();
 
             var bitacora = new Bitacora
             {
@@ -258,6 +272,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 usuario = HttpContext.Session.GetString("usuario")
                        ?? HttpContext.Session.GetString("nombreusuario")
+                       ?? HttpContext.Session.GetString("Usuario")
                        ?? User.Identity?.Name
                        ?? "UsuarioDesconocido";
             }

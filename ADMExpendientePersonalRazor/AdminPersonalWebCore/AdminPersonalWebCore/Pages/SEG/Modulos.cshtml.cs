@@ -8,10 +8,14 @@ namespace AdminPersonalWebCore.Pages.SEG
     public class ModulosModel : PageModel
     {
         private readonly ModuloService _service;
+        private readonly ParametroService _parametroService;
 
-        public ModulosModel(ModuloService service)
+        public ModulosModel(
+            ModuloService service,
+            ParametroService parametroService)
         {
             _service = service;
+            _parametroService = parametroService;
         }
 
         public List<Modulo> Modulos { get; set; } = new();
@@ -29,7 +33,7 @@ namespace AdminPersonalWebCore.Pages.SEG
 
         public int PaginaActual { get; set; } = 1;
         public int TotalPaginas { get; set; }
-        public const int TamanoPagina = 10;
+        public int TamanoPagina { get; set; } = 10;
 
         public void OnGet(int? pagina, int? editarId, string? exito, string? error)
         {
@@ -58,6 +62,7 @@ namespace AdminPersonalWebCore.Pages.SEG
                     return RedirectToPage(new
                     {
                         u = usuarioActual,
+                        pagina = 1,
                         exito = "El módulo ha sido registrado correctamente."
                     });
                 }
@@ -67,6 +72,7 @@ namespace AdminPersonalWebCore.Pages.SEG
                 return RedirectToPage(new
                 {
                     u = usuarioActual,
+                    pagina = 1,
                     exito = "El módulo ha sido actualizado correctamente."
                 });
             }
@@ -89,6 +95,7 @@ namespace AdminPersonalWebCore.Pages.SEG
                 return RedirectToPage(new
                 {
                     u = usuarioActual,
+                    pagina = 1,
                     exito = "El módulo ha sido eliminado correctamente."
                 });
             }
@@ -97,6 +104,7 @@ namespace AdminPersonalWebCore.Pages.SEG
                 return RedirectToPage(new
                 {
                     u = usuarioActual,
+                    pagina = 1,
                     error = ex.Message
                 });
             }
@@ -106,10 +114,25 @@ namespace AdminPersonalWebCore.Pages.SEG
         {
             string usuarioActual = ObtenerUsuarioActual();
 
+            TamanoPagina = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
             var lista = _service.ObtenerTodos(usuarioActual);
 
-            PaginaActual = pagina;
             TotalPaginas = (int)Math.Ceiling(lista.Count / (double)TamanoPagina);
+
+            if (TotalPaginas == 0)
+                TotalPaginas = 1;
+
+            if (pagina < 1)
+                pagina = 1;
+
+            if (pagina > TotalPaginas)
+                pagina = TotalPaginas;
+
+            PaginaActual = pagina;
 
             Modulos = lista
                 .Skip((PaginaActual - 1) * TamanoPagina)
