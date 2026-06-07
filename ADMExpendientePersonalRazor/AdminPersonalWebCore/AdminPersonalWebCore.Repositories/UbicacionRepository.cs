@@ -38,5 +38,34 @@ namespace AdminPersonalWebCore.Repository
                 commandType: CommandType.StoredProcedure
             );
         }
+        public List<Provincia> ObtenerProvincias()
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            return db.Query<Provincia>(
+                "SP_GEN_PROVINCIA_LISTAR",
+                commandType: CommandType.StoredProcedure
+            ).ToList();
+        }
+
+        public List<Canton> ObtenerCantones()
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            return db.Query<Canton>(
+                "SP_GEN_CANTON_LISTAR",
+                commandType: CommandType.StoredProcedure
+            ).ToList();
+        }
+
+        public List<Distrito> ObtenerDistritos()
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            return db.Query<Distrito>(
+                "SP_GEN_DISTRITO_LISTAR",
+                commandType: CommandType.StoredProcedure
+            ).ToList();
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace AdminPersonalWebCore.Entities
     public class Canton
     {
         public string CodigoCanton { get; set; }
-        public string CodigoProvincia { get; set; }
+        public string Provincia { get; set; }
         public string Nombre { get; set; }
     }
 }

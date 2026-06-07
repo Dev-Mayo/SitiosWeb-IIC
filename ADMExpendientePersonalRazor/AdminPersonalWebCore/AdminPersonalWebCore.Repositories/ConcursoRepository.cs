@@ -92,5 +92,15 @@ namespace AdminPersonalWebCore.Repository
                 commandType: CommandType.StoredProcedure
             );
         }
+        public bool TieneOferentesAsociados(string codigo)
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            return db.ExecuteScalar<int>(
+                "SP_OFE_CONCURSO_TIENE_OFERENTES",
+                new { p_codigo_concurso = codigo },
+                commandType: CommandType.StoredProcedure
+            ) > 0;
+        }
     }
 }

@@ -82,6 +82,9 @@ namespace AdminPersonalWebCore.Services
             if (anterior == null)
                 throw new Exception("El concurso no existe.");
 
+            if (_repository.TieneOferentesAsociados(codigo))
+                throw new Exception("No se puede eliminar el concurso porque tiene oferentes asociados.");
+
             _repository.Eliminar(codigo);
 
             _bitacora.Registrar(new Bitacora
