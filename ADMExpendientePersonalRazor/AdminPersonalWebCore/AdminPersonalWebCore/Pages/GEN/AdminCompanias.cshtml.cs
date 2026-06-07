@@ -8,6 +8,7 @@ namespace AdminPersonalWebCore.Pages.GEN
     public class AdminCompaniasModel : PageModel
     {
         private readonly CompaniaService _service;
+        private readonly ParametroService _parametroService;
 
         public List<Compania> Companias { get; set; } = new();
 
@@ -19,9 +20,16 @@ namespace AdminPersonalWebCore.Pages.GEN
 
         public string Mensaje { get; set; }
 
-        public AdminCompaniasModel(CompaniaService service)
+        [BindProperty(SupportsGet = true)]
+        public int PaginaActual { get; set; } = 1;
+
+        public int TotalPaginas { get; set; }
+        public AdminCompaniasModel(
+            CompaniaService service,
+            ParametroService parametroService)
         {
             _service = service;
+            _parametroService = parametroService;
         }
 
         public void OnGet(string mensaje = null)
@@ -70,9 +78,19 @@ namespace AdminPersonalWebCore.Pages.GEN
 
         private void CargarDatos()
         {
-            Companias = _service.ObtenerTodos(UsuarioActual())
-                                .Take(10)
-                                .ToList();
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var lista = _service.ObtenerTodos(UsuarioActual());
+
+            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
+
+            Companias = lista
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad)
+                .ToList();
         }
 
         private string UsuarioActual()

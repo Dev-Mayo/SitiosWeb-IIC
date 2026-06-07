@@ -7,11 +7,14 @@ namespace AdminPersonalWebCore.Services
     {
         private readonly ConcursoRepository _repository;
         private readonly BitacoraService _bitacora;
+        private readonly ParametroService _parametroService;
 
-        public ConcursoService(ConcursoRepository repository, BitacoraService bitacora)
+        public ConcursoService(ConcursoRepository repository, BitacoraService bitacora, ParametroService parametroService)
         {
             _repository = repository;
             _bitacora = bitacora;
+            _parametroService = parametroService;
+
         }
 
         public List<Concurso> ObtenerTodos(string usuario)
@@ -40,7 +43,15 @@ namespace AdminPersonalWebCore.Services
             if (_repository.ObtenerPorCodigo(concurso.CodigoConcurso) != null)
                 throw new Exception("Ya existe un concurso con ese código.");
 
-            concurso.Estado = "Vigente";
+            var estadoDefault = _parametroService.ObtenerValorODefecto(
+                "ESTADO_CONCURSO_DEFAULT",
+                "Vigente"
+            );
+
+            if (estadoDefault != "Vigente" && estadoDefault != "Vencido")
+                estadoDefault = "Vigente";
+
+            concurso.Estado = estadoDefault;
 
             _repository.Insertar(concurso);
 

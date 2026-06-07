@@ -8,6 +8,7 @@ namespace AdminPersonalWebCore.Pages.OFE
     public class AdminConcursosModel : PageModel
     {
         private readonly ConcursoService _service;
+        private readonly ParametroService _parametroService;
 
         public List<Concurso> Concursos { get; set; } = new();
 
@@ -19,9 +20,15 @@ namespace AdminPersonalWebCore.Pages.OFE
 
         public string Mensaje { get; set; }
 
-        public AdminConcursosModel(ConcursoService service)
+        [BindProperty(SupportsGet = true)]
+        public int PaginaActual { get; set; } = 1;
+
+        public int TotalPaginas { get; set; }
+
+        public AdminConcursosModel(ConcursoService service, ParametroService parametroService)
         {
             _service = service;
+            _parametroService = parametroService;
         }
 
         public void OnGet(string mensaje = null)
@@ -86,9 +93,19 @@ namespace AdminPersonalWebCore.Pages.OFE
 
         private void CargarDatos()
         {
-            Concursos = _service.ObtenerTodos(UsuarioActual())
-                                .Take(10)
-                                .ToList();
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var lista = _service.ObtenerTodos(UsuarioActual());
+
+            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
+
+            Concursos = lista
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad)
+                .ToList();
         }
 
         private string UsuarioActual()

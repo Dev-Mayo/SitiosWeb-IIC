@@ -19,6 +19,15 @@ namespace AdminPersonalWebCore.Repository
         {
             _connectionString = connectionString;
         }
+        public List<Ubicacion> ObtenerUbicaciones()
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            return db.Query<Ubicacion>(
+                "SP_GEN_UBICACION_LISTAR",
+                commandType: CommandType.StoredProcedure
+            ).ToList();
+        }
 
         public void GuardarUbicacion(UbicacionCarga item)
         {

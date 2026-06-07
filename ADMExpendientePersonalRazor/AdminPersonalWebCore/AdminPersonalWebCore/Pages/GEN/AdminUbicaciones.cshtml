@@ -34,89 +34,46 @@
             </form>
             <hr />
 
-            <ul class="nav nav-tabs" id="ubicacionesTabs" role="tablist">
-                <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#provincias" type="button">
-                        Provincias
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#cantones" type="button">
-                        Cantones
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#distritos" type="button">
-                        Distritos
-                    </button>
-                </li>
-            </ul>
-
-            <div class="tab-content mt-3">
-                <div class="tab-pane fade show active" id="provincias">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Provincia</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Provincias)
+            <table class="table table-bordered table-striped mt-4">
+                <thead>
+                    <tr>
+                        <th>Provincia</th>
+                        <th>Cantón</th>
+                        <th>Código Distrito</th>
+                        <th>Distrito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Ubicaciones)
+                    {
+                        <tr>
+                            <td>@item.Provincia</td>
+                            <td>@item.Canton</td>
+                            <td>@item.CodigoDistrito</td>
+                            <td>@item.Distrito</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="d-flex justify-content-center mt-4 mb-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
                             {
-                                <tr>
-                                    <td>@item.CodigoProvincia</td>
-                                    <td>@item.Nombre</td>
-                                </tr>
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link"
+                                           asp-page="/GEN/AdminUbicaciones"
+                                           asp-route-PaginaActual="@i">
+                                        @i
+                                    </a>
+                                </li>
                             }
-                        </tbody>
-                    </table>
+                        </ul>
+                    </nav>
                 </div>
-
-                <div class="tab-pane fade" id="cantones">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Provincia</th>
-                                <th>Código</th>
-                                <th>Cantón</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Cantones)
-                            {
-                                <tr>
-                                    <td>@item.Provincia</td>
-                                    <td>@item.CodigoCanton</td>
-                                    <td>@item.Nombre</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="tab-pane fade" id="distritos">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Cantón</th>
-                                <th>Código</th>
-                                <th>Distrito</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Distritos)
-                            {
-                                <tr>
-                                    <td>@item.Canton</td>
-                                    <td>@item.CodigoDistrito</td>
-                                    <td>@item.Nombre</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>

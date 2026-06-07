@@ -59,6 +59,11 @@ namespace AdminPersonalWebCore.Services
             return _repository.ObtenerDistritos();
         }
 
+        public List<Ubicacion> ObtenerUbicaciones()
+        {
+            return _repository.ObtenerUbicaciones();
+        }
+
         private void Validar(UbicacionCarga item)
         {
             if (string.IsNullOrWhiteSpace(item.CodigoProvincia))

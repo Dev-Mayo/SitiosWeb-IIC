@@ -9,18 +9,29 @@ namespace AdminPersonalWebCore.Pages.GEN
     public class AdminUbicacionesModel : PageModel
     {
         private readonly UbicacionService _service;
+        private readonly ParametroService _parametroService;
+
         public List<Provincia> Provincias { get; set; } = new();
         public List<Canton> Cantones { get; set; } = new();
         public List<Distrito> Distritos { get; set; } = new();
+        public List<Ubicacion> Ubicaciones { get; set; } = new();
+        [BindProperty(SupportsGet = true)]
+        public int PaginaActual { get; set; } = 1;
+
+        public int TotalPaginas { get; set; }
+
 
         [BindProperty]
         public IFormFile Archivo { get; set; }
 
         public string Mensaje { get; set; }
 
-        public AdminUbicacionesModel(UbicacionService service)
+        public AdminUbicacionesModel(
+            UbicacionService service,
+            ParametroService parametroService)
         {
             _service = service;
+            _parametroService = parametroService;
         }
 
         public void OnGet(string mensaje = null)
@@ -28,12 +39,24 @@ namespace AdminPersonalWebCore.Pages.GEN
             Mensaje = mensaje;
             CargarListas();
         }
+
         private void CargarListas()
         {
-            Provincias = _service.ObtenerProvincias();
-            Cantones = _service.ObtenerCantones();
-            Distritos = _service.ObtenerDistritos();
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var lista = _service.ObtenerUbicaciones();
+
+            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
+
+            Ubicaciones = lista
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad)
+                .ToList();
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
             try
@@ -41,10 +64,25 @@ namespace AdminPersonalWebCore.Pages.GEN
                 if (Archivo == null || Archivo.Length == 0)
                     throw new Exception("Debe seleccionar un archivo.");
 
+                int maxMb = _parametroService.ObtenerValorEnteroODefecto(
+                    "TAMANO_MAX_ARCHIVO_MB",
+                    10
+                );
+
+                long maxBytes = maxMb * 1024L * 1024L;
+
+                if (Archivo.Length > maxBytes)
+                    throw new Exception($"El archivo no puede superar {maxMb} MB.");
+
                 var extension = Path.GetExtension(Archivo.FileName).ToLower();
 
-                if (extension != ".csv" && extension != ".txt")
-                    throw new Exception("Solo se permiten archivos CSV o TXT.");
+                var extensionesPermitidas = _parametroService.ObtenerListaODefecto(
+                    "EXTENSIONES_UBICACION",
+                    new List<string> { ".csv", ".txt" }
+                );
+
+                if (!extensionesPermitidas.Contains(extension))
+                    throw new Exception("El tipo de archivo no está permitido.");
 
                 var ubicaciones = new List<UbicacionCarga>();
 
