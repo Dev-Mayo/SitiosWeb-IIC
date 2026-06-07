@@ -181,6 +181,7 @@ BEGIN
     SELECT pa.id,
            pa.codigo_institucion as CodigoInstitucion,
            i.nombre AS Institucion,
+           pa.oferente_id as OferenteId,
            pa.titulo as Titulo,
            pa.fecha_inicio as FechaInicio,
            pa.fecha_fin as FechaFin
@@ -198,6 +199,7 @@ BEGIN
     SELECT pa.id,
            pa.codigo_institucion as CodigoInstitucion,
            i.nombre AS Institucion,
+           pa.oferente_id as OferenteId,
            pa.titulo as Titulo,
            pa.fecha_inicio as FechaInicio,
            pa.fecha_fin as FechaFin

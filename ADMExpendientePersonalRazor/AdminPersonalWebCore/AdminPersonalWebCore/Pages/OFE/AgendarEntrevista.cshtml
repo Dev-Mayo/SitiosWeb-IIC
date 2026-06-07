@@ -162,13 +162,13 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p>¿Está seguro que desea eliminar la entrevista?</p>
+                <p>¿Realmente desea eliminar el elemento seleccionado?</p>
             </div>
             <div class="modal-footer">
                 <form method="post" asp-page-handler="Eliminar" asp-route-u="@Request.Query["u"]">
                     <input type="hidden" id="hfEliminarId" name="entrevistaId" value="" />
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Si</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
                 </form>
             </div>
         </div>
