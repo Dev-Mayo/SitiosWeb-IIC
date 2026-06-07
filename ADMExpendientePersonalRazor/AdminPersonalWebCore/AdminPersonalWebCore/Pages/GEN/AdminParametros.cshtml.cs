@@ -19,6 +19,11 @@ namespace AdminPersonalWebCore.Pages.GEN
 
         public string Mensaje { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public int PaginaActual { get; set; } = 1;
+
+        public int TotalPaginas { get; set; }
+
         public AdminParametrosModel(ParametroService service)
         {
             _service = service;
@@ -72,9 +77,19 @@ namespace AdminPersonalWebCore.Pages.GEN
 
         private void CargarDatos()
         {
-            Parametros = _service.ObtenerTodos(UsuarioActual())
-                                 .Take(10)
-                                 .ToList();
+            int cantidad = _service.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var lista = _service.ObtenerTodos(UsuarioActual());
+
+            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
+
+            Parametros = lista
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad)
+                .ToList();
         }
 
         private string UsuarioActual()

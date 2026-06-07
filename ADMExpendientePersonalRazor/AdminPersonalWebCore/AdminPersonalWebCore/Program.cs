@@ -4,6 +4,8 @@ using AdminPersonalWebCore.Repository;
 using AdminPersonalWebCore.Services;
 using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using AdminPersonalWebCore.Services.ModuloOferenteServices;
+using Dapper;
+using MySql.Data.MySqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 

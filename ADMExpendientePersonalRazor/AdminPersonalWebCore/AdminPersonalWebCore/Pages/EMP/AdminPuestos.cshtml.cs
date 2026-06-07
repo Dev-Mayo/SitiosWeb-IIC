@@ -8,6 +8,7 @@ namespace AdminPersonalWebCore.Pages.EMP
     public class AdminPuestosModel : PageModel
     {
         private readonly PuestoService _service;
+        private readonly ParametroService _parametroService;
 
         public List<Puesto> Puestos { get; set; } = new();
 
@@ -19,9 +20,17 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         public string Mensaje { get; set; }
 
-        public AdminPuestosModel(PuestoService service)
+        [BindProperty(SupportsGet = true)]
+        public int PaginaActual { get; set; } = 1;
+
+        public int TotalPaginas { get; set; }
+
+        public AdminPuestosModel(
+            PuestoService service,
+            ParametroService parametroService)
         {
             _service = service;
+            _parametroService = parametroService;
         }
 
         public void OnGet(string mensaje = null)
@@ -70,9 +79,19 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         private void CargarDatos()
         {
-            Puestos = _service.ObtenerTodos(UsuarioActual())
-                              .Take(10)
-                              .ToList();
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var lista = _service.ObtenerTodos(UsuarioActual());
+
+            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
+
+            Puestos = lista
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad)
+                .ToList();
         }
 
         private string UsuarioActual()

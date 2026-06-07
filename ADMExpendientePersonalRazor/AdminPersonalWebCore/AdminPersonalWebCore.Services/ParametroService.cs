@@ -114,6 +114,85 @@ namespace AdminPersonalWebCore.Services
             });
         }
 
+        public string ObtenerValor(string codigo)
+        {
+            var parametro = _repository.ObtenerPorCodigo(codigo);
+
+            if (parametro == null)
+                throw new Exception($"No existe el parámetro {codigo}.");
+
+            return parametro.Valor;
+        }
+
+        public int ObtenerValorEntero(string codigo)
+        {
+            var valor = ObtenerValor(codigo);
+
+            if (!int.TryParse(valor, out int resultado))
+                throw new Exception($"El parámetro {codigo} debe ser numérico.");
+
+            return resultado;
+        }
+
+        public string ObtenerValorODefecto(string codigo, string valorDefault)
+        {
+            try
+            {
+                var parametro = _repository.ObtenerPorCodigo(codigo);
+
+                if (parametro == null || string.IsNullOrWhiteSpace(parametro.Valor))
+                    return valorDefault;
+
+                return parametro.Valor;
+            }
+            catch
+            {
+                return valorDefault;
+            }
+        }
+
+        public List<string> ObtenerLista(string codigo)
+        {
+            return ObtenerValor(codigo)
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim().ToLower())
+                .ToList();
+        }
+
+        public int ObtenerValorEnteroODefecto(string codigo, int valorDefault)
+        {
+            try
+            {
+                var valor = ObtenerValorODefecto(codigo, valorDefault.ToString());
+
+                if (!int.TryParse(valor, out int resultado))
+                    return valorDefault;
+
+                return resultado;
+            }
+            catch
+            {
+                return valorDefault;
+            }
+        }
+
+        public List<string> ObtenerListaODefecto(string codigo, List<string> valorDefault)
+        {
+            try
+            {
+                var valor = ObtenerValorODefecto(codigo, string.Join(",", valorDefault));
+
+                return valor
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim().ToLower())
+                    .ToList();
+            }
+            catch
+            {
+                return valorDefault;
+            }
+        }
+
         private void Validar(Parametro parametro)
         {
             if (string.IsNullOrWhiteSpace(

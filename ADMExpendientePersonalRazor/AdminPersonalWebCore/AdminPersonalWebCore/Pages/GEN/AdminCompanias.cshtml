@@ -55,6 +55,25 @@
                     }
                 </tbody>
             </table>
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="d-flex justify-content-center mt-4 mb-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
+                            {
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link"
+                                           asp-page="/GEN/AdminCompanias"
+                                           asp-route-PaginaActual="@i">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
         </div>
     </div>
 </div>
