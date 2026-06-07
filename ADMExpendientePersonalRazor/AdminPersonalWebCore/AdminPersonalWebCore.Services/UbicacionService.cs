@@ -44,6 +44,21 @@ namespace AdminPersonalWebCore.Services
             });
         }
 
+        public List<Provincia> ObtenerProvincias()
+        {
+            return _repository.ObtenerProvincias();
+        }
+
+        public List<Canton> ObtenerCantones()
+        {
+            return _repository.ObtenerCantones();
+        }
+
+        public List<Distrito> ObtenerDistritos()
+        {
+            return _repository.ObtenerDistritos();
+        }
+
         private void Validar(UbicacionCarga item)
         {
             if (string.IsNullOrWhiteSpace(item.CodigoProvincia))
