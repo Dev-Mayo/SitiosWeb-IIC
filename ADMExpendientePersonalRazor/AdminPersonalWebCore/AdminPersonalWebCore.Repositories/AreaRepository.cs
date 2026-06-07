@@ -98,5 +98,16 @@ namespace AdminPersonalWebCore.Repository
 
             return db.Query<Empleado>(sql).ToList();
         }
+        public bool ExisteCodigo(int codigoArea)
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            string sql = @"
+        SELECT COUNT(1)
+        FROM admin_areas
+        WHERE codigo_area = @codigoArea";
+
+            return db.ExecuteScalar<int>(sql, new { codigoArea }) > 0;
+        }
     }
 }

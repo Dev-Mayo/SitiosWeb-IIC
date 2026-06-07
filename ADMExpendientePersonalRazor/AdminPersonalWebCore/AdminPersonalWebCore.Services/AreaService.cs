@@ -54,7 +54,8 @@ namespace AdminPersonalWebCore.Services
             try
             {
                 Validar(area);
-
+                if (_repo.ExisteCodigo(area.CodigoArea))
+                    throw new Exception("Ya existe un área con ese código.");
                 _repo.Insertar(area);
 
                 _bitacora.Registrar(new Bitacora

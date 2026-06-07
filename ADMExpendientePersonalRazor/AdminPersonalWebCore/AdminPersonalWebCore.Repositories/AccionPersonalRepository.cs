@@ -123,5 +123,22 @@ namespace AdminPersonalWebCore.Repository
 
             return db.Query<Empleado>(sql).ToList();
         }
+
+        public bool ExisteCodigoAccion(int codigoAccion, int? accionIdExcluir = null)
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            string sql = @"
+        SELECT COUNT(1)
+        FROM EMP.acciones_personal
+        WHERE codigo_accion = @codigoAccion
+          AND (@accionIdExcluir IS NULL OR accion_id <> @accionIdExcluir);";
+
+            return db.ExecuteScalar<int>(sql, new
+            {
+                codigoAccion,
+                accionIdExcluir
+            }) > 0;
+        }
     }
 }

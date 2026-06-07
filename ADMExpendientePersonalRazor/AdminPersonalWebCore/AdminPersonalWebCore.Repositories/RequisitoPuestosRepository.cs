@@ -76,5 +76,22 @@ namespace AdminPersonalWebCore.Repository
 
             db.Execute(sql, new { id });
         }
+
+        public bool ExisteNombre(string nombre, int? requisitoIdExcluir = null)
+        {
+            using var db = new MySqlConnection(_connectionString);
+
+            string sql = @"
+        SELECT COUNT(1)
+        FROM requisitos_puestos
+        WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(@nombre))
+          AND (@requisitoIdExcluir IS NULL OR requisito_id <> @requisitoIdExcluir);";
+
+            return db.ExecuteScalar<int>(sql, new
+            {
+                nombre,
+                requisitoIdExcluir
+            }) > 0;
+        }
     }
 }
