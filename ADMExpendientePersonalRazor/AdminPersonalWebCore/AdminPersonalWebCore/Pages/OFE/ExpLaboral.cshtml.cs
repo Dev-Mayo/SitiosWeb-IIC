@@ -12,8 +12,7 @@ namespace AdminPersonalWebCore.Pages.OFE
     {
         private readonly IExpLaboralService _expLaboralService;
         private readonly AuthService _authService;
-
-        private const int PageSize = 10;
+        private readonly ParametroService _parametroService;
 
         // ── Datos para la vista ──────────────────────────────────────────────
         public IEnumerable<ExpLaboral> ExpLaboralesPaginadas { get; private set; } = [];
@@ -34,10 +33,11 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string FechaInicioActual { get; private set; } = "";
         public string FechaFinActual { get; private set; } = "";
 
-        public ExpLaboralModel(IExpLaboralService expLaboralService, AuthService authService)
+        public ExpLaboralModel(IExpLaboralService expLaboralService, AuthService authService, ParametroService parametroService)
         {
             _expLaboralService = expLaboralService;
             _authService = authService;
+            _parametroService = parametroService;
         }
 
         private IActionResult? ValidarSession(string? id = null) //La primera vez en el get de la pagina se debe pasar id para guardar en la session y no redirecionar
@@ -220,14 +220,15 @@ namespace AdminPersonalWebCore.Pages.OFE
         // ────────────────────────────────────────────────────────────────────
         private async Task CargarExpLaboralesAsync(int pagina)
         {
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto("CANTIDAD_REGISTROS_PAGINA", 10);
             var todas = (await _expLaboralService.ObtenerExpLaboralAsync(IdGeneral!, NombreCompleto)).ToList();
 
-            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)PageSize);
+            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)cantidad);
             PaginaActual = Math.Max(1, Math.Min(pagina, Math.Max(TotalPaginas, 1)));
 
             ExpLaboralesPaginadas = todas
-                .Skip((PaginaActual - 1) * PageSize)
-                .Take(PageSize);
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad);
 
             ExpLaboralesJson = JsonSerializer.Serialize(todas.Select(e => new
             {

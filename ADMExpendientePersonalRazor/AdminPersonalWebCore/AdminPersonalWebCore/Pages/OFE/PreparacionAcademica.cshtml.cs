@@ -12,8 +12,7 @@ namespace AdminPersonalWebCore.Pages.OFE
         private readonly IPrepAcademicaService _prepAcademicaService;
         private readonly InstEducativaService _instEducativa;
         private readonly AuthService _authService;
-
-        private const int PageSize = 10;
+        private readonly ParametroService _parametroService;
 
         // ── Datos para la vista ──────────────────────────────────────────────
         public IEnumerable<PreparacionAcad> Preparaciones { get; private set; } = [];
@@ -36,11 +35,12 @@ namespace AdminPersonalWebCore.Pages.OFE
         public PreparacionAcademicaModel(
             IPrepAcademicaService prepAcademicaService,
             InstEducativaService instEducativa,
-            AuthService authService)
+            AuthService authService, ParametroService parametroService)
         {
             _prepAcademicaService = prepAcademicaService;
             _instEducativa = instEducativa;
             _authService = authService;
+            _parametroService = parametroService;
         }
 
         // ── Helper: validar sesión y contexto ────────────────────────────────
@@ -210,12 +210,13 @@ namespace AdminPersonalWebCore.Pages.OFE
         // ── Helpers privados ─────────────────────────────────────────────────
         private async Task CargarDatosAsync(int pagina)
         {
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto("CANTIDAD_REGISTROS_PAGINA", 10);
             // Tabla
             var todas = (await _prepAcademicaService.ObtenerPreparacionAcadAsync(
                 IdGeneral!, NombreCompleto)).ToList();
-            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)PageSize);
+            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)cantidad);
             PaginaActual = Math.Max(1, Math.Min(pagina, Math.Max(TotalPaginas, 1)));
-            Preparaciones = todas.Skip((PaginaActual - 1) * PageSize).Take(PageSize);
+            Preparaciones = todas.Skip((PaginaActual - 1) * cantidad).Take(cantidad);
 
             // Instituciones para el select del modal
             var insts = await Task.Run(() => _instEducativa.ObtenerTodas(NombreCompleto));
