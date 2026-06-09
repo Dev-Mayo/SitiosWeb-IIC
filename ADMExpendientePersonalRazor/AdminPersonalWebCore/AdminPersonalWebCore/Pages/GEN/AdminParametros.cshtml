@@ -64,8 +64,7 @@
                             {
                                 <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
                                     <a class="page-link"
-                                           asp-page="/GEN/AdminParametros"
-                                           asp-route-PaginaActual="@i">
+                                           href="?PaginaActual=@i&u=@Request.Query["u"]">
                                         @i
                                     </a>
                                 </li>
@@ -83,6 +82,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <form method="post" asp-page-handler="Guardar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
                 <div class="modal-header text-white" style="background:#1aad94;">
                     <h5 class="modal-title" id="tituloModalParametro">Formulario Parámetro</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -124,6 +124,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <form method="post" asp-page-handler="Eliminar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">Confirmar eliminación</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
