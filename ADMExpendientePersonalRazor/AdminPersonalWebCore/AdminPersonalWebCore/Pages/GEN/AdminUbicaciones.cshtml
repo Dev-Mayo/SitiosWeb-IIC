@@ -20,6 +20,7 @@
             <pre>CodigoProvincia,Provincia,CodigoCanton,Canton,CodigoDistrito,Distrito</pre>
 
             <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
                 <div class="mb-3">
                     <label class="form-label">Archivo CSV</label>
                     <input type="file"
@@ -64,8 +65,7 @@
                             {
                                 <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
                                     <a class="page-link"
-                                           asp-page="/GEN/AdminUbicaciones"
-                                           asp-route-PaginaActual="@i">
+                                           href="?PaginaActual=@i&u=@Request.Query["u"]">
                                         @i
                                     </a>
                                 </li>
