@@ -1,0 +1,51 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3ECFB761-B399-4223-8D62-23271EC2E19F}|..\\ADMExpedientePersonal.DAL\\ADMExpedientePersonal.DAL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.dal\\modulooferentedal\\oferentesdal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0268E42-EA6A-41AD-8CDF-51D943069956}|..\\ADMExpedientePersonal.BLL\\ADMExpedientePersonal.BLL.csproj|c:\\users\\rafae\\documents\\github\\sitiosweb-iic\\admexpedientepersonal\\admexpedientepersonal.bll\\modulooferentebll\\oferentebll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OferentesDAL.cs",
+              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\OferentesDAL.cs",
+              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\OferentesDAL.cs",
+              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\OferentesDAL.cs",
+              "RelativeToolTip": "..\\ADMExpedientePersonal.DAL\\ModuloOferenteDAL\\OferentesDAL.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAowHIAAABXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T03:45:01.828Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "OferenteBLL.cs",
+              "DocumentMoniker": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
+              "RelativeDocumentMoniker": "..\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
+              "ToolTip": "C:\\Users\\Rafae\\Documents\\GitHub\\SitiosWeb-IIC\\ADMExpedientePersonal\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
+              "RelativeToolTip": "..\\ADMExpedientePersonal.BLL\\ModuloOferenteBLL\\OferenteBLL.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAwwDYAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-05T03:44:12.985Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

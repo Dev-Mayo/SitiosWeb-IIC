@@ -1,0 +1,272 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.OFE.PreparacionAcademicaModel
+@{
+    ViewData["Title"] = "Preparación Académica";
+}
+
+<style>
+    .card-custom {
+        width: calc(100% - 80px);
+        max-width: none;
+        margin: 40px;
+        border-radius: 14px;
+        box-shadow: 0 6px 28px rgba(0,0,0,.15);
+    }
+    .card-header-custom {
+        background: #1aad94;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        border-radius: 14px 14px 0 0;
+    }
+    .table { width: 100%; }
+    .grid-pager { text-align: center; padding-top: 10px; padding-bottom: 10px; }
+</style>
+
+<div class="card-custom bg-white">
+    <div class="card-header-custom">
+        <h5 class="fw-bold mb-0">Administración de preparación académica</h5>
+    </div>
+
+    <div class="p-4">
+        <button type="button" class="btn btn-primary mb-3 fw-semibold" onclick="abrirModalNuevo()">
+            <i class="bi bi-plus-lg"></i> Nueva Preparación Académica
+        </button>
+        <a asp-page="MainOferentes" asp-route-u="@Request.Query["u"]"
+           class="btn btn-secondary mb-3 fw-semibold">Volver</a>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Institución</th>
+                    <th>Oferente</th>
+                    <th>Título</th>
+                    <th>Fecha Inicio</th>
+                    <th>Fecha Fin</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Preparaciones)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Institucion</td>
+                        <td>@item.OferenteId</td>
+                        <td>@item.Titulo</td>
+                        <td>@item.FechaInicio.ToString("dd/MM/yyyy")</td>
+                        <td>@item.FechaFin.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-warning me-1"
+                                onclick="abrirModalEditar(
+                                    @item.Id,
+                                    '@item.CodigoInstitucion',
+                                    '@Html.Raw(item.Titulo.Replace("'", "\\'"))',
+                                    '@item.FechaInicio.ToString("yyyy-MM-dd")',
+                                    '@item.FechaFin.ToString("yyyy-MM-dd")')">
+                                <i class="bi bi-pencil"></i> Editar
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger"
+                                onclick="abrirModalEliminar(@item.Id)">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.Preparaciones.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center text-muted fst-italic py-3">
+                            No hay preparaciones académicas registradas.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.TotalPaginas > 1)
+        {
+            <div class="grid-pager">
+                @for (int i = 1; i <= Model.TotalPaginas; i++)
+                {
+                    <a href="?u=@Request.Query["u"]&pagina=@i"
+                       class="btn btn-sm @(i == Model.PaginaActual ? "btn-primary" : "btn-outline-secondary") me-1">
+                        @i
+                    </a>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- ===== Modal Agregar / Editar ===== -->
+<div id="modalPrep" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header card-header-custom text-white">
+                <h5 class="modal-title" id="modalPrepTitle">Formulario Preparación Académica</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" id="formPrep">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <input type="hidden" id="hfFormId" name="formId" value="0" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">ID</label>
+                        <input type="text" id="txtFormId" class="form-control" disabled />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Institución</label>
+                        <select id="ddlInstitucion" name="formCodigoInstitucion" class="form-select">
+                            <option value="">-- Seleccione --</option>
+                            @foreach (var inst in Model.Instituciones)
+                            {
+                                <option value="@inst.Value">@inst.Text</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Título</label>
+                        <input type="text" id="txtTitulo" name="formTitulo" class="form-control"
+                               maxlength="100" placeholder="Título obtenido" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Fecha Inicio</label>
+                            <input type="date" id="txtFechaInicio" name="formFechaInicio" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">Fecha Fin</label>
+                            <input type="date" id="txtFechaFin" name="formFechaFin" class="form-control" />
+                        </div>
+                    </div>
+
+                    <span id="lblMensajeError" class="form-label fw-semibold text-danger"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-floppy"></i> Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal Confirmar Eliminar ===== -->
+<div id="modalEliminar" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar la preparación académica?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" id="formEliminar">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="hfEliminarId" name="preparacionAcadId" value="" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal Mensaje Sistema ===== -->
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.MensajeSistema</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const u = '@Request.Query["u"]';
+
+    function limpiarModal() {
+        document.getElementById('hfFormId').value              = '0';
+        document.getElementById('txtFormId').value             = '';
+        document.getElementById('ddlInstitucion').value        = '';
+        document.getElementById('txtTitulo').value             = '';
+        document.getElementById('txtFechaInicio').value        = '';
+        document.getElementById('txtFechaFin').value           = '';
+        document.getElementById('lblMensajeError').textContent = '';
+    }
+
+    function abrirModalNuevo() {
+        limpiarModal();
+        document.getElementById('modalPrepTitle').textContent = 'Nueva Preparación Académica';
+        document.getElementById('formPrep').action           = `?handler=Guardar&u=${u}`;
+        new bootstrap.Modal(document.getElementById('modalPrep')).show();
+    }
+
+    function abrirModalEditar(id, institucion, titulo, fechaInicio, fechaFin) {
+        document.getElementById('modalPrepTitle').textContent      = 'Editar Preparación Académica';
+        document.getElementById('hfFormId').value                  = id;
+        document.getElementById('txtFormId').value                 = id;
+        document.getElementById('ddlInstitucion').value            = institucion;
+        document.getElementById('txtTitulo').value                 = titulo;
+        document.getElementById('txtFechaInicio').value            = fechaInicio;
+        document.getElementById('txtFechaFin').value               = fechaFin;
+        document.getElementById('lblMensajeError').textContent     = '';
+        document.getElementById('formPrep').action                 = `?handler=Guardar&u=${u}`;
+        new bootstrap.Modal(document.getElementById('modalPrep')).show();
+    }
+
+    function abrirModalEliminar(id) {
+        document.getElementById('hfEliminarId').value    = id;
+        document.getElementById('formEliminar').action  = `?handler=Eliminar&u=${u}`;
+        new bootstrap.Modal(document.getElementById('modalEliminar')).show();
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+        // Error de validación: POST devolvió Page() con MostrarModalForm=true
+        const mostrar = '@Model.MostrarModalForm' === 'True';
+        if (mostrar) {
+            const id         = '@Model.FormId';
+            const esEditar   = parseInt(id) > 0;
+
+            document.getElementById('modalPrepTitle').textContent      = esEditar ? 'Editar Preparación Académica' : 'Nueva Preparación Académica';
+            document.getElementById('hfFormId').value                  = id;
+            document.getElementById('txtFormId').value                 = esEditar ? id : '';
+            document.getElementById('ddlInstitucion').value            = '@Model.FormCodigoInstitucion';
+            document.getElementById('txtTitulo').value                 = '@Html.Raw(Model.FormTitulo.Replace("'", "\\'"))';
+            document.getElementById('txtFechaInicio').value            = '@Model.FormFechaInicio';
+            document.getElementById('txtFechaFin').value               = '@Model.FormFechaFin';
+            document.getElementById('lblMensajeError').textContent     = '@Model.MensajeError';
+            document.getElementById('formPrep').action                 = `?handler=Guardar&u=${u}`;
+            new bootstrap.Modal(document.getElementById('modalPrep')).show();
+            return;
+        }
+
+        // Mensaje de sistema tras redirect
+        const msg = document.getElementById('txtMensajeSistema').textContent.trim();
+        if (msg) {
+            new bootstrap.Modal(document.getElementById('modalMensaje')).show();
+        }
+    });
+</script>
+}

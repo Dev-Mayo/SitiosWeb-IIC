@@ -1,0 +1,403 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.OFE.MainOferentesModel
+@using System.Text.Json
+@{
+    ViewData["Title"] = "Administración de Oferentes";
+}
+
+<style>
+    .card-custom {
+        width: calc(100% - 80px);
+        margin: 40px;
+        border-radius: 14px;
+        box-shadow: 0 6px 28px rgba(0,0,0,.15);
+    }
+    .card-header-custom {
+        background: #1aad94;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        border-radius: 14px 14px 0 0;
+    }
+    .grid-pager { text-align: center; padding: 10px 0; }
+</style>
+
+<div class="card-custom bg-white">
+    <div class="card-header-custom">
+        <h5 class="fw-bold mb-0">Administración de Oferentes</h5>
+    </div>
+    <div class="p-4">
+
+        <button type="button" class="btn btn-primary mb-3 fw-semibold" onclick="abrirModalNuevo()">
+            <i class="bi bi-plus-lg"></i> Nuevo
+        </button>
+
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Identificación</th>
+                    <th>Nombre Completo</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Concurso</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var o in Model.OferentesPaginados)
+                {
+                    <tr>
+                        <td>@o.Identificacion</td>
+                        <td>@o.NombreCompleto</td>
+                        <td>@string.Join(", ", o.Email)</td>
+                        <td>@string.Join(", ", o.Telefono)</td>
+                        <td>@string.Join(", ", o.CodigoConcurso)</td>
+                        <td>
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <button type="button" class="btn btn-sm btn-warning me-2"
+                                        onclick="abrirModalEditar('@o.Identificacion')">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="abrirModalEliminar('@o.Identificacion')">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                                <div>
+                                    <a href="/OFE/PreparacionAcademica?u=@Request.Query["u"]&id=@o.Identificacion"
+                                       class="btn btn-sm btn-primary me-2">
+                                        <i class="bi bi-book"></i> Preparación académica
+                                    </a>
+                                    <a href="/OFE/ExpLaboral?u=@Request.Query["u"]&id=@o.Identificacion"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="bi bi-briefcase"></i> Experiencia Laboral
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                @if (!Model.OferentesPaginados.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center text-muted fst-italic py-3">
+                            No hay oferentes registrados.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (Model.TotalPaginas > 1)
+        {
+            <div class="grid-pager">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= Model.TotalPaginas; i++)
+                        {
+                            <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                <a class="page-link" href="?u=@Request.Query["u"]&pagina=@i">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- ===== Modal Agregar / Editar ===== -->
+<div id="modalOferente" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header card-header-custom text-white">
+                <h5 class="modal-title" id="modalOferenteTitle">Formulario Oferente</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" id="formOferente">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <input type="hidden" id="hfAccion" name="accion" value="nuevo" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tipo de identificación</label>
+                        <select id="ddlTipo" name="tipoIdentificacion" class="form-select"
+                                onchange="actualizarValidador(this.value)">
+                            <option value="Cedula">Cédula de identidad</option>
+                            <option value="Dimex">DIMEX</option>
+                            <option value="Pasaporte">Pasaporte</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Identificación</label>
+                        <input type="text" id="txtIdentificacion" name="identificacion"
+                               class="form-control" placeholder="Identificación" />
+                        <div id="errorIdentificacion" class="text-danger small" style="display:none;"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre completo</label>
+                        <input type="text" id="txtNombre" name="nombreCompleto"
+                               class="form-control" placeholder="Nombre completo" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Fecha de nacimiento</label>
+                        <input type="date" id="txtFechaNac" name="fechaNacimiento" class="form-control" />
+                    </div>
+
+                    <!-- Correos -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Correos electrónicos</label>
+                        <div id="listaCorreos"></div>
+                        <button type="button" class="btn btn-sm btn-success mt-1"
+                                onclick="agregarCampo('listaCorreos','emails')">
+                            <i class="bi bi-plus"></i> Agregar correo
+                        </button>
+                    </div>
+
+                    <!-- Teléfonos -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Teléfonos de contacto</label>
+                        <div id="listaTelefonos"></div>
+                        <button type="button" class="btn btn-sm btn-success mt-1"
+                                onclick="agregarCampo('listaTelefonos','telefonos')">
+                            <i class="bi bi-plus"></i> Agregar teléfono
+                        </button>
+                    </div>
+
+                    <!-- Concursos -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Concursos</label>
+                        <div id="listaConcursos">
+                            @foreach (var c in Model.Concursos)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input concurso-check" type="checkbox"
+                                           name="concursos" value="@c.CodigoConcurso"
+                                           id="chk_@c.CodigoConcurso" />
+                                    <label class="form-check-label" for="chk_@c.CodigoConcurso">
+                                        @c.Nombre
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <span id="lblMensajeError" class="form-label fw-semibold text-danger"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-floppy"></i> Guardar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal Confirmar Eliminar ===== -->
+<div id="modalEliminar" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirmar eliminación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>¿Está seguro que desea eliminar este oferente?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" id="formEliminar">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="hfEliminarId" name="identificacion" value="" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== Modal Mensaje Sistema ===== -->
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.MensajeSistema</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    const u           = '@Request.Query["u"]';
+    const oferentesData = @Html.Raw(Model.OferentesJson);
+
+    // Patrones de validación por tipo
+    const patrones = {
+        Cedula:    { regex: /^\d{9}$/,              msg: 'Cédula: exactamente 9 dígitos.' },
+        Dimex:     { regex: /^\d{12}$/,             msg: 'DIMEX: exactamente 12 dígitos.' },
+        Pasaporte: { regex: /^[A-Za-z0-9]{6,9}$/,  msg: 'Pasaporte: 6-9 caracteres alfanuméricos.' }
+    };
+    let _tipoActivo = 'Cedula';
+
+    function actualizarValidador(tipo) { _tipoActivo = tipo; }
+
+    // ── Campos dinámicos ────────────────────────────────────────────────────
+    function agregarCampo(contenedorId, nombre) {
+        const cont = document.getElementById(contenedorId);
+        const idx  = cont.querySelectorAll('.input-group').length;
+        const div  = document.createElement('div');
+        div.className = 'input-group mb-2';
+        div.innerHTML = `
+            <input type="text" name="${nombre}" class="form-control" />
+            <button type="button" class="btn btn-danger"
+                onclick="eliminarCampo(this)">X</button>`;
+        cont.appendChild(div);
+    }
+
+    function eliminarCampo(btn) {
+        btn.closest('.input-group').remove();
+    }
+
+    function poblarLista(contenedorId, nombre, valores) {
+        const cont = document.getElementById(contenedorId);
+        cont.innerHTML = '';
+        (valores.length ? valores : ['']).forEach(val => {
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2';
+            div.innerHTML = `
+                <input type="text" name="${nombre}" class="form-control" value="${val}" />
+                <button type="button" class="btn btn-danger"
+                    onclick="eliminarCampo(this)">X</button>`;
+            cont.appendChild(div);
+        });
+    }
+
+    function marcarConcursos(seleccionados) {
+        document.querySelectorAll('.concurso-check').forEach(chk => {
+            chk.checked = seleccionados.includes(chk.value);
+        });
+    }
+
+    // ── Abrir modales ───────────────────────────────────────────────────────
+    function abrirModalNuevo() {
+        document.getElementById('modalOferenteTitle').textContent = 'Nuevo Oferente';
+        document.getElementById('hfAccion').value                 = 'nuevo';
+        document.getElementById('ddlTipo').value                  = 'Cedula';
+        document.getElementById('txtIdentificacion').value        = '';
+        document.getElementById('txtIdentificacion').readOnly     = false;
+        document.getElementById('txtNombre').value                = '';
+        document.getElementById('txtFechaNac').value              = '';
+        document.getElementById('lblMensajeError').textContent    = '';
+        document.getElementById('errorIdentificacion').style.display = 'none';
+        poblarLista('listaCorreos',   'emails',    ['']);
+        poblarLista('listaTelefonos', 'telefonos', ['']);
+        marcarConcursos([]);
+        actualizarValidador('Cedula');
+        document.getElementById('formOferente').action = `?handler=Guardar&u=${u}`;
+        new bootstrap.Modal(document.getElementById('modalOferente')).show();
+    }
+
+    function abrirModalEditar(identificacion) {
+        const o = oferentesData.find(x => x.identificacion === identificacion);
+        if (!o) return;
+
+        document.getElementById('modalOferenteTitle').textContent = 'Editar Oferente';
+        document.getElementById('hfAccion').value                 = 'editar';
+        document.getElementById('ddlTipo').value                  = o.tipoIdentificacion;
+        document.getElementById('txtIdentificacion').value        = o.identificacion;
+        document.getElementById('txtIdentificacion').readOnly     = true;  // no editable en edición
+        document.getElementById('txtNombre').value                = o.nombreCompleto;
+        document.getElementById('txtFechaNac').value              = o.fechaNacimiento;
+        document.getElementById('lblMensajeError').textContent    = '';
+        document.getElementById('errorIdentificacion').style.display = 'none';
+        poblarLista('listaCorreos',   'emails',    o.emails);
+        poblarLista('listaTelefonos', 'telefonos', o.telefonos);
+        marcarConcursos(o.concursos);
+        actualizarValidador(o.tipoIdentificacion);
+        document.getElementById('formOferente').action = `?handler=Guardar&u=${u}`;
+        new bootstrap.Modal(document.getElementById('modalOferente')).show();
+    }
+
+    function abrirModalEliminar(identificacion) {
+        document.getElementById('hfEliminarId').value    = identificacion;
+        document.getElementById('formEliminar').action  = `?handler=Eliminar&u=${u}`;
+        new bootstrap.Modal(document.getElementById('modalEliminar')).show();
+    }
+
+    // ── Validación al submit ────────────────────────────────────────────────
+    document.getElementById('formOferente').addEventListener('submit', function(e) {
+        const txtId   = document.getElementById('txtIdentificacion');
+        const errDiv  = document.getElementById('errorIdentificacion');
+        const lblErr  = document.getElementById('lblMensajeError');
+
+        // Validar formato identificación solo si no es readonly (modo nuevo)
+        if (!txtId.readOnly) {
+            const patron = patrones[_tipoActivo];
+            if (!patron.regex.test(txtId.value)) {
+                errDiv.textContent    = patron.msg;
+                errDiv.style.display  = 'block';
+                e.preventDefault(); return;
+            }
+            errDiv.style.display = 'none';
+        }
+
+        const correos = document.querySelectorAll('#listaCorreos input[type="text"]');
+        const tels    = document.querySelectorAll('#listaTelefonos input[type="text"]');
+        const hayCorreo = Array.from(correos).some(i => i.value.trim());
+        const hayTel    = Array.from(tels).some(i => i.value.trim());
+
+        if (!hayCorreo || !hayTel) {
+            lblErr.textContent = 'Debe ingresar al menos un correo y un teléfono.';
+            e.preventDefault(); return;
+        }
+        lblErr.textContent = '';
+    });
+
+    // ── DOMContentLoaded ────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', function () {
+        // Error de validación: POST devolvió Page() con MostrarModalForm=true
+        const mostrar = '@Model.MostrarModalForm' === 'True';
+        if (mostrar) {
+            const accion = '@Model.FormAccion';
+            document.getElementById('modalOferenteTitle').textContent = accion === 'nuevo' ? 'Nuevo Oferente' : 'Editar Oferente';
+            document.getElementById('hfAccion').value                 = accion;
+            document.getElementById('ddlTipo').value                  = '@Model.FormTipoIdentificacion';
+            document.getElementById('txtIdentificacion').value        = '@Model.FormIdentificacion';
+            document.getElementById('txtIdentificacion').readOnly     = accion !== 'nuevo';
+            document.getElementById('txtNombre').value                = '@Html.Raw(Model.FormNombreCompleto.Replace("'", "\\'"))';
+            document.getElementById('txtFechaNac').value              = '@Model.FormFechaNacimiento';
+            document.getElementById('lblMensajeError').textContent    = '@Html.Raw(Model.MensajeError.Replace("'", "\\'"))';
+            actualizarValidador('@Model.FormTipoIdentificacion');
+
+            poblarLista('listaCorreos',   'emails',    @Html.Raw(JsonSerializer.Serialize(Model.FormEmails)));
+            poblarLista('listaTelefonos', 'telefonos', @Html.Raw(JsonSerializer.Serialize(Model.FormTelefonos)));
+            marcarConcursos(@Html.Raw(JsonSerializer.Serialize(Model.FormConcursos)));
+
+            document.getElementById('formOferente').action = `?handler=Guardar&u=${u}`;
+            new bootstrap.Modal(document.getElementById('modalOferente')).show();
+            return;
+        }
+
+        const msg = document.getElementById('txtMensajeSistema').textContent.trim();
+        if (msg) {
+            new bootstrap.Modal(document.getElementById('modalMensaje')).show();
+        }
+    });
+</script>
+}

@@ -1,0 +1,189 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.EMP.AdminPuestosModel
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background:#1aad94;">
+            <h4 class="mb-0">Administración de Puestos</h4>
+        </div>
+
+        <div class="card-body">
+            @if (!string.IsNullOrEmpty(Model.Mensaje))
+            {
+                <div class="alert alert-info">@Model.Mensaje</div>
+            }
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button type="button" class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalPuesto"
+                        onclick="nuevoPuesto()">
+                    Nuevo
+                </button>
+
+                <a asp-page="/EMP/RequisitosPuestos"
+                       asp-route-u="@Request.Query["u"]"
+                       class="btn btn-primary">
+                    Requisitos
+                </a>
+            </div>
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Salario</th>
+                        <th>Jefatura</th>
+                        <th style="width:220px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Puestos)
+                    {
+                        <tr>
+                            <td>@item.PuestoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Salario.ToString("N2")</td>
+                            <td>@item.JefePuestoId</td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalPuesto"
+                                        onclick="editarPuesto('@item.PuestoId', '@item.Nombre', '@item.Salario', '@item.JefePuestoId')">
+                                    Editar
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminar"
+                                        onclick="prepararEliminar('@item.PuestoId', '@item.Nombre')">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="d-flex justify-content-center mt-4 mb-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
+                            {
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link"
+                                           href="?PaginaActual=@i&u=@Request.Query["u"]">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalPuesto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Guardar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="modal-header text-white" style="background:#1aad94;">
+                    <h5 class="modal-title" id="tituloModalPuesto">Formulario Puesto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="EsEdicion" name="EsEdicion" value="false" />
+                    <input type="hidden" id="PuestoId" name="Puesto.PuestoId" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del puesto</label>
+                        <input type="text" id="Nombre" name="Puesto.Nombre" class="form-control" maxlength="100" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Salario</label>
+                        <input type="number" id="Salario" name="Puesto.Salario" class="form-control" step="0.01" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">ID puesto jefatura</label>
+                        <select id="JefePuestoId" name="Puesto.JefePuestoId" class="form-control">
+                            <option value="">Sin jefatura</option>
+
+                            @foreach (var puesto in Model.Puestos)
+                            {
+                                <option value="@puesto.PuestoId">@puesto.Nombre</option>
+                            }
+                        </select>
+                        <small class="text-muted">Opcional</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Eliminar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="PuestoEliminar" name="puestoId" />
+                    <p>¿Realmente desea eliminar el elemento seleccionado?</p>
+                    <strong id="NombreEliminar"></strong>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+               function nuevoPuesto() {
+            document.getElementById("tituloModalPuesto").innerText = "Nuevo Puesto";
+            document.getElementById("EsEdicion").value = "false";
+            document.getElementById("PuestoId").value = "";
+            document.getElementById("Nombre").value = "";
+            document.getElementById("Salario").value = "";
+            document.getElementById("JefePuestoId").value = "";
+        }
+
+        function editarPuesto(id, nombre, salario, jefePuestoId) {
+            document.getElementById("tituloModalPuesto").innerText = "Editar Puesto";
+            document.getElementById("EsEdicion").value = "true";
+            document.getElementById("PuestoId").value = id;
+            document.getElementById("Nombre").value = nombre;
+            document.getElementById("Salario").value = salario;
+            document.getElementById("JefePuestoId").value = jefePuestoId || "";
+        }
+
+        function prepararEliminar(id, nombre) {
+            document.getElementById("PuestoEliminar").value = id;
+            document.getElementById("NombreEliminar").innerText = id + " - " + nombre;
+        }
+    </script>
+}

@@ -1,0 +1,117 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.EMP.ContratarEmpleadoModel
+
+@{
+    ViewData["Title"] = "Contratar Empleado";
+}
+
+<div class="card-custom bg-white">
+    <div class="card-header-custom">
+        <h5 class="fw-bold mb-0">Contratar Empleado</h5>
+    </div>
+
+    <div class="p-4">
+
+        @if (!string.IsNullOrEmpty(Model.MensajeExito))
+        {
+            <div class="alert alert-success alert-dismissible fade show">
+                @Model.MensajeExito
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.MensajeError))
+        {
+            <div class="alert alert-danger alert-dismissible fade show">
+                @Model.MensajeError
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <form method="post" id="formContratacion">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Oferente</label>
+                <select asp-for="Contratacion.IdentificacionOferente" class="form-select" required>
+                    <option value="">Seleccione un oferente</option>
+                    @foreach (var oferente in Model.Oferentes)
+                    {
+                        <option value="@oferente.Identificacion">
+                            @oferente.NombreCompleto (@oferente.Identificacion)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Puesto</label>
+                <select asp-for="Contratacion.PuestoId" class="form-select" required>
+                    <option value="">Seleccione un puesto</option>
+                    @foreach (var puesto in Model.Puestos)
+                    {
+                        <option value="@puesto.PuestoId">
+                            @puesto.Nombre
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold">Jefatura que Aprueba</label>
+                <select asp-for="Contratacion.JefaturaId" class="form-select" required>
+                    <option value="">Seleccione una jefatura</option>
+                    @foreach (var empleado in Model.Jefaturas)
+                    {
+                        <option value="@empleado.EmpleadoId">
+                            @empleado.NombreCompleto
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="button"
+                        class="btn btn-warning fw-bold"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalConfirmarContratacion">
+                    Contratar
+                </button>
+
+                <a href="/SEG/Bienvenida?u=@Request.Query["u"].ToString()"
+                   class="btn btn-secondary">
+                    Regresar
+                </a>
+            </div>
+
+            <div class="modal fade" id="modalConfirmarContratacion" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold">Confirmar contratación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            ¿Realmente desea contratar al oferente seleccionado?
+                            <br />
+                            Esta acción creará el empleado y generará una acción de personal automáticamente.
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                No
+                            </button>
+
+                            <button type="submit" class="btn btn-warning fw-bold">
+                                Sí, contratar
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

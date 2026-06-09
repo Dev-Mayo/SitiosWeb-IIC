@@ -1,0 +1,16 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.SEG.BienvenidaModel
+@{
+    ViewData["Title"] = "Bienvenida";
+}
+
+<div class="card border-0 shadow-sm p-4" style="max-width:600px; margin: 0 auto;">
+    <div class="text-center mb-4">
+        <div style="font-size:72px;">🏢</div>
+        <h3 class="fw-bold mt-2">Bienvenido al Sistema</h3>
+    </div>
+    <div class="alert alert-success text-center fw-semibold fs-5">
+        Bienvenido, @Model.NombreCompleto
+    </div>
+    <p class="text-muted text-center">Seleccione una opción del menú para continuar.</p>
+</div>
