@@ -9,6 +9,7 @@ namespace AdminPersonalWebCore.Pages.OFE
     {
         private readonly ConcursoService _service;
         private readonly ParametroService _parametroService;
+        private readonly AuthService _authService;
 
         public List<Concurso> Concursos { get; set; } = new();
 
@@ -25,69 +26,113 @@ namespace AdminPersonalWebCore.Pages.OFE
 
         public int TotalPaginas { get; set; }
 
-        public AdminConcursosModel(ConcursoService service, ParametroService parametroService)
+        [BindProperty(SupportsGet = true, Name = "u")]
+        public string UsuarioActual { get; set; }
+
+        public AdminConcursosModel(
+            ConcursoService service,
+            ParametroService parametroService,
+            AuthService authService)
         {
             _service = service;
             _parametroService = parametroService;
+            _authService = authService;
         }
 
-        public void OnGet(string mensaje = null)
+        public IActionResult OnGet(string mensaje = null)
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             Mensaje = mensaje;
             CargarDatos();
+
+            return Page();
         }
 
         public IActionResult OnPostGuardar()
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             try
             {
                 if (EsEdicion)
                 {
-                    _service.Actualizar(Concurso, UsuarioActual());
-                    return RedirectToPage("/OFE/AdminConcursos",
-                        new { mensaje = "Concurso actualizado correctamente." });
+                    _service.Actualizar(Concurso, UsuarioActual);
+
+                    return RedirectToPage(new
+                    {
+                        u = UsuarioActual,
+                        mensaje = "Concurso actualizado correctamente."
+                    });
                 }
 
-                _service.Insertar(Concurso, UsuarioActual());
-                return RedirectToPage("/OFE/AdminConcursos",
-                    new { mensaje = "Concurso registrado correctamente." });
+                _service.Insertar(Concurso, UsuarioActual);
+
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = "Concurso registrado correctamente."
+                });
             }
             catch (Exception ex)
             {
-                return RedirectToPage("/OFE/AdminConcursos",
-                    new { mensaje = ex.Message });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = ex.Message
+                });
             }
         }
 
         public IActionResult OnPostEliminar(string codigo)
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             try
             {
-                _service.Eliminar(codigo, UsuarioActual());
+                _service.Eliminar(codigo, UsuarioActual);
 
-                return RedirectToPage("/OFE/AdminConcursos",
-                    new { mensaje = "Concurso eliminado correctamente." });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = "Concurso eliminado correctamente."
+                });
             }
             catch (Exception ex)
             {
-                return RedirectToPage("/OFE/AdminConcursos",
-                    new { mensaje = ex.Message });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = ex.Message
+                });
             }
         }
 
         public IActionResult OnPostCambiarEstado(string codigo)
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             try
             {
-                _service.CambiarEstado(codigo, UsuarioActual());
+                _service.CambiarEstado(codigo, UsuarioActual);
 
-                return RedirectToPage("/OFE/AdminConcursos",
-                    new { mensaje = "Estado del concurso actualizado correctamente." });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = "Estado del concurso actualizado correctamente."
+                });
             }
             catch (Exception ex)
             {
-                return RedirectToPage("/OFE/AdminConcursos",
-                    new { mensaje = ex.Message });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = ex.Message
+                });
             }
         }
 
@@ -98,7 +143,7 @@ namespace AdminPersonalWebCore.Pages.OFE
                 10
             );
 
-            var lista = _service.ObtenerTodos(UsuarioActual());
+            var lista = _service.ObtenerTodos(UsuarioActual);
 
             TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
 
@@ -108,11 +153,25 @@ namespace AdminPersonalWebCore.Pages.OFE
                 .ToList();
         }
 
-        private string UsuarioActual()
+        private IActionResult? ValidarSession()
         {
-            return HttpContext.Session.GetString("NombreUsuario")
-                   ?? User.Identity?.Name
-                   ?? "Desconocido";
+            var check = CheckSession();
+            if (check != null) return check;
+
+            var usuario = _authService.ObtenerPorNombre(UsuarioActual);
+
+            if (usuario == null)
+                return Redirect("/SEG/Login?msg=login");
+
+            return null;
+        }
+
+        private IActionResult? CheckSession()
+        {
+            if (string.IsNullOrWhiteSpace(UsuarioActual))
+                return Redirect("/SEG/Login?msg=login");
+
+            return null;
         }
     }
 }

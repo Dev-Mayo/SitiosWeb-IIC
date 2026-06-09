@@ -8,11 +8,15 @@ namespace AdminPersonalWebCore.Pages.GEN
     public class AdminParametrosModel : PageModel
     {
         private readonly ParametroService _service;
+        private readonly AuthService _authService;
 
         public List<Parametro> Parametros { get; set; } = new();
 
         [BindProperty]
         public Parametro Parametro { get; set; } = new();
+
+        [BindProperty(SupportsGet = true, Name = "u")]
+        public string UsuarioActual { get; set; }
 
         [BindProperty]
         public bool EsEdicion { get; set; }
@@ -24,54 +28,84 @@ namespace AdminPersonalWebCore.Pages.GEN
 
         public int TotalPaginas { get; set; }
 
-        public AdminParametrosModel(ParametroService service)
+
+        public AdminParametrosModel(
+            ParametroService service,
+            AuthService authService)
         {
             _service = service;
+            _authService = authService;
         }
 
-        public void OnGet(string mensaje = null)
+        public IActionResult OnGet(string mensaje = null)
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             Mensaje = mensaje;
             CargarDatos();
+
+            return Page();
         }
 
         public IActionResult OnPostGuardar()
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             try
             {
                 if (EsEdicion)
                 {
-                    _service.Actualizar(Parametro, UsuarioActual());
+                    _service.Actualizar(Parametro, UsuarioActual);
 
-                    return RedirectToPage("/GEN/AdminParametros",
-                        new { mensaje = "Parámetro actualizado correctamente." });
+                    return RedirectToPage(new
+                    {
+                        u = UsuarioActual,
+                        mensaje = "Parámetro actualizado correctamente."
+                    });
                 }
 
-                _service.Insertar(Parametro, UsuarioActual());
+                _service.Insertar(Parametro, UsuarioActual);
 
-                return RedirectToPage("/GEN/AdminParametros",
-                    new { mensaje = "Parámetro registrado correctamente." });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = "Parámetro registrado correctamente."
+                });
             }
             catch (Exception ex)
             {
-                return RedirectToPage("/GEN/AdminParametros",
-                    new { mensaje = ex.Message });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = ex.Message
+                });
             }
         }
 
         public IActionResult OnPostEliminar(string codigo)
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             try
             {
-                _service.Eliminar(codigo, UsuarioActual());
+                _service.Eliminar(codigo, UsuarioActual);
 
-                return RedirectToPage("/GEN/AdminParametros",
-                    new { mensaje = "Parámetro eliminado correctamente." });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = "Parámetro eliminado correctamente."
+                });
             }
             catch (Exception ex)
             {
-                return RedirectToPage("/GEN/AdminParametros",
-                    new { mensaje = ex.Message });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = ex.Message
+                });
             }
         }
 
@@ -82,7 +116,7 @@ namespace AdminPersonalWebCore.Pages.GEN
                 10
             );
 
-            var lista = _service.ObtenerTodos(UsuarioActual());
+            var lista = _service.ObtenerTodos(UsuarioActual);
 
             TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
 
@@ -92,11 +126,26 @@ namespace AdminPersonalWebCore.Pages.GEN
                 .ToList();
         }
 
-        private string UsuarioActual()
+       
+        private IActionResult? ValidarSession()
         {
-            return HttpContext.Session.GetString("NombreUsuario")
-                   ?? User.Identity?.Name
-                   ?? "Desconocido";
+            var check = CheckSession();
+            if (check != null) return check;
+
+            var usuario = _authService.ObtenerPorNombre(UsuarioActual);
+
+            if (usuario == null)
+                return Redirect("/SEG/Login?msg=login");
+
+            return null;
+        }
+
+        private IActionResult? CheckSession()
+        {
+            if (string.IsNullOrWhiteSpace(UsuarioActual))
+                return Redirect("/SEG/Login?msg=login");
+
+            return null;
         }
     }
 }

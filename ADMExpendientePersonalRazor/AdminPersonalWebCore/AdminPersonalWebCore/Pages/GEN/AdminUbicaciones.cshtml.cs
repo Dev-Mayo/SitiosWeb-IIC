@@ -10,16 +10,17 @@ namespace AdminPersonalWebCore.Pages.GEN
     {
         private readonly UbicacionService _service;
         private readonly ParametroService _parametroService;
+        private readonly AuthService _authService;
 
-        public List<Provincia> Provincias { get; set; } = new();
-        public List<Canton> Cantones { get; set; } = new();
-        public List<Distrito> Distritos { get; set; } = new();
         public List<Ubicacion> Ubicaciones { get; set; } = new();
+
         [BindProperty(SupportsGet = true)]
         public int PaginaActual { get; set; } = 1;
 
         public int TotalPaginas { get; set; }
 
+        [BindProperty(SupportsGet = true, Name = "u")]
+        public string UsuarioActual { get; set; }
 
         [BindProperty]
         public IFormFile Archivo { get; set; }
@@ -28,37 +29,30 @@ namespace AdminPersonalWebCore.Pages.GEN
 
         public AdminUbicacionesModel(
             UbicacionService service,
-            ParametroService parametroService)
+            ParametroService parametroService,
+            AuthService authService)
         {
             _service = service;
             _parametroService = parametroService;
+            _authService = authService;
         }
 
-        public void OnGet(string mensaje = null)
+        public IActionResult OnGet(string mensaje = null)
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             Mensaje = mensaje;
             CargarListas();
-        }
 
-        private void CargarListas()
-        {
-            int cantidad = _parametroService.ObtenerValorEnteroODefecto(
-                "CANTIDAD_REGISTROS_PAGINA",
-                10
-            );
-
-            var lista = _service.ObtenerUbicaciones();
-
-            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
-
-            Ubicaciones = lista
-                .Skip((PaginaActual - 1) * cantidad)
-                .Take(cantidad)
-                .ToList();
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var check = ValidarSession();
+            if (check != null) return check;
+
             try
             {
                 if (Archivo == null || Archivo.Length == 0)
@@ -124,23 +118,60 @@ namespace AdminPersonalWebCore.Pages.GEN
                     });
                 }
 
-                _service.CargarUbicaciones(ubicaciones, UsuarioActual());
+                _service.CargarUbicaciones(ubicaciones, UsuarioActual);
 
-                return RedirectToPage("/GEN/AdminUbicaciones",
-                    new { mensaje = "Carga de ubicaciones realizada correctamente." });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = "Carga de ubicaciones realizada correctamente."
+                });
             }
             catch (Exception ex)
             {
-                return RedirectToPage("/GEN/AdminUbicaciones",
-                    new { mensaje = ex.Message });
+                return RedirectToPage(new
+                {
+                    u = UsuarioActual,
+                    mensaje = ex.Message
+                });
             }
         }
 
-        private string UsuarioActual()
+        private void CargarListas()
         {
-            return HttpContext.Session.GetString("NombreUsuario")
-                   ?? User.Identity?.Name
-                   ?? "Desconocido";
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
+
+            var lista = _service.ObtenerUbicaciones();
+
+            TotalPaginas = (int)Math.Ceiling(lista.Count / (double)cantidad);
+
+            Ubicaciones = lista
+                .Skip((PaginaActual - 1) * cantidad)
+                .Take(cantidad)
+                .ToList();
+        }
+
+        private IActionResult? ValidarSession()
+        {
+            var check = CheckSession();
+            if (check != null) return check;
+
+            var usuario = _authService.ObtenerPorNombre(UsuarioActual);
+
+            if (usuario == null)
+                return Redirect("/SEG/Login?msg=login");
+
+            return null;
+        }
+
+        private IActionResult? CheckSession()
+        {
+            if (string.IsNullOrWhiteSpace(UsuarioActual))
+                return Redirect("/SEG/Login?msg=login");
+
+            return null;
         }
     }
 }
