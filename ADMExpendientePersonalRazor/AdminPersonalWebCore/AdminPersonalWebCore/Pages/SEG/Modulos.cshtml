@@ -1,34 +1,32 @@
 ﻿@page
 @model AdminPersonalWebCore.Pages.SEG.ModulosModel
+
 @{
     ViewData["Title"] = "Administración de Módulos";
+
+    var tieneMensaje = !string.IsNullOrWhiteSpace(Model.MensajeExito) ||
+                       !string.IsNullOrWhiteSpace(Model.MensajeError);
+
+    var tituloModalMensaje = !string.IsNullOrWhiteSpace(Model.MensajeExito)
+        ? "Operación exitosa"
+        : "Mensaje del sistema";
+
+    var claseHeaderModal = !string.IsNullOrWhiteSpace(Model.MensajeExito)
+        ? "bg-success text-white"
+        : "bg-danger text-white";
+
+    var mensajeModal = !string.IsNullOrWhiteSpace(Model.MensajeExito)
+        ? Model.MensajeExito
+        : Model.MensajeError;
 }
 
 <div class="card-custom bg-white">
 
     <div class="card-header-custom">
-        <h5 class="fw-bold mb-0">
-            Administración de Módulos
-        </h5>
+        <h5 class="fw-bold mb-0">Administración de Módulos</h5>
     </div>
 
     <div class="p-4">
-
-        @if (!string.IsNullOrWhiteSpace(Model.MensajeExito))
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-                @Model.MensajeExito
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-
-        @if (!string.IsNullOrWhiteSpace(Model.MensajeError))
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-                @Model.MensajeError
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
 
         <button type="button"
                 class="btn btn-primary mb-3 fw-semibold"
@@ -135,6 +133,7 @@
 
                 <div class="modal-header"
                      style="background:#1aad94; color:white;">
+
                     <h5 class="modal-title" id="modalModuloLabel">
                         @(Model.Modulo.id_modulo == 0 ? "Nuevo módulo" : "Editar módulo")
                     </h5>
@@ -248,29 +247,85 @@
     </div>
 </div>
 
+@if (tieneMensaje)
+{
+    <div class="modal fade"
+         id="modalMensajeSistema"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header @claseHeaderModal">
+
+                    <h5 class="modal-title fw-bold">
+                        @tituloModalMensaje
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    @mensajeModal
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Aceptar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
 @section Scripts {
     <script>
-        const modalEliminar = document.getElementById('modalEliminar');
+        document.addEventListener('DOMContentLoaded', function () {
 
-        if (modalEliminar) {
-            modalEliminar.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
+            const modalEliminar = document.getElementById('modalEliminar');
 
-                const id = button.getAttribute('data-id');
-                const nombre = button.getAttribute('data-nombre');
+            if (modalEliminar) {
+                modalEliminar.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
 
-                document.getElementById('idModuloEliminar').value = id;
-                document.getElementById('nombreModuloEliminar').textContent = nombre;
-            });
-        }
+                    const id = button.getAttribute('data-id');
+                    const nombre = button.getAttribute('data-nombre');
 
-        window.addEventListener('DOMContentLoaded', function () {
+                    document.getElementById('idModuloEliminar').value = id;
+                    document.getElementById('nombreModuloEliminar').textContent = nombre;
+                });
+            }
+
             const idModulo = '@Model.Modulo.id_modulo';
             const hayError = '@Model.MensajeError';
 
             if (idModulo !== '0' || hayError) {
-                const modal = new bootstrap.Modal(document.getElementById('modalModulo'));
-                modal.show();
+                const modalModulo = document.getElementById('modalModulo');
+
+                if (modalModulo) {
+                    const modal = new bootstrap.Modal(modalModulo);
+                    modal.show();
+                }
+            }
+
+            const modalMensaje = document.getElementById('modalMensajeSistema');
+
+            if (modalMensaje) {
+                new bootstrap.Modal(modalMensaje).show();
             }
         });
     </script>

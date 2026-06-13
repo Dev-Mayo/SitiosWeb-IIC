@@ -3,40 +3,37 @@
 
 @{
     ViewData["Title"] = "Administración de Áreas";
+
+    var tieneMensaje = !string.IsNullOrEmpty(Model.MensajeExito) ||
+                       !string.IsNullOrEmpty(Model.MensajeError);
+
+    var tituloModalMensaje = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? "Operación exitosa"
+        : "Mensaje del sistema";
+
+    var claseHeaderModal = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? "bg-success text-white"
+        : "bg-danger text-white";
+
+    var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? Model.MensajeExito
+        : Model.MensajeError;
 }
 
 <div class="card-custom bg-white">
 
     <div class="card-header-custom">
-        <h5 class="fw-bold mb-0">
-            Administración de Áreas
-        </h5>
+        <h5 class="fw-bold mb-0">Administración de Áreas</h5>
     </div>
 
     <div class="p-4">
-
-        @if (!string.IsNullOrEmpty(Model.MensajeExito))
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-                @Model.MensajeExito
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-
-        @if (!string.IsNullOrEmpty(Model.MensajeError))
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-                @Model.MensajeError
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
 
         <button type="button"
                 class="btn btn-primary mb-3 fw-semibold"
                 data-bs-toggle="modal"
                 data-bs-target="#modalNuevo">
             Nuevo
-        </button> @* botón para nueva área *@
+        </button>
 
         <div class="table-responsive">
 
@@ -67,7 +64,7 @@
                                         data-nombre="@area.Nombre"
                                         data-jefatura="@area.Jefatura">
                                     Editar
-                                </button> @* boton para editat un area *@
+                                </button>
 
                                 <button type="button"
                                         class="btn btn-sm btn-danger"
@@ -76,7 +73,7 @@
                                         data-codigo="@area.CodigoArea"
                                         data-nombre="@area.Nombre">
                                     Eliminar
-                                </button> @* boton para eliminar un área *@
+                                </button>
                             </td>
                         </tr>
                     }
@@ -128,9 +125,8 @@
     </div>
 
 </div>
-@* <!-- Modal Nuevo --> *@
 
-
+<!-- Modal Nuevo -->
 <div class="modal fade"
      id="modalNuevo"
      tabindex="-1"
@@ -143,9 +139,7 @@
             <div class="modal-header"
                  style="background:#1aad94; color:white;">
 
-                <h5 class="modal-title">
-                    Nueva Área
-                </h5>
+                <h5 class="modal-title">Nueva Área</h5>
 
                 <button type="button"
                         class="btn-close btn-close-white"
@@ -163,46 +157,33 @@
                 <div class="modal-body">
 
                     <div class="mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Código del área
-                        </label>
+                        <label class="form-label fw-semibold">Código del área</label>
 
                         <input type="number"
                                name="codigoArea"
                                class="form-control"
                                min="1"
                                required />
-
                     </div>
 
                     <div class="mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Nombre del área
-                        </label>
+                        <label class="form-label fw-semibold">Nombre del área</label>
 
                         <input type="text"
                                name="nombre"
                                class="form-control"
                                maxlength="100"
                                required />
-
                     </div>
 
                     <div class="mb-3">
-
-                        <label class="form-label fw-semibold">
-                            Jefatura
-                        </label>
+                        <label class="form-label fw-semibold">Jefatura</label>
 
                         <select name="jefatura"
                                 class="form-select"
                                 required>
 
-                            <option value="">
-                                Seleccione...
-                            </option>
+                            <option value="">Seleccione...</option>
 
                             @foreach (var empleado in Model.Empleados)
                             {
@@ -212,7 +193,6 @@
                             }
 
                         </select>
-
                     </div>
 
                 </div>
@@ -238,127 +218,126 @@
 
     </div>
 
-</div> 
+</div>
 
-    @* <!-- Modal Editar --> *@
+<!-- Modal Editar -->
+<div class="modal fade"
+     id="modalEditar"
+     tabindex="-1"
+     aria-hidden="true">
 
-    <div class="modal fade"
-         id="modalEditar"
-         tabindex="-1"
-         aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
 
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
 
-            <div class="modal-content">
+            <div class="modal-header"
+                 style="background:#ffc107; color:#000;">
 
-                <div class="modal-header"
-                     style="background:#ffc107; color:#000;">
+                <h5 class="modal-title">Editar Área</h5>
 
-                    <h5 class="modal-title">
-                        Editar Área
-                    </h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form method="post"
+                  asp-page-handler="Editar"
+                  asp-route-u="@Request.Query["u"]">
+
+                @Html.AntiForgeryToken()
+
+                <div class="modal-body">
+
+                    <input type="hidden"
+                           id="editarCodigoArea"
+                           name="codigoArea" />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Código del área</label>
+
+                        <input type="number"
+                               id="editarCodigoAreaVisible"
+                               class="form-control"
+                               disabled />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre del área</label>
+
+                        <input type="text"
+                               id="editarNombre"
+                               name="nombre"
+                               class="form-control"
+                               maxlength="100"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Jefatura</label>
+
+                        <select id="editarJefatura"
+                                name="jefatura"
+                                class="form-select"
+                                required>
+
+                            <option value="">Seleccione...</option>
+
+                            @foreach (var empleado in Model.Empleados)
+                            {
+                                <option value="@empleado.EmpleadoId">
+                                    @empleado.NombreCompleto
+                                </option>
+                            }
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Guardar cambios
+                    </button>
 
                     <button type="button"
-                            class="btn-close"
+                            class="btn btn-secondary"
                             data-bs-dismiss="modal">
+                        Cerrar
                     </button>
 
                 </div>
 
-                <form method="post"
-                      asp-page-handler="Editar"
-                      asp-route-u="@Request.Query["u"]">
-
-                    @Html.AntiForgeryToken()
-
-                    <div class="modal-body">
-
-                        <input type="hidden"
-                               id="editarCodigoArea"
-                               name="codigoArea" />
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                Código del área
-                            </label>
-
-                            <input type="number"
-                                   id="editarCodigoAreaVisible"
-                                   class="form-control"
-                                   disabled />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                Nombre del área
-                            </label>
-
-                            <input type="text"
-                                   id="editarNombre"
-                                   name="nombre"
-                                   class="form-control"
-                                   maxlength="100"
-                                   required />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                Jefatura
-                            </label>
-
-                            <select id="editarJefatura"
-                                    name="jefatura"
-                                    class="form-select"
-                                    required>
-
-                                <option value="">
-                                    Seleccione...
-                                </option>
-
-                                @foreach (var empleado in Model.Empleados)
-                                {
-                                    <option value="@empleado.EmpleadoId">
-                                        @empleado.NombreCompleto
-                                    </option>
-                                }
-
-                            </select>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-
-                        <button type="submit"
-                                class="btn btn-primary">
-                            Guardar cambios
-                        </button>
-
-                        <button type="button"
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal">
-                            Cerrar
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
+            </form>
 
         </div>
 
     </div>
 
-<!-- Modal Eliminar -->
+</div>
 
-<div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true">
+<!-- Modal Eliminar -->
+<div class="modal fade"
+     id="modalEliminar"
+     tabindex="-1"
+     aria-hidden="true">
+
     <div class="modal-dialog modal-dialog-centered">
+
         <div class="modal-content">
 
             <div class="modal-header bg-danger text-white">
+
                 <h5 class="modal-title">Confirmar eliminación</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal">
+                </button>
+
             </div>
 
             <form method="post"
@@ -368,25 +347,86 @@
                 @Html.AntiForgeryToken()
 
                 <div class="modal-body">
-                    <input type="hidden" id="eliminarCodigoArea" name="codigoArea" />
+
+                    <input type="hidden"
+                           id="eliminarCodigoArea"
+                           name="codigoArea" />
 
                     <p>¿Realmente desea eliminar el elemento seleccionado?</p>
+
                     <strong id="eliminarNombre"></strong>
+
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger">Sí</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Sí
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        No
+                    </button>
+
                 </div>
 
             </form>
 
         </div>
+
     </div>
+
 </div>
 
+@if (tieneMensaje)
+{
+    <div class="modal fade"
+         id="modalMensajeSistema"
+         tabindex="-1"
+         aria-hidden="true">
 
-    @section Scripts{
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header @claseHeaderModal">
+
+                    <h5 class="modal-title fw-bold">
+                        @tituloModalMensaje
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    @mensajeModal
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Aceptar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+@section Scripts {
 
     <script>
         const modalEditar = document.getElementById('modalEditar');
@@ -422,4 +462,14 @@
             });
         }
     </script>
-    } @* fin scripts *@
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalMensaje = document.getElementById("modalMensajeSistema");
+
+            if (modalMensaje) {
+                new bootstrap.Modal(modalMensaje).show();
+            }
+        });
+    </script>
+}
