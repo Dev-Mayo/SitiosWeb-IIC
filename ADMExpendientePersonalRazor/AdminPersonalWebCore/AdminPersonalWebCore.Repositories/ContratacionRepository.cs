@@ -1,5 +1,4 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using Dapper;
 using System.Collections.Generic;
 using System.Linq;

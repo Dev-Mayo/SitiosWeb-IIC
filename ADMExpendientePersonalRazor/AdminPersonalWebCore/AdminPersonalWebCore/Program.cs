@@ -1,9 +1,5 @@
 using AdminPersonalWebCore.Repository;
-using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
-using AdminPersonalWebCore.Repository;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
-using AdminPersonalWebCore.Services.ModuloOferenteServices;
 using Dapper;
 using MySql.Data.MySqlClient;
 
@@ -47,11 +43,6 @@ builder.Services.AddSingleton<InstEducativaRepository>(_ => new InstEducativaRep
 builder.Services.AddSingleton<RequisitoPuestoRepository>(); //EMP3 ya cambiado con el interface IDb
 builder.Services.AddSingleton<AreaRepository>(); // EMP4 ya cambiado con el interface IDb
 builder.Services.AddSingleton<AccionPersonalRepository>(); // EMP5 ya cambiado con el interface IDb
-builder.Services.AddScoped<OferenteRepository>();
-builder.Services.AddScoped<AdminRolRepository>();
-builder.Services.AddScoped<PrepAcademicaRepository>();
-builder.Services.AddScoped<EntrevistaRepository>();
-builder.Services.AddScoped<ExpLaboralRepository>();
 
 builder.Services.AddSingleton<ModuloRepository>();// SEG5 ya cambiado con el interface IDb
 builder.Services.AddSingleton<ContratacionRepository>(); // EMP1 ya cambiado con el interface IDb
@@ -60,6 +51,12 @@ builder.Services.AddSingleton<ConcursoRepository>(_ => new ConcursoRepository(of
 builder.Services.AddSingleton<PuestoRepository>(_ => new PuestoRepository(empConn));
 builder.Services.AddSingleton<ParametroRepository>(_ => new ParametroRepository(genConn));
 builder.Services.AddSingleton<UbicacionRepository>(_ => new UbicacionRepository(genConn));
+
+builder.Services.AddSingleton<OferenteRepository>();
+builder.Services.AddSingleton<AdminRolRepository>();
+builder.Services.AddSingleton<PrepAcademicaRepository>();
+builder.Services.AddSingleton<EntrevistaRepository>();
+builder.Services.AddSingleton<ExpLaboralRepository>();
 
 
 
@@ -75,11 +72,11 @@ builder.Services.AddSingleton<RequisitoPuestoService>();//emp3
 builder.Services.AddSingleton<AreaService>(); // EMP4
 builder.Services.AddSingleton<AccionPersonalService>(); // EMP5
 
-builder.Services.AddScoped<IOferenteService, OferenteService>();
-builder.Services.AddScoped<IAdminRolService, AdminRolService>();
-builder.Services.AddScoped<IPrepAcademicaService, PrepAcademicaService>();
-builder.Services.AddScoped<IEntrevistaService, EntrevistaService>();
-builder.Services.AddScoped<IExpLaboralService, ExpLaboralService>();
+builder.Services.AddSingleton<OferenteService>();
+builder.Services.AddSingleton<AdminRolService>(); //SEG 4
+builder.Services.AddSingleton<PrepAcademicaService>();
+builder.Services.AddSingleton<EntrevistaService>();
+builder.Services.AddSingleton<ExpLaboralService>();
 
 
 builder.Services.AddSingleton<ModuloService>(); // SEG5

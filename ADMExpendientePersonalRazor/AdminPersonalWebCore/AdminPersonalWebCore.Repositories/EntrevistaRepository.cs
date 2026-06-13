@@ -1,6 +1,4 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
-using AdminPersonalWebCore.Repository;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 
-namespace AdminPersonalWebCore.Repository.ModuloOferenteRepository
+namespace AdminPersonalWebCore.Repository
 {
     public class EntrevistaRepository
     {

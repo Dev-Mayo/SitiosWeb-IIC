@@ -1,7 +1,5 @@
 using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
@@ -10,8 +8,8 @@ namespace AdminPersonalWebCore.Pages.OFE
 {
     public class AgendarEntrevistaModel : SecurePageModel
     {
-        private readonly IEntrevistaService _entrevistaService;
-        private readonly IOferenteService _oferenteService;
+        private readonly EntrevistaService _entrevistaService;
+        private readonly OferenteService _oferenteService;
         private readonly AuthService _authService;
         private readonly ParametroService _parametroService;
 
@@ -34,7 +32,7 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string EmpleadoIdActual { get; private set; } = "";
         public string FechaActual { get; private set; } = "";
 
-        public AgendarEntrevistaModel( IEntrevistaService entrevistaService, IOferenteService oferenteService, AuthService authService, ParametroService parametroService)
+        public AgendarEntrevistaModel( EntrevistaService entrevistaService, OferenteService oferenteService, AuthService authService, ParametroService parametroService)
         {
             _entrevistaService = entrevistaService;
             _oferenteService = oferenteService;

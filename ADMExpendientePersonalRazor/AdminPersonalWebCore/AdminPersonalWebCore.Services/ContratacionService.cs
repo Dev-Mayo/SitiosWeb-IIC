@@ -1,5 +1,4 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Repository;
 
 namespace AdminPersonalWebCore.Services

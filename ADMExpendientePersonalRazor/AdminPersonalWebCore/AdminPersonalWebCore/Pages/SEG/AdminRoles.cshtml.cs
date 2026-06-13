@@ -1,6 +1,5 @@
 using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -8,14 +7,14 @@ namespace AdminPersonalWebCore.Pages.SEG
 {
     public class AdminRolesModel : SecurePageModel
     {
-        private readonly IAdminRolService _rolService;
+        private readonly AdminRolService _rolService;
         private readonly BitacoraService _bitacoraService;
         private readonly AuthService _authService;
         private readonly ParametroService _parametroService;
 
         
 
-        public AdminRolesModel(IAdminRolService rolService, BitacoraService bitacoraService, AuthService authService, ParametroService parametroService)
+        public AdminRolesModel(AdminRolService rolService, BitacoraService bitacoraService, AuthService authService, ParametroService parametroService)
         {
             _rolService = rolService;
             _bitacoraService = bitacoraService;

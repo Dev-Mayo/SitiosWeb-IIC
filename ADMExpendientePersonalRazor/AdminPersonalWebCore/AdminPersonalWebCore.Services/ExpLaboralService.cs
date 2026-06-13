@@ -1,7 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
-using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
+using AdminPersonalWebCore.Repository;
 using Mysqlx.Expr;
 using System;
 using System.Collections.Generic;
@@ -9,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Services.ModuloOferenteServices
+namespace AdminPersonalWebCore.Services
 {
-    public class ExpLaboralService : IExpLaboralService
+    public class ExpLaboralService
     {
         private readonly ExpLaboralRepository _expLaboralrepository;
         private readonly BitacoraService _bitacoraService;

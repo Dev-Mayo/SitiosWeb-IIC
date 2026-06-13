@@ -1,4 +1,4 @@
-﻿using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
+﻿using AdminPersonalWebCore.Entities;
 using Dapper;
 using MySql.Data.MySqlClient;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Repository.ModuloOferenteRepository
+namespace AdminPersonalWebCore.Repository
 {
     public class OferenteRepository
     {

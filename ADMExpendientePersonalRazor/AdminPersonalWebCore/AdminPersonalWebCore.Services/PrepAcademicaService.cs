@@ -1,7 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
-using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
+using AdminPersonalWebCore.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Services.ModuloOferenteServices
+namespace AdminPersonalWebCore.Services
 {
-    public class PrepAcademicaService : IPrepAcademicaService
+    public class PrepAcademicaService
     {
         private readonly PrepAcademicaRepository _prepAcademicaRepository;
         private readonly BitacoraService _bitacoraService;
