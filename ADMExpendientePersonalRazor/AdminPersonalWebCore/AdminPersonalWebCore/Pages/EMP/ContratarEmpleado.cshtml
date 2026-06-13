@@ -11,6 +11,7 @@
 }
 
 <div class="card-custom bg-white">
+
     <div class="card-header-custom">
         <h5 class="fw-bold mb-0">Contratar Empleado</h5>
     </div>
@@ -76,7 +77,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
 
-                        <div class="modal-header">
+                        <div class="modal-header bg-warning text-dark">
                             <h5 class="modal-title fw-bold">Confirmar contratación</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
@@ -107,28 +108,22 @@
 
 @if (tieneMensaje)
 {
-    <div class="modal fade" id="modalConfirmarContratacion" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalMensajeSistema" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title fw-bold">Confirmar contratación</h5>
+                <div class="modal-header @claseHeaderModal">
+                    <h5 class="modal-title fw-bold">@tituloModalMensaje</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-                    ¿Realmente desea contratar al oferente seleccionado?
-                    <br />
-                    Esta acción creará el empleado y generará una acción de personal automáticamente.
+                    @mensajeModal
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        No
-                    </button>
-
-                    <button type="submit" class="btn btn-warning fw-bold">
-                        Sí, contratar
+                        Aceptar
                     </button>
                 </div>
 
