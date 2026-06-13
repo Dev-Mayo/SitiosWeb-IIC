@@ -3,6 +3,21 @@
 
 @{
     ViewData["Title"] = "Administración de Requisitos de Puestos";
+
+    var tieneMensaje = !string.IsNullOrEmpty(Model.MensajeExito) ||
+                       !string.IsNullOrEmpty(Model.MensajeError);
+
+    var tituloModalMensaje = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? "Operación exitosa"
+        : "Mensaje del sistema";
+
+    var claseHeaderModal = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? "bg-success text-white"
+        : "bg-danger text-white";
+
+    var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? Model.MensajeExito
+        : Model.MensajeError;
 }
 
 <div class="card-custom bg-white">
@@ -14,28 +29,6 @@
     </div>
 
     <div class="p-4">
-
-        @if (!string.IsNullOrEmpty(Model.MensajeExito))
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-                @Model.MensajeExito
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert">
-                </button>
-            </div>
-        }
-
-        @if (!string.IsNullOrEmpty(Model.MensajeError))
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-                @Model.MensajeError
-                <button type="button"
-                        class="btn-close"
-                        data-bs-dismiss="alert">
-                </button>
-            </div>
-        }
 
         <button type="button"
                 class="btn btn-primary mb-3 fw-semibold"
@@ -75,7 +68,7 @@
                                         data-id="@requisito.requisito_id"
                                         data-nombre="@requisito.nombre">
                                     Editar
-                                </button> <!-- Editar-->
+                                </button>
 
                                 <button type="button"
                                         class="btn btn-sm btn-danger"
@@ -84,7 +77,7 @@
                                         data-id="@requisito.requisito_id"
                                         data-nombre="@requisito.nombre">
                                     Eliminar
-                                </button> <!-- Eliminar-->
+                                </button>
 
                             </td>
 
@@ -93,9 +86,9 @@
 
                 </tbody>
 
-            </table> 
-            
-            @if (Model.TotalPaginas > 1) 
+            </table>
+
+            @if (Model.TotalPaginas > 1)
             {
                 <nav aria-label="Paginación de requisitos">
                     <ul class="pagination justify-content-center mt-3">
@@ -132,7 +125,7 @@
 
                     </ul>
                 </nav>
-            }@* Mostrar la paginación solo si hay más de una página  *@
+            }
 
         </div>
 
@@ -141,7 +134,6 @@
 </div>
 
 <!-- Modal Nuevo -->
-
 <div class="modal fade"
      id="modalNuevo"
      tabindex="-1"
@@ -213,7 +205,6 @@
 </div>
 
 <!-- Modal Editar -->
-
 <div class="modal fade"
      id="modalEditar"
      tabindex="-1"
@@ -290,7 +281,6 @@
 </div>
 
 <!-- Modal Eliminar -->
-
 <div class="modal fade"
      id="modalEliminar"
      tabindex="-1"
@@ -356,7 +346,50 @@
 
 </div>
 
-<!-- Scripts -->
+@if (tieneMensaje)
+{
+    <div class="modal fade"
+         id="modalMensajeSistema"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header @claseHeaderModal">
+
+                    <h5 class="modal-title fw-bold">
+                        @tituloModalMensaje
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    @mensajeModal
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Aceptar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
 
 @section Scripts {
     <script>
@@ -379,9 +412,7 @@
         const modalEliminar = document.getElementById('modalEliminar');
 
         if (modalEliminar) {
-
             modalEliminar.addEventListener('show.bs.modal', function (event) {
-
                 const boton = event.relatedTarget;
 
                 const id = boton.getAttribute('data-id');
@@ -392,6 +423,14 @@
             });
         }
     </script>
-}<!--Fin de scripts -->
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const modalMensaje = document.getElementById("modalMensajeSistema");
 
+            if (modalMensaje) {
+                new bootstrap.Modal(modalMensaje).show();
+            }
+        });
+    </script>
+}
