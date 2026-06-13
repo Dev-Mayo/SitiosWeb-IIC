@@ -11,9 +11,7 @@
         ? "Operación exitosa"
         : "Mensaje del sistema";
 
-    var claseHeaderModal = !string.IsNullOrEmpty(Model.MensajeExito)
-        ? "bg-success text-white"
-        : "bg-danger text-white";
+    var claseHeaderModal = "bg-warning text-dark";
 
     var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito)
         ? Model.MensajeExito
@@ -295,9 +293,15 @@
 
                 @Html.AntiForgeryToken()
 
-                <div class="modal-header bg-danger text-white">
+                <div class="modal-header bg-warning text-dark">
+
                     <h5 class="modal-title">Confirmar eliminación</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
                 </div>
 
                 <div class="modal-body">
@@ -337,7 +341,7 @@
                     </h5>
 
                     <button type="button"
-                            class="btn-close btn-close-white"
+                            class="btn-close"
                             data-bs-dismiss="modal">
                     </button>
 

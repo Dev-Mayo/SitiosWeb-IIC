@@ -11,9 +11,7 @@
         ? "Operación exitosa"
         : "Mensaje del sistema";
 
-    var claseHeaderModal = !string.IsNullOrEmpty(Model.MensajeExito)
-        ? "bg-success text-white"
-        : "bg-danger text-white";
+    var claseHeaderModal = "bg-warning text-dark";
 
     var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito)
         ? Model.MensajeExito
@@ -290,14 +288,14 @@
 
         <div class="modal-content">
 
-            <div class="modal-header bg-danger text-white">
+            <div class="modal-header bg-warning text-dark">
 
                 <h5 class="modal-title">
                     Confirmar eliminación
                 </h5>
 
                 <button type="button"
-                        class="btn-close btn-close-white"
+                        class="btn-close"
                         data-bs-dismiss="modal">
                 </button>
 
@@ -364,7 +362,7 @@
                     </h5>
 
                     <button type="button"
-                            class="btn-close btn-close-white"
+                            class="btn-close"
                             data-bs-dismiss="modal">
                     </button>
 

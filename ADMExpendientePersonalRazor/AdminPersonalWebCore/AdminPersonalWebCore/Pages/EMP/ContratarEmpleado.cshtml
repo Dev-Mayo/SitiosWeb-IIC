@@ -6,7 +6,7 @@
 
     var tieneMensaje = !string.IsNullOrEmpty(Model.MensajeExito) || !string.IsNullOrEmpty(Model.MensajeError);
     var tituloModalMensaje = !string.IsNullOrEmpty(Model.MensajeExito) ? "Operación exitosa" : "Mensaje del sistema";
-    var claseHeaderModal = !string.IsNullOrEmpty(Model.MensajeExito) ? "bg-success text-white" : "bg-danger text-white";
+    var claseHeaderModal = "bg-warning text-dark";
     var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito) ? Model.MensajeExito : Model.MensajeError;
 }
 
@@ -107,22 +107,28 @@
 
 @if (tieneMensaje)
 {
-    <div class="modal fade" id="modalMensajeSistema" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modalConfirmarContratacion" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
-                <div class="modal-header @claseHeaderModal">
-                    <h5 class="modal-title fw-bold">@tituloModalMensaje</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold">Confirmar contratación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
                 <div class="modal-body">
-                    @mensajeModal
+                    ¿Realmente desea contratar al oferente seleccionado?
+                    <br />
+                    Esta acción creará el empleado y generará una acción de personal automáticamente.
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        Aceptar
+                        No
+                    </button>
+
+                    <button type="submit" class="btn btn-warning fw-bold">
+                        Sí, contratar
                     </button>
                 </div>
 
