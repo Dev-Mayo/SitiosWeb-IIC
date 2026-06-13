@@ -26,9 +26,8 @@ namespace AdminPersonalWebCore.Pages.SEG
         public int TotalPaginas { get; set; } = 1;
         public const int PageSize = 10;
 
-      
-        public string MensajeExito { get; set; }
-        public string MensajeError { get; set; }
+
+        public string MensajeSistema { get; set; }
         public string ErrorNuevo { get; set; }
         public string ErrorEditar { get; set; }
 
@@ -55,11 +54,11 @@ namespace AdminPersonalWebCore.Pages.SEG
             try
             {
                 _svc.CambiarEstado(idUsuario, nuevoEstado, NombreCompleto);
-                MensajeExito = $"Usuario {(nuevoEstado == "Activo" ? "activado" : "inactivado")} correctamente.";
+                MensajeSistema = $"Usuario {(nuevoEstado == "Activo" ? "activado" : "inactivado")} correctamente.";
             }
             catch
             {
-                MensajeError = "Error al cambiar estado.";
+                MensajeSistema = "Error al cambiar estado.";
             }
 
             CargarDatos();
@@ -99,11 +98,11 @@ namespace AdminPersonalWebCore.Pages.SEG
                 string rolesStr = string.Join(",", roles);
                 _svc.Insertar(username, nombreCompleto, correo,
                     password, rolesStr, NombreCompleto);
-                MensajeExito = "Usuario creado correctamente.";
+                MensajeSistema = "Usuario creado correctamente.";
             }
             catch (Exception ex)
             {
-                MensajeError = "Error al crear usuario: " + ex.Message;
+                MensajeSistema = "Error al crear usuario: " + ex.Message;
             }
 
             CargarDatos();
@@ -152,11 +151,11 @@ namespace AdminPersonalWebCore.Pages.SEG
                 string rolesStr = string.Join(",", roles);
                 _svc.Actualizar(idUsuario, username, nombreCompleto,
                     correo, estado, rolesStr, password, NombreCompleto);
-                MensajeExito = "Usuario actualizado correctamente.";
+                MensajeSistema = "Usuario actualizado correctamente.";
             }
             catch (Exception ex)
             {
-                MensajeError = ex.Message.Contains("No se puede")
+                MensajeSistema = ex.Message.Contains("No se puede")
                     ? ex.Message
                     : "Error al actualizar usuario: " + ex.Message;
             }
@@ -173,11 +172,11 @@ namespace AdminPersonalWebCore.Pages.SEG
             try
             {
                 _svc.Eliminar(idUsuario, NombreCompleto);
-                MensajeExito = "Usuario eliminado correctamente.";
+                MensajeSistema = "Usuario eliminado correctamente.";
             }
             catch (Exception ex)
             {
-                MensajeError = ex.Message.Contains("No se puede eliminar")
+                MensajeSistema = ex.Message.Contains("No se puede eliminar")
                     ? ex.Message
                     : "Error al eliminar usuario: " + ex.Message;
             }
