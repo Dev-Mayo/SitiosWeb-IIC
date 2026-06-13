@@ -31,26 +31,30 @@ string genConn = builder.Configuration.GetConnectionString("GEN");
 string ofeConn = builder.Configuration.GetConnectionString("OFE");
 string empConn = builder.Configuration.GetConnectionString("EMP");//st
 
-builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>(); // Inyectar la fábrica de conexiones para que los repositorios puedan usarla
+//builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>(); // Inyectar la fábrica de conexiones para que los repositorios puedan usarla
 
+builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();//Inyeccion a la fabrica pero con el singleton para que se mantenga la misma instancia durante toda la aplicación,
+                                                                           //lo que es adecuado para una fábrica de conexiones que no tiene estado y
+                                                                           //puede ser compartida de manera segura entre múltiples hilos.
 // Repository (DAL)
 builder.Services.AddSingleton<UsuarioRepository>(_ => new UsuarioRepository(segConn));
 builder.Services.AddSingleton<MenuRepository>(_ => new MenuRepository(segConn));
 builder.Services.AddSingleton<BitacoraRepository>(_ => new BitacoraRepository(bitConn));
 builder.Services.AddSingleton<AdminUsuarioRepository>(_ => new AdminUsuarioRepository(segConn));
 builder.Services.AddSingleton<InstEducativaRepository>(_ => new InstEducativaRepository(genConn));
-builder.Services.AddSingleton<RequisitoPuestoRepository>(_ => new RequisitoPuestoRepository(empConn)); //emp3
-builder.Services.AddSingleton<AreaRepository>(_ => new AreaRepository(empConn)); // EMP4
-builder.Services.AddSingleton<AccionPersonalRepository>(_ => new AccionPersonalRepository(empConn)); // EMP5
 
+
+builder.Services.AddSingleton<RequisitoPuestoRepository>(); //EMP3 ya cambiado con el interface IDb
+builder.Services.AddSingleton<AreaRepository>(); // EMP4 ya cambiado con el interface IDb
+builder.Services.AddSingleton<AccionPersonalRepository>(); // EMP5 ya cambiado con el interface IDb
 builder.Services.AddScoped<OferenteRepository>();
 builder.Services.AddScoped<AdminRolRepository>();
 builder.Services.AddScoped<PrepAcademicaRepository>();
 builder.Services.AddScoped<EntrevistaRepository>();
 builder.Services.AddScoped<ExpLaboralRepository>();
 
-builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
-builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
+builder.Services.AddSingleton<ModuloRepository>();// SEG5 ya cambiado con el interface IDb
+builder.Services.AddSingleton<ContratacionRepository>(); // EMP1 ya cambiado con el interface IDb
 builder.Services.AddSingleton<CompaniaRepository>(_ => new CompaniaRepository(genConn));
 builder.Services.AddSingleton<ConcursoRepository>(_ => new ConcursoRepository(ofeConn));
 builder.Services.AddSingleton<PuestoRepository>(_ => new PuestoRepository(empConn));

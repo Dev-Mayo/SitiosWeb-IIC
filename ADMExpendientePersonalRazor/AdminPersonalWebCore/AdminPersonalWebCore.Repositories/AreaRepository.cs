@@ -1,6 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
 using Dapper;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class AreaRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public AreaRepository(string connectionString)
+        public AreaRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Area> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -34,7 +33,7 @@ namespace AdminPersonalWebCore.Repository
 
         public Area ObtenerPorId(int codigoArea)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -49,7 +48,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(Area area)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 INSERT INTO admin_areas
@@ -62,7 +61,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(Area area)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 UPDATE admin_areas
@@ -76,7 +75,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(int codigoArea)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 DELETE FROM admin_areas
@@ -87,7 +86,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<Empleado> ObtenerEmpleados()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -98,14 +97,15 @@ namespace AdminPersonalWebCore.Repository
 
             return db.Query<Empleado>(sql).ToList();
         }
+
         public bool ExisteCodigo(int codigoArea)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        SELECT COUNT(1)
-        FROM admin_areas
-        WHERE codigo_area = @codigoArea";
+                SELECT COUNT(1)
+                FROM admin_areas
+                WHERE codigo_area = @codigoArea;";
 
             return db.ExecuteScalar<int>(sql, new { codigoArea }) > 0;
         }

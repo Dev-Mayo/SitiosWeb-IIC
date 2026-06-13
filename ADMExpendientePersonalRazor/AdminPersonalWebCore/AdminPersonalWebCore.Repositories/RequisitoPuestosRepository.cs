@@ -1,6 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
 using Dapper;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class RequisitoPuestoRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public RequisitoPuestoRepository(string connectionString)
+        public RequisitoPuestoRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<RequisitoPuesto> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT 
@@ -31,7 +30,7 @@ namespace AdminPersonalWebCore.Repository
 
         public RequisitoPuesto ObtenerPorId(int id)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT 
@@ -45,7 +44,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(RequisitoPuesto requisito)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 INSERT INTO requisitos_puestos (nombre)
@@ -56,7 +55,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(RequisitoPuesto requisito)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 UPDATE requisitos_puestos
@@ -68,7 +67,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(int id)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 DELETE FROM requisitos_puestos
@@ -79,13 +78,13 @@ namespace AdminPersonalWebCore.Repository
 
         public bool ExisteNombre(string nombre, int? requisitoIdExcluir = null)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        SELECT COUNT(1)
-        FROM requisitos_puestos
-        WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(@nombre))
-          AND (@requisitoIdExcluir IS NULL OR requisito_id <> @requisitoIdExcluir);";
+                SELECT COUNT(1)
+                FROM requisitos_puestos
+                WHERE LOWER(TRIM(nombre)) = LOWER(TRIM(@nombre))
+                  AND (@requisitoIdExcluir IS NULL OR requisito_id <> @requisitoIdExcluir);";
 
             return db.ExecuteScalar<int>(sql, new
             {

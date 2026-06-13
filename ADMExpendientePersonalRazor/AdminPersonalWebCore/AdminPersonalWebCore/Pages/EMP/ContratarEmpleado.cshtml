@@ -3,6 +3,11 @@
 
 @{
     ViewData["Title"] = "Contratar Empleado";
+
+    var tieneMensaje = !string.IsNullOrEmpty(Model.MensajeExito) || !string.IsNullOrEmpty(Model.MensajeError);
+    var tituloModalMensaje = !string.IsNullOrEmpty(Model.MensajeExito) ? "Operación exitosa" : "Mensaje del sistema";
+    var claseHeaderModal = !string.IsNullOrEmpty(Model.MensajeExito) ? "bg-success text-white" : "bg-danger text-white";
+    var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito) ? Model.MensajeExito : Model.MensajeError;
 }
 
 <div class="card-custom bg-white">
@@ -11,22 +16,6 @@
     </div>
 
     <div class="p-4">
-
-        @if (!string.IsNullOrEmpty(Model.MensajeExito))
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-                @Model.MensajeExito
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-
-        @if (!string.IsNullOrEmpty(Model.MensajeError))
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-                @Model.MensajeError
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
 
         <form method="post" id="formContratacion">
 
@@ -115,3 +104,36 @@
         </form>
     </div>
 </div>
+
+@if (tieneMensaje)
+{
+    <div class="modal fade" id="modalMensajeSistema" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header @claseHeaderModal">
+                    <h5 class="modal-title fw-bold">@tituloModalMensaje</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    @mensajeModal
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Aceptar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var modalMensaje = new bootstrap.Modal(document.getElementById("modalMensajeSistema"));
+            modalMensaje.show();
+        });
+    </script>
+}

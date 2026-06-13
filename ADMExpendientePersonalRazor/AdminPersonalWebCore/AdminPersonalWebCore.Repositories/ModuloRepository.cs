@@ -1,6 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
 using Dapper;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class ModuloRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public ModuloRepository(string connectionString)
+        public ModuloRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Modulo> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 SELECT
@@ -31,7 +30,7 @@ namespace AdminPersonalWebCore.Repository
 
         public Modulo ObtenerPorId(int idModulo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 SELECT
@@ -45,7 +44,7 @@ namespace AdminPersonalWebCore.Repository
 
         public int Insertar(Modulo modulo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 INSERT INTO modulos
@@ -60,7 +59,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(Modulo modulo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 UPDATE modulos
@@ -72,7 +71,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(int idModulo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 DELETE FROM modulos
@@ -83,7 +82,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<Rol> ObtenerRoles()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 SELECT
@@ -97,7 +96,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<int> ObtenerRolesPorModulo(int idModulo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 SELECT id_rol
@@ -109,7 +108,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void ActualizarRolesModulo(int idModulo, List<int> rolesSeleccionados)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
             db.Open();
 
             using var transaction = db.BeginTransaction();
@@ -136,7 +135,7 @@ namespace AdminPersonalWebCore.Repository
 
         public bool TieneRolesAsignados(int idModulo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
                 SELECT COUNT(1)
@@ -148,13 +147,13 @@ namespace AdminPersonalWebCore.Repository
 
         public bool ExisteNombre(string nombreModulo, int? idModuloExcluir = null)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("SEG");
 
             string sql = @"
-        SELECT COUNT(1)
-        FROM SEG.modulos
-        WHERE LOWER(TRIM(nombre_modulo)) = LOWER(TRIM(@nombreModulo))
-          AND (@idModuloExcluir IS NULL OR id_modulo <> @idModuloExcluir);";
+                SELECT COUNT(1)
+                FROM modulos
+                WHERE LOWER(TRIM(nombre_modulo)) = LOWER(TRIM(@nombreModulo))
+                  AND (@idModuloExcluir IS NULL OR id_modulo <> @idModuloExcluir);";
 
             return db.ExecuteScalar<int>(sql, new
             {
