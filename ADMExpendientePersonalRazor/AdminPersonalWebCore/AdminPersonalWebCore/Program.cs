@@ -32,12 +32,12 @@ string empConn = builder.Configuration.GetConnectionString("EMP");//st
 builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();//Inyeccion a la fabrica pero con el singleton para que se mantenga la misma instancia durante toda la aplicación,
                                                                            //lo que es adecuado para una fábrica de conexiones que no tiene estado y
                                                                            //puede ser compartida de manera segura entre múltiples hilos.
-// Repository (DAL)
-builder.Services.AddSingleton<UsuarioRepository>(_ => new UsuarioRepository(segConn));
-builder.Services.AddSingleton<MenuRepository>(_ => new MenuRepository(segConn));
-builder.Services.AddSingleton<BitacoraRepository>(_ => new BitacoraRepository(bitConn));
-builder.Services.AddSingleton<AdminUsuarioRepository>(_ => new AdminUsuarioRepository(segConn));
-builder.Services.AddSingleton<InstEducativaRepository>(_ => new InstEducativaRepository(genConn));
+                                                                           // Repository (DAL)
+builder.Services.AddSingleton<UsuarioRepository>();
+builder.Services.AddSingleton<MenuRepository>();
+builder.Services.AddSingleton<BitacoraRepository>();
+builder.Services.AddSingleton<AdminUsuarioRepository>();
+builder.Services.AddSingleton<InstEducativaRepository>();
 
 
 builder.Services.AddSingleton<RequisitoPuestoRepository>(); //EMP3 ya cambiado con el interface IDb

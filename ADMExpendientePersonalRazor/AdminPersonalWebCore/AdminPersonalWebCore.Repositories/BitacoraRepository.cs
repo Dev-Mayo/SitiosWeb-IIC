@@ -1,6 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
 using Dapper;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,24 +8,28 @@ namespace AdminPersonalWebCore.Repository
 {
     public class BitacoraRepository
     {
-        private readonly string _conn;
-        public BitacoraRepository(string conn) => _conn = conn;
+        private readonly IDbConnectionFactory _connectionFactory;
+
+        public BitacoraRepository(IDbConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory;
+        }
 
         public void Registrar(Bitacora bitacora)
         {
-            using var db = new MySqlConnection(_conn);
-            db.Open();
+            using var db = _connectionFactory.CreateConnection("BIT");
             string sql = "INSERT INTO bitacoras(usuario,accion,descripcion) VALUES(@u,@a,@d)";
-            using var cmd = new MySqlCommand(sql, db);
-            cmd.Parameters.AddWithValue("@u", bitacora.Usuario);
-            cmd.Parameters.AddWithValue("@a", bitacora.Accion.ToString());
-            cmd.Parameters.AddWithValue("@d", bitacora.DescripcionJson);
-            cmd.ExecuteNonQuery();
+            db.Execute(sql, new
+            {
+                u = bitacora.Usuario,
+                a = bitacora.Accion.ToString(),
+                d = bitacora.DescripcionJson
+            });
         }
 
         public List<BitacoraDisplay> ObtenerBitacoras(string usuario, string descripcion, string orden)
         {
-            using var db = new MySqlConnection(_conn);
+            using var db = _connectionFactory.CreateConnection("BIT");
             return db.Query<BitacoraDisplay>("sp_listar_bitacoras",
                 new
                 {
