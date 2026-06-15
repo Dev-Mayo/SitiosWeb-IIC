@@ -58,7 +58,9 @@
                         <td>@item.OferenteIdentificacion</td>
                         <td>@item.EmpleadoId</td>
                         <td>@item.FechaEntrevista.ToString("yyyy-MM-dd")</td>
-                        <td>@item.Estado</td>
+                        <td>
+                        <span class="badge @(item.Estado == "Realizada" ? "bg-success" : item.Estado == "Pendiente" ? "bg-secondary" : "bg-danger")"> @item.Estado </span>
+                        </td>
                         <td>
                             <button type="button" class="btn btn-sm btn-warning me-1"
                                 onclick="abrirModalEditar(@item.EntrevistaId)">
@@ -68,12 +70,26 @@
                                 onclick="abrirModalEliminar(@item.EntrevistaId)">
                                 <i class="bi bi-trash"></i> Eliminar
                             </button>
-                            <form method="post" asp-page-handler="CambiarEstado" asp-route-u=@Request.Query["u"] style="display:inline">
-                                <input type="hidden" name="entrevistaId" value="@item.EntrevistaId" />
-                                <button type="submit" class="btn btn-sm btn-success">
-                                    <i class="bi bi-check"></i> Cambiar estado
-                                </button>
-                            </form>
+
+                            @* Toggle Realizado/Pendiente*@
+                            @if (item.Estado == "Realizada")
+                            {
+                                <form method="post" asp-page-handler="CambiarEstado" asp-route-u=@Request.Query["u"] style="display:inline">
+                                    <input type="hidden" name="entrevistaId" value="@item.EntrevistaId" />
+                                    <button type="submit" class="btn btn-sm btn-secondary me-1">
+                                        Pendiente
+                                    </button>
+                                </form>
+                            }
+                            else if (item.Estado == "Pendiente")
+                            {
+                                <form method="post" asp-page-handler="CambiarEstado" asp-route-u=@Request.Query["u"] style="display:inline">
+                                    <input type="hidden" name="entrevistaId" value="@item.EntrevistaId" />
+                                    <button type="submit" class="btn btn-sm btn-success me-1">
+                                        Realizada
+                                    </button>
+                                </form>
+                            }
                         </td>
                     </tr>
                 }
