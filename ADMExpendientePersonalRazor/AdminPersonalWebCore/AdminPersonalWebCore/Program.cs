@@ -46,11 +46,12 @@ builder.Services.AddSingleton<AccionPersonalRepository>(); // EMP5 ya cambiado c
 
 builder.Services.AddSingleton<ModuloRepository>();// SEG5 ya cambiado con el interface IDb
 builder.Services.AddSingleton<ContratacionRepository>(); // EMP1 ya cambiado con el interface IDb
-builder.Services.AddSingleton<CompaniaRepository>(_ => new CompaniaRepository(genConn));
-builder.Services.AddSingleton<ConcursoRepository>(_ => new ConcursoRepository(ofeConn));
-builder.Services.AddSingleton<PuestoRepository>(_ => new PuestoRepository(empConn));
-builder.Services.AddSingleton<ParametroRepository>(_ => new ParametroRepository(genConn));
-builder.Services.AddSingleton<UbicacionRepository>(_ => new UbicacionRepository(genConn));
+builder.Services.AddSingleton<CompaniaRepository>();
+builder.Services.AddSingleton<ConcursoRepository>();
+builder.Services.AddSingleton<PuestoRepository>();
+builder.Services.AddSingleton<ParametroRepository>();
+builder.Services.AddSingleton<UbicacionRepository>();
+
 
 builder.Services.AddSingleton<OferenteRepository>();
 builder.Services.AddSingleton<AdminRolRepository>();

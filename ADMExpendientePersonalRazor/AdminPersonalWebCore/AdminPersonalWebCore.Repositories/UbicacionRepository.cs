@@ -13,15 +13,15 @@ namespace AdminPersonalWebCore.Repository
 {
     public class UbicacionRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public UbicacionRepository(string connectionString)
+        public UbicacionRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
         public List<Ubicacion> ObtenerUbicaciones()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.Query<Ubicacion>(
                 "SP_GEN_UBICACION_LISTAR",
@@ -31,7 +31,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void GuardarUbicacion(UbicacionCarga item)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_UBICACION_GUARDAR",
@@ -49,7 +49,7 @@ namespace AdminPersonalWebCore.Repository
         }
         public List<Provincia> ObtenerProvincias()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.Query<Provincia>(
                 "SP_GEN_PROVINCIA_LISTAR",
@@ -59,7 +59,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<Canton> ObtenerCantones()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.Query<Canton>(
                 "SP_GEN_CANTON_LISTAR",
@@ -69,7 +69,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<Distrito> ObtenerDistritos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.Query<Distrito>(
                 "SP_GEN_DISTRITO_LISTAR",

@@ -9,16 +9,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class CompaniaRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public CompaniaRepository(string connectionString)
+        public CompaniaRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Compania> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.Query<Compania>(
                 "SP_GEN_COMPANIA_LISTAR",
@@ -28,7 +28,7 @@ namespace AdminPersonalWebCore.Repository
 
         public Compania ObtenerPorCodigo(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.QueryFirstOrDefault<Compania>(
                 "SP_GEN_COMPANIA_OBTENER",
@@ -42,7 +42,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(Compania compania)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_COMPANIA_INSERTAR",
@@ -57,7 +57,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(Compania compania)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_COMPANIA_ACTUALIZAR",
@@ -72,7 +72,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_COMPANIA_ELIMINAR",

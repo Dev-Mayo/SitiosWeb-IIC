@@ -7,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class ParametroRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public ParametroRepository(string connectionString)
+        public ParametroRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Parametro> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.Query<Parametro>(
                 "SP_GEN_PARAMETRO_LISTAR",
@@ -26,7 +26,7 @@ namespace AdminPersonalWebCore.Repository
 
         public Parametro ObtenerPorCodigo(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             return db.QueryFirstOrDefault<Parametro>(
                 "SP_GEN_PARAMETRO_OBTENER",
@@ -37,7 +37,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(Parametro parametro)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_PARAMETRO_INSERTAR",
@@ -52,7 +52,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(Parametro parametro)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_PARAMETRO_ACTUALIZAR",
@@ -67,7 +67,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("GEN");
 
             db.Execute(
                 "SP_GEN_PARAMETRO_ELIMINAR",
