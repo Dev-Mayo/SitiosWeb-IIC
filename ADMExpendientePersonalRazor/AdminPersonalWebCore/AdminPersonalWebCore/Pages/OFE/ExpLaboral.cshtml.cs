@@ -1,7 +1,5 @@
 using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
@@ -10,7 +8,7 @@ namespace AdminPersonalWebCore.Pages.OFE
 {
     public class ExpLaboralModel : SecurePageModel
     {
-        private readonly IExpLaboralService _expLaboralService;
+        private readonly ExpLaboralService _expLaboralService;
         private readonly AuthService _authService;
         private readonly ParametroService _parametroService;
 
@@ -33,7 +31,7 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string FechaInicioActual { get; private set; } = "";
         public string FechaFinActual { get; private set; } = "";
 
-        public ExpLaboralModel(IExpLaboralService expLaboralService, AuthService authService, ParametroService parametroService)
+        public ExpLaboralModel(ExpLaboralService expLaboralService, AuthService authService, ParametroService parametroService)
         {
             _expLaboralService = expLaboralService;
             _authService = authService;

@@ -3,29 +3,30 @@
 
 @{
     ViewData["Title"] = "Administración de Acciones de Personal";
+
+    var tieneMensaje = !string.IsNullOrEmpty(Model.MensajeExito) ||
+                       !string.IsNullOrEmpty(Model.MensajeError);
+
+    var tituloModalMensaje = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? "Operación exitosa"
+        : "Mensaje del sistema";
+
+    var claseHeaderModal = "bg-warning text-dark";
+
+    var mensajeModal = !string.IsNullOrEmpty(Model.MensajeExito)
+        ? Model.MensajeExito
+        : Model.MensajeError;
 }
 
-<div class="container-fluid mt-4">
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
+<div class="card-custom bg-white">
 
-            <h4 class="fw-bold mb-4">Administración de Acciones de Personal</h4>
+    <div class="card-header-custom text-center">
+        <h5 class="fw-bold mb-0">
+            Administración de Acciones de Personal
+        </h5>
+    </div>
 
-            @if (!string.IsNullOrEmpty(Model.MensajeExito))
-            {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    @Model.MensajeExito
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            }
-
-            @if (!string.IsNullOrEmpty(Model.MensajeError))
-            {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    @Model.MensajeError
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                </div>
-            }
+    <div class="p-4">
 
             <button type="button"
                     class="btn btn-primary mb-3"
@@ -82,6 +83,7 @@
                     }
                 </tbody>
             </table>
+
             @if (Model.TotalPaginas > 1)
             {
                 <nav>
@@ -123,17 +125,17 @@
 
         </div>
     </div>
-</div>
 
-@* modales
- *@
- <div class="modal fade" id="modalNuevaAccion" tabindex="-1">
+<!-- Modal Nueva Acción -->
+<div class="modal fade" id="modalNuevaAccion" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <form method="post"
                   asp-page-handler="Crear"
                   asp-route-u="@Request.Query["u"]">
+
+                @Html.AntiForgeryToken()
 
                 <div class="modal-header">
                     <h5 class="modal-title">Nueva Acción de Personal</h5>
@@ -194,7 +196,8 @@
         </div>
     </div>
 </div>
-@* eidtar *@
+
+<!-- Modal Editar Acción -->
 <div class="modal fade" id="modalEditarAccion" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -202,6 +205,8 @@
             <form method="post"
                   asp-page-handler="Editar"
                   asp-route-u="@Request.Query["u"]">
+
+                @Html.AntiForgeryToken()
 
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Acción de Personal</h5>
@@ -218,8 +223,7 @@
                                id="editarCodigoAccion"
                                class="form-control"
                                required
-                               min="1"
-                               />
+                               min="1" />
                     </div>
 
                     <div class="mb-3">
@@ -245,7 +249,7 @@
                         <select asp-for="AccionEditar.EmpleadoId"
                                 id="editarEmpleado"
                                 class="form-select"
-                        required>
+                                required>
                             <option value="">Seleccione...</option>
                             @foreach (var emp in Model.Empleados)
                             {
@@ -280,7 +284,8 @@
         </div>
     </div>
 </div>
-@* modal eliminar *@
+
+<!-- Modal Eliminar Acción -->
 <div class="modal fade" id="modalEliminarAccion" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -289,9 +294,17 @@
                   asp-page-handler="Eliminar"
                   asp-route-u="@Request.Query["u"]">
 
-                <div class="modal-header">
+                @Html.AntiForgeryToken()
+
+                <div class="modal-header bg-warning text-dark">
+
                     <h5 class="modal-title">Confirmar eliminación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
                 </div>
 
                 <div class="modal-body">
@@ -313,45 +326,87 @@
     </div>
 </div>
 
+@if (tieneMensaje)
+{
+    <div class="modal fade"
+         id="modalMensajeSistema"
+         tabindex="-1"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content">
+
+                <div class="modal-header @claseHeaderModal">
+
+                    <h5 class="modal-title fw-bold">
+                        @tituloModalMensaje
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal">
+                    </button>
+
+                </div>
+
+                <div class="modal-body">
+                    @mensajeModal
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Aceptar
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
 @section Scripts {
-  
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
             const modalEditarAccion = document.getElementById('modalEditarAccion');
 
-            modalEditarAccion.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
+            if (modalEditarAccion) {
+                modalEditarAccion.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
 
-                document.getElementById('editarAccionId').value = button.getAttribute('data-id');
-                document.getElementById('editarCodigoAccion').value = button.getAttribute('data-codigo');
-                document.getElementById('editarFecha').value = button.getAttribute('data-fecha');
-                document.getElementById('editarDescripcion').value = button.getAttribute('data-descripcion');
-                document.getElementById('editarEmpleado').value = button.getAttribute('data-empleado');
-                document.getElementById('editarJefatura').value = button.getAttribute('data-jefatura');
-            });
+                    document.getElementById('editarAccionId').value = button.getAttribute('data-id');
+                    document.getElementById('editarCodigoAccion').value = button.getAttribute('data-codigo');
+                    document.getElementById('editarFecha').value = button.getAttribute('data-fecha');
+                    document.getElementById('editarDescripcion').value = button.getAttribute('data-descripcion');
+                    document.getElementById('editarEmpleado').value = button.getAttribute('data-empleado');
+                    document.getElementById('editarJefatura').value = button.getAttribute('data-jefatura');
+                });
+            }
 
             const modalEliminarAccion = document.getElementById('modalEliminarAccion');
 
-            modalEliminarAccion.addEventListener('show.bs.modal', function (event) {
-                const button = event.relatedTarget;
+            if (modalEliminarAccion) {
+                modalEliminarAccion.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
 
-                document.getElementById('eliminarAccionId').value = button.getAttribute('data-id');
-                document.getElementById('eliminarDescripcion').innerText = button.getAttribute('data-descripcion');
-            });
+                    document.getElementById('eliminarAccionId').value = button.getAttribute('data-id');
+                    document.getElementById('eliminarDescripcion').innerText = button.getAttribute('data-descripcion');
+                });
+            }
 
+            const modalMensaje = document.getElementById("modalMensajeSistema");
+
+            if (modalMensaje) {
+                new bootstrap.Modal(modalMensaje).show();
+            }
         });
     </script>
-
-
-    <script>
-        const modalEliminarAccion = document.getElementById('modalEliminarAccion');
-
-        modalEliminarAccion.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-
-            document.getElementById('eliminarAccionId').value = button.getAttribute('data-id');
-            document.getElementById('eliminarDescripcion').innerText = button.getAttribute('data-descripcion');
-        });
-    </script>
-    }
+}

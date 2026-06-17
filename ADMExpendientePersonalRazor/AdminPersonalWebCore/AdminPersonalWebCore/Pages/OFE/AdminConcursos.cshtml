@@ -8,10 +8,6 @@
         </div>
 
         <div class="card-body">
-            @if (!string.IsNullOrEmpty(Model.Mensaje))
-            {
-                <div class="alert alert-info">@Model.Mensaje</div>
-            }
 
             <button type="button" class="btn btn-primary mb-3"
                     data-bs-toggle="modal"
@@ -21,7 +17,7 @@
             </button>
 
             <table class="table table-bordered table-striped">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
@@ -40,7 +36,10 @@
                             <td>@item.Nombre</td>
                             <td>@item.FechaInicio.ToString("yyyy-MM-dd")</td>
                             <td>@item.FechaFin.ToString("yyyy-MM-dd")</td>
-                            <td>@item.Estado</td>
+                            <td>
+                                <span class="badge @(item.Estado == "Vigente" ? "bg-success" :item.Estado == "Vencido" ? "bg-secondary" : "bg-danger")">
+                                    @item.Estado
+                                </span>
                             <td>
                                 <button type="button"
                                         class="btn btn-warning btn-sm"
@@ -182,6 +181,24 @@
     </div>
 </div>
 
+
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.Mensaje</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     <script>
         function nuevoConcurso() {
@@ -208,5 +225,15 @@
             document.getElementById("CodigoEliminar").value = codigo;
             document.getElementById("NombreEliminar").innerText = codigo + " - " + nombre;
         }
+        
     </script>
+    @if (!string.IsNullOrEmpty(Model.Mensaje))
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modalMensaje = new bootstrap.Modal(document.getElementById("modalMensaje"));
+                modalMensaje.show();
+            });
+        </script>
+    }
 }

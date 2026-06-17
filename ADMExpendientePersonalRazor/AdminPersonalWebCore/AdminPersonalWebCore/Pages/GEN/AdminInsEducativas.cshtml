@@ -28,20 +28,23 @@
 
     <div class="p-4">
 
-        @if (!string.IsNullOrEmpty(Model.MensajeExito))
-        {
-            <div class="alert alert-success alert-dismissible fade show">
-                @Model.MensajeExito
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        @* ── MODAL MENSAJE ── *@
+        <div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title">Mensaje del sistema</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <span id="txtMensajeSistema">@Model.MensajeSistema</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
             </div>
-        }
-        @if (!string.IsNullOrEmpty(Model.MensajeError))
-        {
-            <div class="alert alert-danger alert-dismissible fade show">
-                @Model.MensajeError
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
+        </div>
 
         <button type="button" class="btn btn-primary mb-3 fw-semibold"
                 data-bs-toggle="modal" data-bs-target="#modalForm"
@@ -229,6 +232,14 @@
                             document.getElementById('modalFormTitulo').innerText = 'Editar Institución';
                             </text>
                     }
+                });
+                </text>
+        }
+        @if (!string.IsNullOrEmpty(Model.MensajeSistema))
+        {
+                <text>
+                document.addEventListener('DOMContentLoaded', function () {
+                    new bootstrap.Modal(document.getElementById('modalMensaje')).show();
                 });
                 </text>
         }

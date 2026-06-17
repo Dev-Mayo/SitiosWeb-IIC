@@ -25,8 +25,7 @@ namespace AdminPersonalWebCore.Pages.GEN
         public const int PageSize = 10;
 
 
-        public string MensajeExito { get; set; }
-        public string MensajeError { get; set; }
+        public string MensajeSistema { get; set; }
         public string ErrorForm { get; set; }
 
 
@@ -73,7 +72,7 @@ namespace AdminPersonalWebCore.Pages.GEN
                         return Page();
                     }
                     _svc.Insertar(codigo, nombre, NombreCompleto);
-                    MensajeExito = "Institución creada correctamente.";
+                    MensajeSistema = "Institución creada correctamente.";
                 }
                 else
                 {
@@ -84,12 +83,12 @@ namespace AdminPersonalWebCore.Pages.GEN
                         return Page();
                     }
                     _svc.Actualizar(codigo, nombre, NombreCompleto);
-                    MensajeExito = "Institución actualizada correctamente.";
+                    MensajeSistema = "Institución actualizada correctamente.";
                 }
             }
             catch (Exception ex)
             {
-                MensajeError = "Error al guardar: " + ex.Message;
+                MensajeSistema = "Error al guardar: " + ex.Message;
             }
 
             CargarDatos();
@@ -104,11 +103,11 @@ namespace AdminPersonalWebCore.Pages.GEN
             try
             {
                 _svc.Eliminar(codigo, NombreCompleto);
-                MensajeExito = "Institución eliminada correctamente.";
+                MensajeSistema = "Institución eliminada correctamente.";
             }
             catch (Exception ex)
             {
-                MensajeError = ex.Message.Contains("No se puede eliminar")
+                MensajeSistema = ex.Message.Contains("No se puede eliminar")
                     ? ex.Message
                     : "Error al eliminar: " + ex.Message;
             }

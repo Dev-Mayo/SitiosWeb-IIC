@@ -1,6 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
 using Dapper;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class AccionPersonalRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public AccionPersonalRepository(string connectionString)
+        public AccionPersonalRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<AccionPersonal> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -41,7 +40,7 @@ namespace AdminPersonalWebCore.Repository
 
         public AccionPersonal ObtenerPorId(int id)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -59,80 +58,80 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(AccionPersonal accion)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        INSERT INTO acciones_personal
-        (
-            codigo_accion,
-            fecha,
-            descripcion,
-            empleado_id,
-            jefatura_id
-        )
-        VALUES
-        (
-            @CodigoAccion,
-            @Fecha,
-            @Descripcion,
-            @EmpleadoId,
-            @JefaturaId
-        );";
+                INSERT INTO acciones_personal
+                (
+                    codigo_accion,
+                    fecha,
+                    descripcion,
+                    empleado_id,
+                    jefatura_id
+                )
+                VALUES
+                (
+                    @CodigoAccion,
+                    @Fecha,
+                    @Descripcion,
+                    @EmpleadoId,
+                    @JefaturaId
+                );";
 
             db.Execute(sql, accion);
         }
 
         public void Actualizar(AccionPersonal accion)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        UPDATE acciones_personal
-        SET
-            codigo_accion = @CodigoAccion,
-            fecha = @Fecha,
-            descripcion = @Descripcion,
-            empleado_id = @EmpleadoId,
-            jefatura_id = @JefaturaId
-        WHERE accion_id = @AccionId;";
+                UPDATE acciones_personal
+                SET
+                    codigo_accion = @CodigoAccion,
+                    fecha = @Fecha,
+                    descripcion = @Descripcion,
+                    empleado_id = @EmpleadoId,
+                    jefatura_id = @JefaturaId
+                WHERE accion_id = @AccionId;";
 
             db.Execute(sql, accion);
         }
 
         public void Eliminar(int id)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        DELETE FROM acciones_personal
-        WHERE accion_id = @id;";
+                DELETE FROM acciones_personal
+                WHERE accion_id = @id;";
 
             db.Execute(sql, new { id });
         }
 
         public List<Empleado> ObtenerEmpleados()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        SELECT
-            empleado_id AS EmpleadoId,
-            nombre_completo AS NombreCompleto
-        FROM empleados
-        ORDER BY nombre_completo ASC;";
+                SELECT
+                    empleado_id AS EmpleadoId,
+                    nombre_completo AS NombreCompleto
+                FROM empleados
+                ORDER BY nombre_completo ASC;";
 
             return db.Query<Empleado>(sql).ToList();
         }
 
         public bool ExisteCodigoAccion(int codigoAccion, int? accionIdExcluir = null)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
-        SELECT COUNT(1)
-        FROM EMP.acciones_personal
-        WHERE codigo_accion = @codigoAccion
-          AND (@accionIdExcluir IS NULL OR accion_id <> @accionIdExcluir);";
+                SELECT COUNT(1)
+                FROM acciones_personal
+                WHERE codigo_accion = @codigoAccion
+                  AND (@accionIdExcluir IS NULL OR accion_id <> @accionIdExcluir);";
 
             return db.ExecuteScalar<int>(sql, new
             {

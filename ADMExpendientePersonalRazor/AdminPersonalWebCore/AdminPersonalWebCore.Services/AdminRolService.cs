@@ -1,15 +1,14 @@
 ﻿using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Repository;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Services.ModuloOferenteServices
+namespace AdminPersonalWebCore.Services
 {
-    public class AdminRolService : IAdminRolService
+    public class AdminRolService
     {
         private readonly AdminRolRepository _adminRolRepository;
         private readonly BitacoraService _bitacoraBLL;

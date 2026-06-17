@@ -8,11 +8,6 @@
         </div>
 
         <div class="card-body">
-            @if (!string.IsNullOrEmpty(Model.Mensaje))
-            {
-                <div class="alert alert-info">@Model.Mensaje</div>
-            }
-
             <p>
                 Seleccione un archivo CSV con el siguiente formato:
             </p>
@@ -36,7 +31,7 @@
             <hr />
 
             <table class="table table-bordered table-striped mt-4">
-                <thead>
+                <thead class="table-dark">
                     <tr>
                         <th>Provincia</th>
                         <th>Cantón</th>
@@ -77,3 +72,32 @@
         </div>
     </div>
 </div>
+
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.Mensaje</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (!string.IsNullOrEmpty(Model.Mensaje))
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modalMensaje = new bootstrap.Modal(document.getElementById("modalMensaje"));
+                modalMensaje.show();
+            });
+        </script>
+    }
+}

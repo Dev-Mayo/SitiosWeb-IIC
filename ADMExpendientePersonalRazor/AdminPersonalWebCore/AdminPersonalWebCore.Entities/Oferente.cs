@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Entities.ModuloOferenteEntities
+namespace AdminPersonalWebCore.Entities
 {
     public class Oferente
     {

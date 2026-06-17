@@ -1,6 +1,5 @@
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
+using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +8,7 @@ namespace AdminPersonalWebCore.Pages.OFE
 {
     public class PreparacionAcademicaModel : SecurePageModel
     {
-        private readonly IPrepAcademicaService _prepAcademicaService;
+        private readonly PrepAcademicaService _prepAcademicaService;
         private readonly InstEducativaService _instEducativa;
         private readonly AuthService _authService;
         private readonly ParametroService _parametroService;
@@ -33,7 +32,7 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string FormFechaFin { get; private set; } = "";
 
         public PreparacionAcademicaModel(
-            IPrepAcademicaService prepAcademicaService,
+            PrepAcademicaService prepAcademicaService,
             InstEducativaService instEducativa,
             AuthService authService, ParametroService parametroService)
         {

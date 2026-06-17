@@ -1,6 +1,5 @@
-﻿using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
-using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
+﻿using AdminPersonalWebCore.Entities;
+using AdminPersonalWebCore.Repository;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Services.ModuloOferenteServices
+namespace AdminPersonalWebCore.Services
 {
-    public class OferenteService : IOferenteService
+    public class OferenteService
     {
         private readonly OferenteRepository _oferenteRepository;
         private readonly BitacoraService _bitacoraService;

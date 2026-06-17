@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdminPersonalWebCore.Entities.ModuloOferenteEntities
+namespace AdminPersonalWebCore.Entities
 {
     public class ExpLaboral
     {

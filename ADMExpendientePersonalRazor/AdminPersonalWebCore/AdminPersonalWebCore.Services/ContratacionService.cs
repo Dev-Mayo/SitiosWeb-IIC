@@ -1,7 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Repository;
-using MySql.Data.MySqlClient;
 
 namespace AdminPersonalWebCore.Services
 {
