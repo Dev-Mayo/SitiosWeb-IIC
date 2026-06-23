@@ -1,0 +1,12 @@
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\bin\Debug\net8.0\AdminPersonalWebCore.Entities.deps.json
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\bin\Debug\net8.0\AdminPersonalWebCore.Entities.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\bin\Debug\net8.0\AdminPersonalWebCore.Entities.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.AssemblyInfoInputs.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.AssemblyInfo.cs
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.csproj.CoreCompileInputs.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.sourcelink.json
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\refint\AdminPersonalWebCore.Entities.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\AdminPersonalWebCore.Entities.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Entities\obj\Debug\net8.0\ref\AdminPersonalWebCore.Entities.dll

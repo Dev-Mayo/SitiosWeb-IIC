@@ -1,0 +1,16 @@
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\bin\Debug\net8.0\AdminPersonalWebCore.Repository.deps.json
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\bin\Debug\net8.0\AdminPersonalWebCore.Repository.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\bin\Debug\net8.0\AdminPersonalWebCore.Repository.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\bin\Debug\net8.0\AdminPersonalWebCore.Entities.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\bin\Debug\net8.0\AdminPersonalWebCore.Entities.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.csproj.AssemblyReference.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.AssemblyInfoInputs.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.AssemblyInfo.cs
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.csproj.CoreCompileInputs.cache
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.sourcelink.json
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPer.492BE56E.Up2Date
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\refint\AdminPersonalWebCore.Repository.dll
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\AdminPersonalWebCore.Repository.pdb
+C:\Users\santi\Documents\CUC\Sitios WEB\SitiosWeb-IIC\ADMExpendientePersonalRazor\AdminPersonalWebCore\AdminPersonalWebCore.Repositories\obj\Debug\net8.0\ref\AdminPersonalWebCore.Repository.dll
