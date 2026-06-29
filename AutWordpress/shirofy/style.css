@@ -1,0 +1,256 @@
+/*
+Theme Name: Shirofy
+Theme URI: https://shirofy.com
+Description: Portal público de Servicios Médicos SA - Shirofy
+Version: 1.0
+Author: Shirofy Team
+*/
+
+:root {
+    --primary: #1aad94;
+    --primary-dark: #158a75;
+    --primary-light: #e8f8f5;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+}
+
+/* ── NAVBAR ── */
+.navbar-shirofy {
+    background-color: var(--primary);
+    padding: 14px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.navbar-shirofy .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.navbar-shirofy .brand img {
+    height: 42px;
+    border-radius: 8px;
+}
+
+.navbar-shirofy .brand-name {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.navbar-shirofy .nav-links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.navbar-shirofy .nav-links a {
+    color: rgba(255,255,255,0.88);
+    text-decoration: none;
+    padding: 7px 16px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.navbar-shirofy .nav-links a:hover,
+.navbar-shirofy .nav-links a.active {
+    background: rgba(255,255,255,0.18);
+    color: white;
+}
+
+.navbar-toggler {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.navbar-toggler span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: white;
+    margin: 4px 0;
+}
+
+/* ── HERO ── */
+.hero {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    padding: 90px 0 70px;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto 28px;
+}
+
+.btn-hero {
+    background: white;
+    color: var(--primary);
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1rem;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-hero:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    color: var(--primary);
+}
+
+/* ── SECTIONS ── */
+.section { padding: 72px 0; }
+.section-alt { background: var(--primary-light); }
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 12px;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    margin-bottom: 48px;
+}
+
+.divider {
+    width: 60px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+    margin: 12px 0 24px;
+}
+
+/* ── CARDS ── */
+.card-shirofy {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+
+.card-shirofy:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.card-shirofy .card-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--primary-light);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+}
+
+.card-shirofy .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.card-shirofy .card-body {
+    padding: 28px;
+}
+
+/* ── TEAM ── */
+.team-card {
+    text-align: center;
+    padding: 32px 20px;
+}
+
+.team-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+/* ── FOOTER ── */
+.footer {
+    background: #1a2332;
+    color: rgba(255,255,255,0.75);
+    padding: 48px 0 24px;
+}
+
+.footer h5 {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.footer a {
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+    transition: color 0.2s;
+}
+
+.footer a:hover { color: var(--primary); }
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 32px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 1.9rem; }
+    .section { padding: 48px 0; }
+    .section-title { font-size: 1.6rem; }
+    .nav-links { display: none; flex-direction: column; width: 100%; }
+    .nav-links.open { display: flex; padding: 12px 0; }
+}
