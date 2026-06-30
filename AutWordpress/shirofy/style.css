@@ -254,3 +254,56 @@ body {
     .nav-links { display: none; flex-direction: column; width: 100%; }
     .nav-links.open { display: flex; padding: 12px 0; }
 }
+
+/* ── PUESTOS ── */
+.puesto-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.puesto-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.puesto-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.puesto-link:hover {
+    color: var(--primary-dark);
+}
+
+.puesto-card-disponible {
+    border: 2px solid var(--primary-light);
+}
+
+.puesto-card-disponible:hover {
+    border-color: var(--primary);
+}
+
+/* Estilos para puestos no disponibles */
+.puesto-card-disponible .puesto-link {
+    color: var(--text-muted);
+}
+
+.puesto-card-disponible .puesto-link:hover {
+    color: var(--text-muted);
+}
+
+/* Ajustes para el contenido dentro de las cards */
+.puesto-card .card-body {
+    padding: 24px;
+}
+
+.puesto-card .card-title {
+    margin-bottom: 12px;
+}
+
+.puesto-card .card-title .badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
