@@ -22,7 +22,7 @@ $pages = array(
     <div class="container d-flex justify-content-between align-items-center">
 
         <a href="<?php echo home_url('/'); ?>" class="brand">
-            <img src="<?php echo get_template_directory_uri(); ?>/img/logoempresa.png"
+            <img src="<?php echo get_template_directory_uri(); ?>/img/logoempresa.jpg"
                  alt="Shirofy"
                  onerror="this.style.display='none'">
             <span class="brand-name">Shirofy</span>
