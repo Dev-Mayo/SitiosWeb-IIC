@@ -63,5 +63,10 @@ namespace ADMExpedientePersonal.WebServices
                 EmpleadoId = 0
             };
         }
+        public int ProbarConexionEMP()
+        {
+            var repository = RepositoryFactory.CrearEmpleadoRepository();
+            return repository.ProbarConexionEMP();
+        }
     }
 }

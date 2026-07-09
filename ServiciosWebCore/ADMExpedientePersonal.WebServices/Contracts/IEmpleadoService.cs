@@ -9,5 +9,11 @@ namespace ADMExpedientePersonal.WebServices.Contracts
     {
         [OperationContract]
         EmpleadoResponse RegistrarEmpleado(EmpleadoRequest request);
+
+
+        [OperationContract]
+        int ProbarConexionEMP();
     }
+
+
 }
