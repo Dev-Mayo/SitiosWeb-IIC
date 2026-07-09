@@ -90,5 +90,17 @@ namespace ADMExpedientePersonal.WebServices.Repositories
                 ) > 0;
             }
         }
+
+        public int ProbarConexionEMP() // este es solo para la prueba a ver si sirve la conexión
+        {
+            using (var connection = _connectionFactory.CreateConnection("EMP"))
+            {
+                const string sql = @"
+            SELECT COUNT(*)
+            FROM empleados;";
+
+                return connection.ExecuteScalar<int>(sql);
+            }
+        }
     }
 }
