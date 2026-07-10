@@ -17,3 +17,4 @@ namespace ADMExpedientePersonal.WebServices.Contracts
 
 
 }
+//Este es el contrato WCF por eso que va aquí en el COntracts del proyecto, NO en el proyecto Services, porque este es el que expone el servicio y el otro es el que implementa la lógica de negocio.

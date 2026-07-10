@@ -1,4 +1,4 @@
-﻿using ADMExpedientePersonal.WebServices.Data;
+﻿using ADMExpedientePersonal.WebServices.Repositories.Data;
 using ADMExpedientePersonal.WebServices.Entities.Requests;
 using Dapper;
 

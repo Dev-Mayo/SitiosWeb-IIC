@@ -1,4 +1,4 @@
-﻿using ADMExpedientePersonal.WebServices.Data;
+﻿using ADMExpedientePersonal.WebServices.Repositories.Data;
 using ADMExpedientePersonal.WebServices.Repositories;
 
 namespace ADMExpedientePersonal.WebServices.Common

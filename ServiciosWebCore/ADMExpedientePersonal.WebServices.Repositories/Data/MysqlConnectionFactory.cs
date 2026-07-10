@@ -1,8 +1,8 @@
-﻿using MySqlConnector;
+﻿using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Data;
 
-namespace ADMExpedientePersonal.WebServices.Data
+namespace ADMExpedientePersonal.WebServices.Repositories.Data
 {
     public class MySqlConnectionFactory : IDbConnectionFactory
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data;
 
-namespace ADMExpedientePersonal.WebServices.Data
+namespace ADMExpedientePersonal.WebServices.Repositories.Data
 {
     public interface IDbConnectionFactory
     {
