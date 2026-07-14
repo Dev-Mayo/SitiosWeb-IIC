@@ -8,14 +8,17 @@ namespace AdminPersonalWebCore.Pages.EMP
     public class AreasModel : PageModel
     {
         private readonly AreaService _service;
+        private readonly ParametroService _parametroService;
 
-        public AreasModel(AreaService service)
+        public AreasModel(
+            AreaService service,
+            ParametroService parametroService)
         {
             _service = service;
+            _parametroService = parametroService;
         }
 
         public List<Area> Areas { get; set; } = new();
-
         public List<Empleado> Empleados { get; set; } = new();
 
         [BindProperty]
@@ -39,7 +42,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             CargarDatos(pagina);
         }
 
-        public IActionResult OnPostCrear(int codigoArea, string nombre, int jefatura) //crear porst 
+        public IActionResult OnPostCrear(int codigoArea, string nombre, int jefatura)
         {
             var usuarioActual = ObtenerUsuarioActual();
 
@@ -54,7 +57,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
                 _service.Insertar(area, usuarioActual);
 
-                TempData["MensajeExito"] = "El �rea ha sido registrada correctamente.";
+                TempData["MensajeExito"] = "El área ha sido registrada correctamente.";
 
                 return RedirectToPage(new
                 {
@@ -66,12 +69,11 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 MensajeError = ex.Message;
                 CargarDatos(1);
-
                 return Page();
             }
         }
 
-        public IActionResult OnPostEditar(int codigoArea, string nombre, int jefatura) //editar por c�digo de �rea, no por id
+        public IActionResult OnPostEditar(int codigoArea, string nombre, int jefatura)
         {
             var usuarioActual = ObtenerUsuarioActual();
 
@@ -86,7 +88,7 @@ namespace AdminPersonalWebCore.Pages.EMP
 
                 _service.Actualizar(area, usuarioActual);
 
-                TempData["MensajeExito"] = "�rea actualizada correctamente.";
+                TempData["MensajeExito"] = "Área actualizada correctamente.";
 
                 return RedirectToPage(new
                 {
@@ -98,12 +100,11 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 MensajeError = ex.Message;
                 CargarDatos(1);
-
                 return Page();
             }
         }
 
-        public IActionResult OnPostEliminar(int codigoArea) //eliminar por c�digo de �rea, no por id
+        public IActionResult OnPostEliminar(int codigoArea)
         {
             var usuarioActual = ObtenerUsuarioActual();
 
@@ -111,7 +112,7 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 _service.Eliminar(codigoArea, usuarioActual);
 
-                TempData["MensajeExito"] = "�rea eliminada correctamente.";
+                TempData["MensajeExito"] = "Área eliminada correctamente.";
 
                 return RedirectToPage(new
                 {
@@ -123,22 +124,35 @@ namespace AdminPersonalWebCore.Pages.EMP
             {
                 MensajeError = ex.Message;
                 CargarDatos(1);
-
                 return Page();
             }
         }
+
         private void CargarDatos(int pagina = 1)
         {
             var usuarioActual = ObtenerUsuarioActual();
+
+            TamanoPagina = _parametroService.ObtenerValorEnteroODefecto(
+                "CANTIDAD_REGISTROS_PAGINA",
+                10
+            );
 
             var listaCompleta = _service.ObtenerTodos(usuarioActual);
 
             Empleados = _service.ObtenerEmpleados();
 
-            PaginaActual = pagina;
+            TotalPaginas = (int)Math.Ceiling(listaCompleta.Count / (double)TamanoPagina);
 
-            TotalPaginas =
-                (int)Math.Ceiling(listaCompleta.Count / (double)TamanoPagina);
+            if (TotalPaginas == 0)
+                TotalPaginas = 1;
+
+            if (pagina < 1)
+                pagina = 1;
+
+            if (pagina > TotalPaginas)
+                pagina = TotalPaginas;
+
+            PaginaActual = pagina;
 
             Areas = listaCompleta
                 .Skip((PaginaActual - 1) * TamanoPagina)
@@ -148,12 +162,6 @@ namespace AdminPersonalWebCore.Pages.EMP
 
         private string ObtenerUsuarioActual()
         {
-            var usuarioQuery = Request.Query["u"].ToString();
-
-            if (!string.IsNullOrWhiteSpace(usuarioQuery))
-                return usuarioQuery;
-
-            return HttpContext.Session.GetString("Usuario") ?? "Sistema";
             var usuario = Request.Query["u"].ToString();
 
             if (string.IsNullOrWhiteSpace(usuario))

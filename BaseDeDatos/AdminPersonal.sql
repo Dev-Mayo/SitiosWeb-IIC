@@ -73,8 +73,7 @@ CREATE TABLE preparacion_acad (
     titulo VARCHAR(100) NOT NULL,
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
-    FOREIGN KEY (oferente_id) REFERENCES oferentes(identificacion),
-    FOREIGN KEY (codigo_institucion) REFERENCES GEN.inst_educativas(codigo_institucion)
+    FOREIGN KEY (oferente_id) REFERENCES oferentes(identificacion)
 );
 CREATE TABLE exp_laboral (
     id INT AUTO_INCREMENT PRIMARY KEY,

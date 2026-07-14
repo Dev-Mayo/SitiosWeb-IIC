@@ -1,6 +1,5 @@
 using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 
@@ -8,17 +7,19 @@ namespace AdminPersonalWebCore.Pages.SEG
 {
     public class AdminRolesModel : SecurePageModel
     {
-        private readonly IAdminRolService _rolService;
+        private readonly AdminRolService _rolService;
         private readonly BitacoraService _bitacoraService;
         private readonly AuthService _authService;
+        private readonly ParametroService _parametroService;
 
-        private const int PageSize = 10;
+        
 
-        public AdminRolesModel(IAdminRolService rolService, BitacoraService bitacoraService, AuthService authService)
+        public AdminRolesModel(AdminRolService rolService, BitacoraService bitacoraService, AuthService authService, ParametroService parametroService)
         {
             _rolService = rolService;
             _bitacoraService = bitacoraService;
             _authService = authService;
+            _parametroService = parametroService;
         }
 
         // ── Datos para la vista ──────────────────────────────────────────────
@@ -137,10 +138,11 @@ namespace AdminPersonalWebCore.Pages.SEG
         // ── Helpers privados ─────────────────────────────────────────────────
         private async Task CargarRolesAsync(int pageIndex)
         {
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto("CANTIDAD_REGISTROS_PAGINA", 10);
             var todos = (await _rolService.ObtenerRolesAsync(NombreCompleto)).ToList();
-            TotalPages = (int)Math.Ceiling(todos.Count / (double)PageSize);
+            TotalPages = (int)Math.Ceiling(todos.Count / (double)cantidad);
             PageIndex = Math.Max(1, Math.Min(pageIndex, Math.Max(TotalPages, 1)));
-            Roles = todos.Skip((PageIndex - 1) * PageSize).Take(PageSize);
+            Roles = todos.Skip((PageIndex - 1) * cantidad).Take(cantidad);
         }
 
         // Carga la tabla y devuelve Page() con el modal de error abierto

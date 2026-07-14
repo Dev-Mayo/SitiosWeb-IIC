@@ -1,0 +1,239 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.OFE.AdminConcursosModel
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background:#1aad94;">
+            <h4 class="mb-0">Administración de Concursos</h4>
+        </div>
+
+        <div class="card-body">
+
+            <button type="button" class="btn btn-primary mb-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalConcurso"
+                    onclick="nuevoConcurso()">
+                Nuevo
+            </button>
+
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Estado</th>
+                        <th style="width:300px;">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model.Concursos)
+                    {
+                        <tr>
+                            <td>@item.CodigoConcurso</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.FechaInicio.ToString("yyyy-MM-dd")</td>
+                            <td>@item.FechaFin.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                <span class="badge @(item.Estado == "Vigente" ? "bg-success" :item.Estado == "Vencido" ? "bg-secondary" : "bg-danger")">
+                                    @item.Estado
+                                </span>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalConcurso"
+                                        onclick="editarConcurso('@item.CodigoConcurso', '@item.Nombre', '@item.FechaInicio.ToString("yyyy-MM-dd")', '@item.FechaFin.ToString("yyyy-MM-dd")')">
+                                    Editar
+                                </button>
+
+                                <form method="post" asp-page-handler="CambiarEstado" style="display:inline;">
+                                    <input type="hidden" name="u" value="@Request.Query["u"]" />
+                                    <input type="hidden" name="codigo" value="@item.CodigoConcurso" />
+                                    <button type="submit" class="btn btn-info btn-sm">
+                                        Cambiar Estado
+                                    </button>
+                                </form>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminar"
+                                        onclick="prepararEliminar('@item.CodigoConcurso', '@item.Nombre')">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+                
+            </table>
+        </div>
+        @if (Model.TotalPaginas > 1)
+        {
+            <div class="d-flex justify-content-center mt-4 mb-3">
+                <nav>
+                    <ul class="pagination mb-0">
+                        @for (int i = 1; i <= Model.TotalPaginas; i++)
+                        {
+                            <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                <a class="page-link"
+                                       href="?PaginaActual=@i&u=@Request.Query["u"]">
+                                    @i
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal Crear / Editar -->
+<div class="modal fade" id="modalConcurso" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <form method="post" asp-page-handler="Guardar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="modal-header text-white" style="background:#1aad94;">
+                    <h5 class="modal-title" id="tituloModalConcurso">Formulario Concurso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="EsEdicion" name="EsEdicion" value="false" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Código del concurso</label>
+                        <input type="text"
+                               id="CodigoConcurso"
+                               name="Concurso.CodigoConcurso"
+                               class="form-control"
+                               maxlength="50" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nombre del concurso</label>
+                        <input type="text"
+                               id="Nombre"
+                               name="Concurso.Nombre"
+                               class="form-control"
+                               maxlength="150" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha de inicio</label>
+                        <input type="date"
+                               id="FechaInicio"
+                               name="Concurso.FechaInicio"
+                               class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Fecha de fin</label>
+                        <input type="date"
+                               id="FechaFin"
+                               name="Concurso.FechaFin"
+                               class="form-control" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <form method="post" asp-page-handler="Eliminar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="CodigoEliminar" name="codigo" />
+                    <p>¿Realmente desea eliminar el elemento seleccionado?</p>
+                    <strong id="NombreEliminar"></strong>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.Mensaje</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function nuevoConcurso() {
+            document.getElementById("tituloModalConcurso").innerText = "Nuevo Concurso";
+            document.getElementById("EsEdicion").value = "false";
+            document.getElementById("CodigoConcurso").value = "";
+            document.getElementById("Nombre").value = "";
+            document.getElementById("FechaInicio").value = "";
+            document.getElementById("FechaFin").value = "";
+            document.getElementById("CodigoConcurso").readOnly = false;
+        }
+
+        function editarConcurso(codigo, nombre, fechaInicio, fechaFin) {
+            document.getElementById("tituloModalConcurso").innerText = "Editar Concurso";
+            document.getElementById("EsEdicion").value = "true";
+            document.getElementById("CodigoConcurso").value = codigo;
+            document.getElementById("Nombre").value = nombre;
+            document.getElementById("FechaInicio").value = fechaInicio;
+            document.getElementById("FechaFin").value = fechaFin;
+            document.getElementById("CodigoConcurso").readOnly = true;
+        }
+
+        function prepararEliminar(codigo, nombre) {
+            document.getElementById("CodigoEliminar").value = codigo;
+            document.getElementById("NombreEliminar").innerText = codigo + " - " + nombre;
+        }
+        
+    </script>
+    @if (!string.IsNullOrEmpty(Model.Mensaje))
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modalMensaje = new bootstrap.Modal(document.getElementById("modalMensaje"));
+                modalMensaje.show();
+            });
+        </script>
+    }
+}

@@ -1,9 +1,7 @@
 using AdminPersonalWebCore.Repository;
-using AdminPersonalWebCore.Repository.ModuloOferenteRepository;
-using AdminPersonalWebCore.Repository;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
-using AdminPersonalWebCore.Services.ModuloOferenteServices;
+using Dapper;
+using MySql.Data.MySqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,31 +27,37 @@ string genConn = builder.Configuration.GetConnectionString("GEN");
 string ofeConn = builder.Configuration.GetConnectionString("OFE");
 string empConn = builder.Configuration.GetConnectionString("EMP");//st
 
-builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>(); // Inyectar la fábrica de conexiones para que los repositorios puedan usarla
+//builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>(); // Inyectar la fábrica de conexiones para que los repositorios puedan usarla
 
-// Repository (DAL)
-builder.Services.AddSingleton<UsuarioRepository>(_ => new UsuarioRepository(segConn));
-builder.Services.AddSingleton<MenuRepository>(_ => new MenuRepository(segConn));
-builder.Services.AddSingleton<BitacoraRepository>(_ => new BitacoraRepository(bitConn));
-builder.Services.AddSingleton<AdminUsuarioRepository>(_ => new AdminUsuarioRepository(segConn));
-builder.Services.AddSingleton<InstEducativaRepository>(_ => new InstEducativaRepository(genConn));
-builder.Services.AddSingleton<RequisitoPuestoRepository>(_ => new RequisitoPuestoRepository(empConn)); //emp3
-builder.Services.AddSingleton<AreaRepository>(_ => new AreaRepository(empConn)); // EMP4
-builder.Services.AddSingleton<AccionPersonalRepository>(_ => new AccionPersonalRepository(empConn)); // EMP5
+builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();//Inyeccion a la fabrica pero con el singleton para que se mantenga la misma instancia durante toda la aplicación,
+                                                                           //lo que es adecuado para una fábrica de conexiones que no tiene estado y
+                                                                           //puede ser compartida de manera segura entre múltiples hilos.
+                                                                           // Repository (DAL)
+builder.Services.AddSingleton<UsuarioRepository>();
+builder.Services.AddSingleton<MenuRepository>();
+builder.Services.AddSingleton<BitacoraRepository>();
+builder.Services.AddSingleton<AdminUsuarioRepository>();
+builder.Services.AddSingleton<InstEducativaRepository>();
 
-builder.Services.AddScoped<OferenteRepository>();
-builder.Services.AddScoped<AdminRolRepository>();
-builder.Services.AddScoped<PrepAcademicaRepository>();
-builder.Services.AddScoped<EntrevistaRepository>();
-builder.Services.AddScoped<ExpLaboralRepository>();
 
-builder.Services.AddSingleton<ModuloRepository>(_ => new ModuloRepository(segConn)); // SEG5//SEG5
-builder.Services.AddSingleton(new ContratacionRepository(empConn));// EMP1
-builder.Services.AddSingleton<CompaniaRepository>(_ => new CompaniaRepository(genConn));
-builder.Services.AddSingleton<ConcursoRepository>(_ => new ConcursoRepository(ofeConn));
-builder.Services.AddSingleton<PuestoRepository>(_ => new PuestoRepository(empConn));
-builder.Services.AddSingleton<ParametroRepository>(_ => new ParametroRepository(genConn));
-builder.Services.AddSingleton<UbicacionRepository>(_ => new UbicacionRepository(genConn));
+builder.Services.AddSingleton<RequisitoPuestoRepository>(); //EMP3 ya cambiado con el interface IDb
+builder.Services.AddSingleton<AreaRepository>(); // EMP4 ya cambiado con el interface IDb
+builder.Services.AddSingleton<AccionPersonalRepository>(); // EMP5 ya cambiado con el interface IDb
+
+builder.Services.AddSingleton<ModuloRepository>();// SEG5 ya cambiado con el interface IDb
+builder.Services.AddSingleton<ContratacionRepository>(); // EMP1 ya cambiado con el interface IDb
+builder.Services.AddSingleton<CompaniaRepository>();
+builder.Services.AddSingleton<ConcursoRepository>();
+builder.Services.AddSingleton<PuestoRepository>();
+builder.Services.AddSingleton<ParametroRepository>();
+builder.Services.AddSingleton<UbicacionRepository>();
+
+
+builder.Services.AddSingleton<OferenteRepository>();
+builder.Services.AddSingleton<AdminRolRepository>();
+builder.Services.AddSingleton<PrepAcademicaRepository>();
+builder.Services.AddSingleton<EntrevistaRepository>();
+builder.Services.AddSingleton<ExpLaboralRepository>();
 
 
 
@@ -69,11 +73,11 @@ builder.Services.AddSingleton<RequisitoPuestoService>();//emp3
 builder.Services.AddSingleton<AreaService>(); // EMP4
 builder.Services.AddSingleton<AccionPersonalService>(); // EMP5
 
-builder.Services.AddScoped<IOferenteService, OferenteService>();
-builder.Services.AddScoped<IAdminRolService, AdminRolService>();
-builder.Services.AddScoped<IPrepAcademicaService, PrepAcademicaService>();
-builder.Services.AddScoped<IEntrevistaService, EntrevistaService>();
-builder.Services.AddScoped<IExpLaboralService, ExpLaboralService>();
+builder.Services.AddSingleton<OferenteService>();
+builder.Services.AddSingleton<AdminRolService>(); //SEG 4
+builder.Services.AddSingleton<PrepAcademicaService>();
+builder.Services.AddSingleton<EntrevistaService>();
+builder.Services.AddSingleton<ExpLaboralService>();
 
 
 builder.Services.AddSingleton<ModuloService>(); // SEG5

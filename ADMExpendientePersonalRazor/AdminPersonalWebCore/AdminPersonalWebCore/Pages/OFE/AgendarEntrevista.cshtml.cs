@@ -1,7 +1,5 @@
 using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text.Json;
@@ -10,11 +8,10 @@ namespace AdminPersonalWebCore.Pages.OFE
 {
     public class AgendarEntrevistaModel : SecurePageModel
     {
-        private readonly IEntrevistaService _entrevistaService;
-        private readonly IOferenteService _oferenteService;
+        private readonly EntrevistaService _entrevistaService;
+        private readonly OferenteService _oferenteService;
         private readonly AuthService _authService;
-
-        private const int PageSize = 10;
+        private readonly ParametroService _parametroService;
 
         // ── Datos para la vista ──────────────────────────────────────────────
         public IEnumerable<Entrevista> EntrevistasPaginadas { get; private set; } = [];
@@ -35,11 +32,12 @@ namespace AdminPersonalWebCore.Pages.OFE
         public string EmpleadoIdActual { get; private set; } = "";
         public string FechaActual { get; private set; } = "";
 
-        public AgendarEntrevistaModel( IEntrevistaService entrevistaService, IOferenteService oferenteService, AuthService authService)
+        public AgendarEntrevistaModel( EntrevistaService entrevistaService, OferenteService oferenteService, AuthService authService, ParametroService parametroService)
         {
             _entrevistaService = entrevistaService;
             _oferenteService = oferenteService;
            _authService = authService;
+            _parametroService = parametroService;
         }
 
         private IActionResult? ValidarSession()
@@ -228,16 +226,15 @@ namespace AdminPersonalWebCore.Pages.OFE
 
         private async Task CargarEntrevistasAsync(int pagina)
         {
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto("CANTIDAD_REGISTROS_PAGINA", 10);
             var todas = (await _entrevistaService.ObtenerEntrevistasAsync(NombreCompleto)).ToList();
 
-            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)PageSize);
+            TotalPaginas = (int)Math.Ceiling(todas.Count / (double)cantidad);
             PaginaActual = Math.Max(1, Math.Min(pagina, TotalPaginas));
 
-            EntrevistasPaginadas = todas
-                .Skip((PaginaActual - 1) * PageSize)
-                .Take(PageSize);
+            EntrevistasPaginadas = todas.Skip((PaginaActual - 1) * cantidad).Take(cantidad);
 
-            // Serializar para uso en JS (edición)
+            // Serializar para uso en JS (edicion)
             EntrevistasJson = JsonSerializer.Serialize(todas.Select(e => new
             {
                 entrevistaId = e.EntrevistaId,

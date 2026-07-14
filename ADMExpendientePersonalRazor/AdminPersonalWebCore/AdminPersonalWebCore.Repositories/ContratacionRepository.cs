@@ -1,7 +1,5 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using Dapper;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class ContratacionRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public ContratacionRepository(string connectionString)
+        public ContratacionRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Oferente> ObtenerOferentesDisponibles()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -36,7 +34,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<Puesto> ObtenerPuestos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -51,7 +49,7 @@ namespace AdminPersonalWebCore.Repository
 
         public List<Empleado> ObtenerJefaturas()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             string sql = @"
                 SELECT
@@ -65,7 +63,7 @@ namespace AdminPersonalWebCore.Repository
 
         public int ContratarEmpleado(ContratacionRequest request)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
             db.Open();
 
             using var transaction = db.BeginTransaction();

@@ -1,0 +1,194 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.GEN.AdminParametrosModel
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background:#1aad94;">
+            <h4 class="mb-0">Administración de Parámetros</h4>
+        </div>
+
+        <div class="card-body">
+
+            <button type="button" class="btn btn-primary mb-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalParametro"
+                    onclick="nuevoParametro()">
+                Nuevo
+            </button>
+
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Código</th>
+                        <th>Valor</th>
+                        <th style="width:220px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Parametros)
+                    {
+                        <tr>
+                            <td>@item.CodigoParametro</td>
+                            <td>@item.Valor</td>
+                            <td>
+                                <button type="button"
+                                        class="btn btn-warning btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalParametro"
+                                        onclick="editarParametro('@item.CodigoParametro', '@item.Valor')">
+                                    Editar
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEliminar"
+                                        onclick="prepararEliminar('@item.CodigoParametro')">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="d-flex justify-content-center mt-4 mb-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
+                            {
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link"
+                                           href="?PaginaActual=@i&u=@Request.Query["u"]">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Modal Crear / Editar -->
+<div class="modal fade" id="modalParametro" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Guardar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="modal-header text-white" style="background:#1aad94;">
+                    <h5 class="modal-title" id="tituloModalParametro">Formulario Parámetro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="EsEdicion" name="EsEdicion" value="false" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Código del parámetro</label>
+                        <input type="text"
+                               id="CodigoParametro"
+                               name="Parametro.CodigoParametro"
+                               class="form-control"
+                               maxlength="50" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Valor</label>
+                        <textarea id="Valor"
+                                  name="Parametro.Valor"
+                                  class="form-control"
+                                  maxlength="500"
+                                  rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Eliminar">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="CodigoEliminar" name="codigo" />
+                    <p>¿Realmente desea eliminar el elemento seleccionado?</p>
+                    <strong id="NombreEliminar"></strong>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.Mensaje</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function nuevoParametro() {
+            document.getElementById("tituloModalParametro").innerText = "Nuevo Parámetro";
+            document.getElementById("EsEdicion").value = "false";
+            document.getElementById("CodigoParametro").value = "";
+            document.getElementById("Valor").value = "";
+            document.getElementById("CodigoParametro").readOnly = false;
+        }
+
+        function editarParametro(codigo, valor) {
+            document.getElementById("tituloModalParametro").innerText = "Editar Parámetro";
+            document.getElementById("EsEdicion").value = "true";
+            document.getElementById("CodigoParametro").value = codigo;
+            document.getElementById("Valor").value = valor;
+            document.getElementById("CodigoParametro").readOnly = true;
+        }
+
+        function prepararEliminar(codigo) {
+            document.getElementById("CodigoEliminar").value = codigo;
+            document.getElementById("NombreEliminar").innerText = codigo;
+        }
+        
+    </script>
+    @if (!string.IsNullOrEmpty(Model.Mensaje))
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modalMensaje = new bootstrap.Modal(document.getElementById("modalMensaje"));
+                modalMensaje.show();
+            });
+        </script>
+    }
+}

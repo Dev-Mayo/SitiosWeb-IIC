@@ -13,7 +13,7 @@ namespace AdminPersonalWebCore.Pages
             string u = Request.Query["u"];
             string sessionUser = HttpContext.Session.GetString("username");
 
-            if (string.IsNullOrEmpty(u) || string.IsNullOrEmpty(sessionUser))
+            if (string.IsNullOrEmpty(u) || string.IsNullOrEmpty(sessionUser) || u != sessionUser)
                 return Redirect("/SEG/Login?msg=login");
 
             UsuarioActual = u;

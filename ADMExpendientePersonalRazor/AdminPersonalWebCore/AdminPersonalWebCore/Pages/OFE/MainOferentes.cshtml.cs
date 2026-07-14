@@ -1,6 +1,5 @@
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
+using AdminPersonalWebCore.Entities;
 using AdminPersonalWebCore.Services;
-using AdminPersonalWebCore.Services.Abstract.ModuloOferenteAbstractServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
@@ -9,14 +8,15 @@ namespace AdminPersonalWebCore.Pages.OFE
 {
     public class MainOferentesModel : SecurePageModel
     {
-        private readonly IOferenteService _oferenteService;
+        private readonly OferenteService _oferenteService;
         private readonly AuthService _authService;
-        private const int TamPagina = 10;
+        private readonly ParametroService _parametroService;
 
-        public MainOferentesModel(IOferenteService oferenteService, AuthService authService)
+        public MainOferentesModel(OferenteService oferenteService, AuthService authService, ParametroService parametroService)
         {
             _oferenteService = oferenteService;
             _authService = authService;
+            _parametroService = parametroService;
         }
 
         // ── Datos para la vista ──────────────────────────────────────────────
@@ -218,11 +218,11 @@ namespace AdminPersonalWebCore.Pages.OFE
         // ── Helpers privados ─────────────────────────────────────────────────
         private async Task CargarDatosAsync(int pagina)
         {
+            int cantidad = _parametroService.ObtenerValorEnteroODefecto("CANTIDAD_REGISTROS_PAGINA", 10);
             var todos = (await _oferenteService.ObtenerOferentesAsync(NombreCompleto)).ToList();
-            TotalPaginas = (int)Math.Ceiling(todos.Count / (double)TamPagina);
+            TotalPaginas = (int)Math.Ceiling(todos.Count / (double)cantidad);
             PaginaActual = Math.Clamp(pagina, 1, Math.Max(1, TotalPaginas));
-            OferentesPaginados = todos.Skip((PaginaActual - 1) * TamPagina).Take(TamPagina);
-
+            OferentesPaginados = todos.Skip((PaginaActual - 1) * cantidad).Take(cantidad);
             Concursos = await _oferenteService.ObtenerConcursosAsync(NombreCompleto);
 
             // Serializar para JS (edición inline sin fetch)

@@ -7,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class PuestoRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public PuestoRepository(string connectionString)
+        public PuestoRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Puesto> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             return db.Query<Puesto>(
                 "SP_EMP_PUESTO_LISTAR",
@@ -26,7 +26,7 @@ namespace AdminPersonalWebCore.Repository
 
         public Puesto ObtenerPorId(int puestoId)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             return db.QueryFirstOrDefault<Puesto>(
                 "SP_EMP_PUESTO_OBTENER",
@@ -37,7 +37,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(Puesto puesto)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             db.Execute(
                 "SP_EMP_PUESTO_INSERTAR",
@@ -53,7 +53,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(Puesto puesto)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             db.Execute(
                 "SP_EMP_PUESTO_ACTUALIZAR",
@@ -70,7 +70,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(int puestoId)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("EMP");
 
             db.Execute(
                 "SP_EMP_PUESTO_ELIMINAR",

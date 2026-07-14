@@ -1,0 +1,103 @@
+﻿@page
+@model AdminPersonalWebCore.Pages.GEN.AdminUbicacionesModel
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background:#1aad94;">
+            <h4 class="mb-0">Carga de datos de ubicación</h4>
+        </div>
+
+        <div class="card-body">
+            <p>
+                Seleccione un archivo CSV con el siguiente formato:
+            </p>
+
+            <pre>CodigoProvincia,Provincia,CodigoCanton,Canton,CodigoDistrito,Distrito</pre>
+
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" name="u" value="@Request.Query["u"]" />
+                <div class="mb-3">
+                    <label class="form-label">Archivo CSV</label>
+                    <input type="file"
+                           name="Archivo"
+                           class="form-control"
+                           accept=".csv,.txt" />
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Cargar archivo
+                </button>
+            </form>
+            <hr />
+
+            <table class="table table-bordered table-striped mt-4">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Provincia</th>
+                        <th>Cantón</th>
+                        <th>Código Distrito</th>
+                        <th>Distrito</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Ubicaciones)
+                    {
+                        <tr>
+                            <td>@item.Provincia</td>
+                            <td>@item.Canton</td>
+                            <td>@item.CodigoDistrito</td>
+                            <td>@item.Distrito</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="d-flex justify-content-center mt-4 mb-3">
+                    <nav>
+                        <ul class="pagination mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
+                            {
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link"
+                                           href="?PaginaActual=@i&u=@Request.Query["u"]">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="modalMensaje" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title">Mensaje del sistema</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <span id="txtMensajeSistema">@Model.Mensaje</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @if (!string.IsNullOrEmpty(Model.Mensaje))
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var modalMensaje = new bootstrap.Modal(document.getElementById("modalMensaje"));
+                modalMensaje.show();
+            });
+        </script>
+    }
+}

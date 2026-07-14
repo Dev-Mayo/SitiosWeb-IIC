@@ -59,6 +59,8 @@ namespace AdminPersonalWebCore.Services
             try
             {
                 Validar(modulo);
+                if (_repo.ExisteNombre(modulo.nombre_modulo))
+                    throw new Exception("Ya existe un módulo con ese nombre.");
 
                 if (rolesSeleccionados == null || rolesSeleccionados.Count == 0)
                     throw new Exception("Debe seleccionar al menos un rol.");
@@ -93,7 +95,7 @@ namespace AdminPersonalWebCore.Services
             try
             {
                 Validar(modulo);
-
+               
                 if (modulo.id_modulo <= 0)
                     throw new Exception("Debe indicar un módulo válido.");
 
@@ -104,6 +106,9 @@ namespace AdminPersonalWebCore.Services
 
                 if (anterior == null)
                     throw new Exception("El módulo indicado no existe.");
+
+                if (_repo.ExisteNombre(modulo.nombre_modulo, modulo.id_modulo)) // aquí cambie el probelma de que no me dejaba actualizar porque capia sobre el mismo nombre, Valida nombres duplicados excluyendo el módulo actual en edición
+                    throw new Exception("Ya existe un módulo con ese nombre.");
 
                 var rolesAnteriores = _repo.ObtenerRolesPorModulo(modulo.id_modulo);
 

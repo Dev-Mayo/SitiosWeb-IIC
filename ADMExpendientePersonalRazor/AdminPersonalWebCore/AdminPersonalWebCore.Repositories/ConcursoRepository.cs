@@ -7,16 +7,16 @@ namespace AdminPersonalWebCore.Repository
 {
     public class ConcursoRepository
     {
-        private readonly string _connectionString;
+        private readonly IDbConnectionFactory _connectionFactory;
 
-        public ConcursoRepository(string connectionString)
+        public ConcursoRepository(IDbConnectionFactory connectionFactory)
         {
-            _connectionString = connectionString;
+            _connectionFactory = connectionFactory;
         }
 
         public List<Concurso> ObtenerTodos()
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("OFE");
 
             return db.Query<Concurso>(
                 "SP_OFE_CONCURSO_LISTAR",
@@ -26,7 +26,7 @@ namespace AdminPersonalWebCore.Repository
 
         public Concurso ObtenerPorCodigo(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("OFE");
 
             return db.QueryFirstOrDefault<Concurso>(
                 "SP_OFE_CONCURSO_OBTENER",
@@ -37,7 +37,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Insertar(Concurso concurso)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("OFE");
 
             db.Execute(
                 "SP_OFE_CONCURSO_INSERTAR",
@@ -55,7 +55,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Actualizar(Concurso concurso)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("OFE");
 
             db.Execute(
                 "SP_OFE_CONCURSO_ACTUALIZAR",
@@ -73,7 +73,7 @@ namespace AdminPersonalWebCore.Repository
 
         public void Eliminar(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("OFE");
 
             db.Execute(
                 "SP_OFE_CONCURSO_ELIMINAR",
@@ -84,13 +84,23 @@ namespace AdminPersonalWebCore.Repository
 
         public void CambiarEstado(string codigo)
         {
-            using var db = new MySqlConnection(_connectionString);
+            using var db = _connectionFactory.CreateConnection("OFE");
 
             db.Execute(
                 "SP_OFE_CONCURSO_CAMBIAR_ESTADO",
                 new { p_codigo_concurso = codigo },
                 commandType: CommandType.StoredProcedure
             );
+        }
+        public bool TieneOferentesAsociados(string codigo)
+        {
+            using var db = _connectionFactory.CreateConnection("OFE");
+
+            return db.ExecuteScalar<int>(
+                "SP_OFE_CONCURSO_TIENE_OFERENTES",
+                new { p_codigo_concurso = codigo },
+                commandType: CommandType.StoredProcedure
+            ) > 0;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AdminPersonalWebCore.Entities;
-using AdminPersonalWebCore.Entities.ModuloOferenteEntities;
 using AdminPersonalWebCore.Repository;
 
 namespace AdminPersonalWebCore.Services
@@ -104,5 +103,7 @@ namespace AdminPersonalWebCore.Services
             if (request.JefaturaId <= 0)
                 throw new Exception("Debe seleccionar la jefatura que aprueba.");
         }
+
+     
     }
 }

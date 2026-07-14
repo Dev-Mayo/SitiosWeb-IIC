@@ -49,6 +49,8 @@ namespace AdminPersonalWebCore.Services
             try
             {
                 Validar(requisito);
+                if (_repo.ExisteNombre(requisito.nombre))
+                    throw new Exception("Ya existe un requisito de puesto con ese nombre.");
 
                 _repo.Insertar(requisito);
 
@@ -74,6 +76,8 @@ namespace AdminPersonalWebCore.Services
             try
             {
                 Validar(requisito);
+                if (_repo.ExisteNombre(requisito.nombre, requisito.requisito_id))
+                    throw new Exception("Ya existe un requisito de puesto con ese nombre.");
 
                 var anterior = _repo.ObtenerPorId(requisito.requisito_id);
 
