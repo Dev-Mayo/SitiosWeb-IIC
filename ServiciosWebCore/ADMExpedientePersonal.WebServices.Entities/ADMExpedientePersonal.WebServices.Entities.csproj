@@ -42,7 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\Models\Usuario.cs" />
+    <Compile Include="Entities\Requests\AutenticacionRequest.cs" />
     <Compile Include="Entities\Requests\EmpleadoRequest.cs" />
+    <Compile Include="Entities\Responses\AutenticacionResponse.cs" />
     <Compile Include="Entities\Responses\EmpleadoResponse.CS" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

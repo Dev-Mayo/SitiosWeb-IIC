@@ -1,4 +1,4 @@
-﻿using ADMExpedientePersonal.WebServices.Repositories.Data;
+﻿using ADMExpedientePersonal.WebServices.Data;
 using ADMExpedientePersonal.WebServices.Repositories;
 
 namespace ADMExpedientePersonal.WebServices.Common
@@ -12,12 +12,5 @@ namespace ADMExpedientePersonal.WebServices.Common
         {
             return new EmpleadoRepository(_connectionFactory);
         }
-
-
-        public static AutenticacionRepository CrearAutenticacionRepository()
-        {
-            return new AutenticacionRepository(_connectionFactory);
-        }
-
     }
 }
