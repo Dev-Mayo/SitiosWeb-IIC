@@ -410,6 +410,27 @@ DELIMITER $$
 
 
 
+USE OFE;
+DELIMITER $$
+CREATE PROCEDURE sp_obtener_oferentes_por_puesto (
+    IN p_codigo_puesto INT
+)
+BEGIN
+    SELECT DISTINCT
+        o.identificacion,
+        o.nombre_completo
+    FROM oferentes o
+    INNER JOIN oferente_concursos oc ON oc.identificacion = o.identificacion
+    INNER JOIN concursos c ON c.codigo_concurso = oc.codigo_concurso
+    WHERE c.puesto_id = p_codigo_puesto
+      AND c.estado = 'Vigente'
+      AND o.contratado = 0
+    ORDER BY o.nombre_completo;
+END$$
+DELIMITER ;
+
+
+
 
 
 

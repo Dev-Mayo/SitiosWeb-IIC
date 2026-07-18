@@ -59,6 +59,7 @@ CREATE TABLE concursos (
     fecha_fin DATE NOT NULL,
     estado ENUM('Vigente', 'Vencido') DEFAULT 'Vigente'
 );
+    
 CREATE TABLE oferente_concursos (
     identificacion VARCHAR(20),
     codigo_concurso INT,
@@ -103,6 +104,12 @@ CREATE TABLE puestos (
     jefe_puesto_id INT NULL,
     FOREIGN KEY (jefe_puesto_id) REFERENCES puestos(puesto_id)
 );
+
+USE OFE;
+ALTER TABLE concursos ADD COLUMN puesto_id INT NULL;
+ALTER TABLE concursos ADD CONSTRAINT fk_concurso_puesto
+    FOREIGN KEY (puesto_id) REFERENCES EMP.puestos(puesto_id);
+    
 CREATE TABLE empleados (
     empleado_id INT AUTO_INCREMENT PRIMARY KEY,
     identificacion VARCHAR(20) UNIQUE,

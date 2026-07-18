@@ -124,6 +124,7 @@
   <ItemGroup>
     <Content Include="AutenticacionService.svc" />
     <Content Include="EmpleadoService.svc" />
+    <Content Include="OferenteService.svc" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +136,10 @@
       <DependentUpon>EmpleadoService.svc</DependentUpon>
     </Compile>
     <Compile Include="Contracts\IEmpleadoService.cs" />
+    <Compile Include="Contracts\IOferenteService.cs" />
+    <Compile Include="OferenteService.svc.cs">
+      <DependentUpon>OferenteService.svc</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

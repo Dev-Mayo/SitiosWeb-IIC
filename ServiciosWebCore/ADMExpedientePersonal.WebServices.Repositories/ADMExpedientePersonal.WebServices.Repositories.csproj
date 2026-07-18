@@ -104,6 +104,7 @@
     <Compile Include="Data\MysqlConnectionFactory.cs" />
     <Compile Include="Data\RepositoryFactory.cs" />
     <Compile Include="EmpleadoRepository.cs" />
+    <Compile Include="OferenteRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
