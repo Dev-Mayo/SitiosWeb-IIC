@@ -103,6 +103,7 @@
     <Compile Include="Data\IDbConnectionFactory.cs" />
     <Compile Include="Data\MysqlConnectionFactory.cs" />
     <Compile Include="Data\RepositoryFactory.cs" />
+    <Compile Include="DetalleOferenteRepository.cs" />
     <Compile Include="EmpleadoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

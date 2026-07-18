@@ -18,6 +18,10 @@ namespace ADMExpedientePersonal.WebServices.Common
         {
             return new AutenticacionRepository(_connectionFactory);
         }
+        public static DetalleOferenteRepository CrearDetalleOferenteRepository()
+        {
+            return new DetalleOferenteRepository(_connectionFactory);
+        }
 
     }
 }
