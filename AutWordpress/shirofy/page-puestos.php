@@ -17,56 +17,68 @@ get_header(); ?>
     <div class="container">
         <div class="row g-4">
             <?php
-            $puestos = array(
-                array(
-                    'nombre' => 'Desarrollador',
-                    'disponible' => true,
-                    'salario' => '1200',
-                    'jefe' => 'David'
-                ),
-                array(
-                    'nombre' => 'Analista de Sistemas',
-                    'disponible' => true,
-                    'salario' => '1500',
-                    'jefe' => 'Rafa'
-                ),
-                array(
-                    'nombre' => 'Administrador de Base de Datos',
-                    'disponible' => false,
-                    'salario' => '1800',
-                    'jefe' => 'Diego'
-                ),
-                array(
-                    'nombre' => 'Técnico de Redes',
-                    'disponible' => true,
-                    'salario' => '1000',
-                    'jefe' => 'Steven'
-                ),
-            );
-            foreach ($puestos as $p): ?>
+            $wcf_url = "http://localhost:63602/PuestoService.svc/listarDisponibles";
+
+            $ch = curl_init($wcf_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            $puestos = array();
+            $errorPuestos = '';
+
+            if ($response === false || $httpCode !== 200) {
+                $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
+            } else {
+                $resultado = json_decode($response, true);
+                if (!empty($resultado['Success'])) {
+                    foreach ($resultado['Puestos'] as $p) {
+                        $puestos[] = array(
+                            'id'      => $p['PuestoId'],
+                            'nombre'  => $p['Nombre'],
+                            'salario' => $p['Salario'],
+                            'jefe'    => $p['Jefe']
+                        );
+                    }
+                } else {
+                    $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
+                }
+            }
+
+            if (!empty($errorPuestos)): ?>
+                <div class="col-12">
+                    <p class="text-muted"><?php echo esc_html($errorPuestos); ?></p>
+                </div>
+            <?php elseif (empty($puestos)): ?>
+                <div class="col-12">
+                    <p class="text-muted">No hay puestos disponibles en este momento.</p>
+                </div>
+            <?php else: foreach ($puestos as $p): ?>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card-shirofy puesto-card <?php echo !$p['disponible'] ? 'puesto-card-disponible' : ''; ?>">
+                    <div class="card-shirofy puesto-card">
                         <div class="card-body">
                             <div class="card-title">
-                                <a href="<?php echo home_url('/puestos/' . urlencode($p['nombre'])); ?>" 
-                                   class="puesto-link"
-                                   <?php echo !$p['disponible'] ? 'disabled style="pointer-events:none; opacity:0.6;"' : ''; ?>>
-                                    <?php echo $p['nombre']; ?>
+                                <a href="<?php echo home_url('/puestos/' . urlencode($p['id'])); ?>"
+                                   class="puesto-link">
+                                    <?php echo esc_html($p['nombre']); ?>
                                 </a>
-                                <?php if (!$p['disponible']): ?>
-                                    <span class="badge bg-danger ms-2">No disponible</span>
-                                <?php endif; ?>
                             </div>
                             <p class="text-muted" style="font-size:0.9rem; margin-top:8px">
-                                <strong>Salario:</strong> <?php echo $p['salario']; ?>
+                                <strong>Salario:</strong> <?php echo esc_html($p['salario']); ?>
                             </p>
                             <p class="text-muted" style="font-size:0.85rem; margin-top:4px">
-                                <strong>Jefe:</strong> <?php echo $p['jefe']; ?>
+                                <strong>Jefe:</strong> <?php echo esc_html($p['jefe']); ?>
                             </p>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            <?php endforeach; endif; ?>
         </div>
     </div>
 </section>

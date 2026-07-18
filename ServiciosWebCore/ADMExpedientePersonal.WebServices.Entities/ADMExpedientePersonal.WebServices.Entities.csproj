@@ -45,8 +45,13 @@
     <Compile Include="Entities\Models\Usuario.cs" />
     <Compile Include="Entities\Requests\AutenticacionRequest.cs" />
     <Compile Include="Entities\Requests\EmpleadoRequest.cs" />
+    <Compile Include="Entities\Requests\OferentesPorPuestoRequest.cs" />
     <Compile Include="Entities\Responses\AutenticacionResponse.cs" />
     <Compile Include="Entities\Responses\EmpleadoResponse.CS" />
+    <Compile Include="Entities\Responses\OferenteDto.cs" />
+    <Compile Include="Entities\Responses\OferentesPorPuestoResponse.cs" />
+    <Compile Include="Entities\Responses\PuestoDto.cs" />
+    <Compile Include="Entities\Responses\PuestosDisponiblesResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
