@@ -46,6 +46,7 @@
     <Compile Include="EmpleadoService.cs" />
     <Compile Include="OferenteService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PuestoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ADMExpedientePersonal.WebServices.Entities\ADMExpedientePersonal.WebServices.Entities.csproj">

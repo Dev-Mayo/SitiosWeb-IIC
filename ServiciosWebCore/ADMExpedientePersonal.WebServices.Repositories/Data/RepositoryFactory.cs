@@ -24,5 +24,10 @@ namespace ADMExpedientePersonal.WebServices.Common
             return new OferenteRepository(_connectionFactory);
         }
 
+        public static PuestoRepository CrearPuestoRepository()
+        {
+            return new PuestoRepository(_connectionFactory);
+        }
+
     }
 }

@@ -110,6 +110,10 @@ ALTER TABLE concursos ADD COLUMN puesto_id INT NULL;
 ALTER TABLE concursos ADD CONSTRAINT fk_concurso_puesto
     FOREIGN KEY (puesto_id) REFERENCES EMP.puestos(puesto_id);
     
+USE EMP;
+ALTER TABLE puestos
+    ADD COLUMN disponible TINYINT(1) NOT NULL DEFAULT 0;
+    
 CREATE TABLE empleados (
     empleado_id INT AUTO_INCREMENT PRIMARY KEY,
     identificacion VARCHAR(20) UNIQUE,
