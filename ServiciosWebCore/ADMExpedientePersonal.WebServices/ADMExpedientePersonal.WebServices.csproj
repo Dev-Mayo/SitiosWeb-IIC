@@ -122,31 +122,45 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AutenticacionService.svc" />
-    <Content Include="EmpleadoService.svc" />
-    <Content Include="OferenteService.svc" />
-    <Content Include="PuestoService.svc" />
-    <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Contracts\IAutenticacionService.cs" />
-    <Compile Include="AutenticacionService.svc.cs">
-      <DependentUpon>AutenticacionService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Contracts\IPuestoService.cs" />
-    <Compile Include="EmpleadoService.svc.cs">
-      <DependentUpon>EmpleadoService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Contracts\IEmpleadoService.cs" />
-    <Compile Include="Contracts\IOferenteService.cs" />
-    <Compile Include="OferenteService.svc.cs">
-      <DependentUpon>OferenteService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PuestoService.svc.cs">
-      <DependentUpon>PuestoService.svc</DependentUpon>
-    </Compile>
-  </ItemGroup>
+  <Content Include="AutenticacionService.svc" />
+  <Content Include="EmpleadoService.svc" />
+  <Content Include="DetalleOferenteService.svc" />
+  <Content Include="OferenteService.svc" />
+  <Content Include="PuestoService.svc" />
+  <Content Include="Web.config" />
+</ItemGroup>
+
+<ItemGroup>
+  <Compile Include="Contracts\IAutenticacionService.cs" />
+
+  <Compile Include="AutenticacionService.svc.cs">
+    <DependentUpon>AutenticacionService.svc</DependentUpon>
+  </Compile>
+
+  <Compile Include="Contracts\IDetalleOferenteService.cs" />
+  <Compile Include="Contracts\IPuestoService.cs" />
+
+  <Compile Include="EmpleadoService.svc.cs">
+    <DependentUpon>EmpleadoService.svc</DependentUpon>
+  </Compile>
+
+  <Compile Include="Contracts\IEmpleadoService.cs" />
+  <Compile Include="Contracts\IOferenteService.cs" />
+
+  <Compile Include="OferenteService.svc.cs">
+    <DependentUpon>OferenteService.svc</DependentUpon>
+  </Compile>
+
+  <Compile Include="Properties\AssemblyInfo.cs" />
+
+  <Compile Include="DetalleOferenteService.svc.cs">
+    <DependentUpon>DetalleOferenteService.svc</DependentUpon>
+  </Compile>
+
+  <Compile Include="PuestoService.svc.cs">
+    <DependentUpon>PuestoService.svc</DependentUpon>
+  </Compile>
+</ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Common\" />

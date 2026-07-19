@@ -1,6 +1,7 @@
 ﻿using System.ServiceModel;
-using ADMExpedientePersonal.WebServices.Entities.Responses;
+using System.ServiceModel.Web;
 using ADMExpedientePersonal.WebServices.Entities.Requests;
+using ADMExpedientePersonal.WebServices.Entities.Responses;
 
 namespace ADMExpedientePersonal.WebServices.Contracts
 {
@@ -8,13 +9,24 @@ namespace ADMExpedientePersonal.WebServices.Contracts
     public interface IEmpleadoService
     {
         [OperationContract]
-        EmpleadoResponse RegistrarEmpleado(EmpleadoRequest request);
-
+        [WebInvoke(
+            Method = "POST",
+            UriTemplate = "/registrar-empleado",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Bare
+        )]
+        EmpleadoResponse RegistrarEmpleado(
+            EmpleadoRequest request
+        );
 
         [OperationContract]
+        [WebGet(
+            UriTemplate = "/probar-conexion",
+            ResponseFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Bare
+        )]
         int ProbarConexionEMP();
     }
-
-
 }
 //Este es el contrato WCF por eso que va aquí en el COntracts del proyecto, NO en el proyecto Services, porque este es el que expone el servicio y el otro es el que implementa la lógica de negocio.

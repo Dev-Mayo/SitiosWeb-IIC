@@ -85,22 +85,7 @@ if ($identificacion !== '' && $error === '') {
     $curlError = curl_error($ch);
 
     curl_close($ch);
-//   esto lo usé para ver unos errores que tenía 
-//   echo '<pre>';
-
-// echo "HTTP CODE:\n";
-// var_dump($httpCode);
-
-// echo "\nRESPUESTA:\n";
-// var_dump($response);
-
-// echo "\nERROR CURL:\n";
-// var_dump($curlError);
-
-// echo '</pre>';
-
-// exit;
-
+    
     if ($response === false || $httpCode !== 200) {
         $error = "Error al conectar con el servicio de detalle de oferente.";
 
@@ -137,23 +122,103 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
         $error = 'No se recibió un código de puesto válido.';
     } else {
 
-        /*
+        // // Convertir la fecha WCF al formato DateTime que espera Core 3
+        // $fechaNacimiento = null;
+
+        // if (
+        //     !empty($oferente['FechaNacimiento']) &&
+        //     preg_match('/\/Date\((\-?\d+)/', $oferente['FechaNacimiento'], $coincidencias)
+        // ) {
+        //     $fechaNacimiento = date(
+        //         'Y-m-d\TH:i:s',
+        //         ((int)$coincidencias[1]) / 1000
+        //     );
+        // }
+
+        // Construir el JSON que recibirá Core 3
         $payload = json_encode([
-            'Identificacion'     => $oferente['Identificacion'],
-            'TipoIdentificacion' => $oferente['TipoIdentificacion'],
-            'NombreCompleto'     => $oferente['NombreCompleto'],
-            'FechaNacimiento'    => $oferente['FechaNacimiento'],
-            'PuestoId'       => $codigo_puesto,
-            'Correos'            => $oferente['Correos'],
-            'Telefonos'          => $oferente['Telefonos']
+    'Identificacion'     => $oferente['Identificacion'],
+    'TipoIdentificacion' => $oferente['TipoIdentificacion'],
+    'NombreCompleto'     => $oferente['NombreCompleto'],
+    'FechaNacimiento'    => $oferente['FechaNacimiento'],
+    'PuestoId'           => $codigo_puesto,
+    'Correos'            => $oferente['Correos'] ?? [],
+    'Telefonos'          => $oferente['Telefonos'] ?? []
+]);
+
+        $wcf_url = "http://localhost:63602/EmpleadoService.svc/registrar-empleado"; // Cambiar a la URL del servicio Core 3, depende de la configuración de su puerto y la ruta del servicio.
+
+        $ch = curl_init($wcf_url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($payload)
         ]);
 
-        Aquí se realizará el cURL hacia Core 3.
-        */
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-        $mensaje = 'Empleado creado con éxito.';
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
+
+        curl_close($ch);
+        
+        //   esto lo usé para ver unos errores que tenía 
+//   echo '<pre>';
+
+// echo "HTTP CODE:\n";
+// var_dump($httpCode);
+
+// echo "\nRESPUESTA:\n";
+// var_dump($response);
+
+// echo "\nERROR CURL:\n";
+// var_dump($curlError);
+
+// echo '</pre>';
+
+// exit;
+
+        if ($response === false || $httpCode !== 200) {
+
+            $error = 'Error al conectar con el servicio de registro de empleado.';
+
+            if ($curlError !== '') {
+                $error .= ' Detalle: ' . $curlError;
+            }
+
+        } else {
+
+            $resultado = json_decode($response, true);
+
+            if (!is_array($resultado)) {
+
+                $error = 'El servicio devolvió una respuesta inválida.';
+
+            } elseif (!empty($resultado['Exito'])) {
+header(
+    'Location: oferentes.php?codigo_puesto='
+    . urlencode((string)$codigo_puesto)
+    . '&msg=empleado_creado'
+);
+
+exit;
+
+            } else {
+
+                $error = $resultado['Mensaje']
+                    ?? 'No fue posible registrar el empleado.';
+
+            }
+        }
     }
-}
+}   
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -341,20 +406,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
 
         </div>
 
-        <!-- <div class="puesto-info">
-            <strong>Código del puesto seleccionado:</strong>
- </div> -->
-            <?php if ($codigo_puesto > 0): ?>
-
-                <?php echo htmlspecialchars((string)$codigo_puesto); ?>
-
-            <?php else: ?>
-
-                No disponible
-
-            <?php endif; ?>
+      
        
-
         <?php if ($mensaje !== ''): ?>
 
             <div class="alert alert-success">
@@ -543,65 +596,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
 
         <div class="text-muted">
             No hay preparación académica registrada.
-        </div>
-
-    <?php endif; ?>
-
-</div>
-<div class="section-title">
-    Experiencia laboral
-</div>
-
-<div class="mb-4">
-
-    <?php if (!empty($oferente['ExperienciaLaboral'])): ?>
-
-        <?php foreach ($oferente['ExperienciaLaboral'] as $experiencia): ?>
-
-            <div class="list-item-custom">
-
-                <div class="fw-semibold mb-1">
-                    <?php
-                        echo htmlspecialchars(
-                            $experiencia['Puesto'] ?? 'Puesto no disponible'
-                        );
-                    ?>
-                </div>
-
-                <div class="text-muted small">
-                    Empresa:
-                    <?php
-                        echo htmlspecialchars(
-                            $experiencia['Empresa'] ?? 'No disponible'
-                        );
-                    ?>
-                </div>
-
-                <div class="text-muted small">
-                    Periodo:
-                    <?php
-                        echo htmlspecialchars(
-                            formatearFechaWcf($experiencia['FechaInicio']) ?? 'No disponible'
-                        );
-                    ?>
-
-                    -
-
-                    <?php
-                        echo htmlspecialchars(
-                            formatearFechaWcf($experiencia['FechaFin']) ?? 'Actualidad'
-                        );
-                    ?>
-                </div>
-
-            </div>
-
-        <?php endforeach; ?>
-
-    <?php else: ?>
-
-        <div class="text-muted">
-            No hay experiencia laboral registrada.
         </div>
 
     <?php endif; ?>
