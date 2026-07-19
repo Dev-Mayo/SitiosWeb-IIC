@@ -34,66 +34,91 @@ foreach (array_slice($palabras, 0, 2) as $p) {
     $iniciales .= strtoupper(mb_substr($p, 0, 1));
 }
 
+
+function formatearFechaWcf($fechaWcf)
+{
+    if (empty($fechaWcf)) {
+        return 'No disponible';
+    }
+
+    if (preg_match('/\/Date\((\-?\d+)/', $fechaWcf, $coincidencias)) {
+        $milisegundos = (int)$coincidencias[1];
+        $segundos = (int)($milisegundos / 1000);
+
+        return date('d/m/Y', $segundos);
+    }
+
+    return $fechaWcf;
+}
 /*
 |--------------------------------------------------------------------------
-| MUCHACHONES AQUI HAY DATOS SIMULADOS, por fa al que le toque core 8 lea los comentarios de abajo
-|--------------------------------------------------------------------------
-| Este bloque se reemplazará por el servicio Core 8.
-| Core 8 deberá recibir la identificación y devolver todos los datos
-| registrados para el oferente.
+| CONSUMO DEL SERVICIO CORE 8
 |--------------------------------------------------------------------------
 */
 
 $oferente = null;
 
-$oferentesSimulados = [
-    '305550555' => [
-        'Identificacion'     => '305550555',
-        'TipoIdentificacion' => 'Cedula',
-        'NombreCompleto'     => 'María Fernanda Pérez',
-        'FechaNacimiento'    => '1995-04-20',
-        'Correos'            => [
-            'maria.perez@email.com',
-            'maria.trabajo@email.com'
-        ],
-        'Telefonos'          => [
-            '8888-8888',
-            '2222-2222'
-        ],
-        'Curriculum'         => 'curriculum_maria_perez.pdf'
-    ],
-    '208880888' => [
-        'Identificacion'     => '208880888',
-        'TipoIdentificacion' => 'Cedula',
-        'NombreCompleto'     => 'Carlos Andrés Rodríguez',
-        'FechaNacimiento'    => '1990-08-15',
-        'Correos'            => [
-            'carlos.rodriguez@email.com'
-        ],
-        'Telefonos'          => [
-            '8777-7777'
-        ],
-        'Curriculum'         => 'curriculum_carlos_rodriguez.pdf'
-    ],
-    '109990999' => [
-        'Identificacion'     => '109990999',
-        'TipoIdentificacion' => 'Cedula',
-        'NombreCompleto'     => 'Daniela Vargas Gómez',
-        'FechaNacimiento'    => '1998-11-10',
-        'Correos'            => [
-            'daniela.vargas@email.com'
-        ],
-        'Telefonos'          => [
-            '8666-6666'
-        ],
-        'Curriculum'         => 'curriculum_daniela_vargas.pdf'
-    ]
-];
+if ($identificacion !== '' && $error === '') {
 
-if ($identificacion !== '' && isset($oferentesSimulados[$identificacion])) {
-    $oferente = $oferentesSimulados[$identificacion];
-} elseif ($identificacion !== '' && $error === '') {
-    $error = 'No se encontró información para el oferente seleccionado.';
+    $wcf_url = "http://localhost:63602/DetalleOferenteService.svc/obtener-detalle";
+
+    $payload = json_encode([
+        "Identificacion" => $identificacion
+    ]);
+
+    $ch = curl_init($wcf_url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen($payload)
+    ]);
+
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+
+    curl_close($ch);
+//   esto lo usé para ver unos errores que tenía 
+//   echo '<pre>';
+
+// echo "HTTP CODE:\n";
+// var_dump($httpCode);
+
+// echo "\nRESPUESTA:\n";
+// var_dump($response);
+
+// echo "\nERROR CURL:\n";
+// var_dump($curlError);
+
+// echo '</pre>';
+
+// exit;
+
+    if ($response === false || $httpCode !== 200) {
+        $error = "Error al conectar con el servicio de detalle de oferente.";
+
+        if ($curlError !== '') {
+            $error .= " Detalle: " . $curlError;
+        }
+    } else {
+        $resultado = json_decode($response, true);
+
+        if (!is_array($resultado)) {
+            $error = "El servicio devolvió una respuesta inválida.";
+        } elseif (!empty($resultado['Exito'])) {
+            $oferente = $resultado;
+        } else {
+            $error = $resultado['Mensaje']
+                ?? "No se encontró información para el oferente seleccionado.";
+        }
+    }
 }
 
 /*
@@ -118,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
             'TipoIdentificacion' => $oferente['TipoIdentificacion'],
             'NombreCompleto'     => $oferente['NombreCompleto'],
             'FechaNacimiento'    => $oferente['FechaNacimiento'],
-            'CodigoPuesto'       => $codigo_puesto,
+            'PuestoId'       => $codigo_puesto,
             'Correos'            => $oferente['Correos'],
             'Telefonos'          => $oferente['Telefonos']
         ]);
@@ -318,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
 
         <!-- <div class="puesto-info">
             <strong>Código del puesto seleccionado:</strong>
-
+ </div> -->
             <?php if ($codigo_puesto > 0): ?>
 
                 <?php echo htmlspecialchars((string)$codigo_puesto); ?>
@@ -328,7 +353,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
                 No disponible
 
             <?php endif; ?>
-        </div> -->
+       
 
         <?php if ($mensaje !== ''): ?>
 
@@ -395,9 +420,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
 
                     <div class="detail-value">
                         <?php
-                            echo htmlspecialchars(
-                                $oferente['FechaNacimiento']
-                            );
+                           echo htmlspecialchars(
+    formatearFechaWcf($oferente['FechaNacimiento'])
+);
                         ?>
                     </div>
                 </div>
@@ -421,7 +446,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
                         <?php foreach ($oferente['Correos'] as $correo): ?>
 
                             <div class="list-item-custom">
-                                📧 <?php echo htmlspecialchars($correo); ?>
+                                 <?php echo htmlspecialchars($correo); ?>
                             </div>
 
                         <?php endforeach; ?>
@@ -447,7 +472,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
                         <?php foreach ($oferente['Telefonos'] as $telefono): ?>
 
                             <div class="list-item-custom">
-                                📞 <?php echo htmlspecialchars($telefono); ?>
+                                 <?php echo htmlspecialchars($telefono); ?>
                             </div>
 
                         <?php endforeach; ?>
@@ -462,15 +487,263 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
 
                 </div>
 
+
             </div>
+            <div class="section-title">
+    Preparación académica
+</div>
+
+<div class="mb-4">
+
+    <?php if (!empty($oferente['PreparacionAcademica'])): ?>
+
+        <?php foreach ($oferente['PreparacionAcademica'] as $preparacion): ?>
+
+            <div class="list-item-custom">
+
+                <div class="fw-semibold mb-1">
+                    <?php
+                        echo htmlspecialchars(
+                            $preparacion['Titulo'] ?? 'Título no disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Institución:
+                    <?php
+                        echo htmlspecialchars(
+                            $preparacion['CodigoInstitucion'] ?? 'No disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Periodo:
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($preparacion['FechaInicio']) ?? 'No disponible'
+                        );
+                    ?>
+
+                    -
+
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($preparacion['FechaFin']) ?? 'Actualidad'
+                        );
+                    ?>
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+    <?php else: ?>
+
+        <div class="text-muted">
+            No hay preparación académica registrada.
+        </div>
+
+    <?php endif; ?>
+
+</div>
+<div class="section-title">
+    Experiencia laboral
+</div>
+
+<div class="mb-4">
+
+    <?php if (!empty($oferente['ExperienciaLaboral'])): ?>
+
+        <?php foreach ($oferente['ExperienciaLaboral'] as $experiencia): ?>
+
+            <div class="list-item-custom">
+
+                <div class="fw-semibold mb-1">
+                    <?php
+                        echo htmlspecialchars(
+                            $experiencia['Puesto'] ?? 'Puesto no disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Empresa:
+                    <?php
+                        echo htmlspecialchars(
+                            $experiencia['Empresa'] ?? 'No disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Periodo:
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($experiencia['FechaInicio']) ?? 'No disponible'
+                        );
+                    ?>
+
+                    -
+
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($experiencia['FechaFin']) ?? 'Actualidad'
+                        );
+                    ?>
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+    <?php else: ?>
+
+        <div class="text-muted">
+            No hay experiencia laboral registrada.
+        </div>
+
+    <?php endif; ?>
+
+</div>
+<div class="section-title">
+    Experiencia laboral
+</div>
+
+<div class="mb-4">
+
+    <?php if (!empty($oferente['ExperienciaLaboral'])): ?>
+
+        <?php foreach ($oferente['ExperienciaLaboral'] as $experiencia): ?>
+
+            <div class="list-item-custom">
+
+                <div class="fw-semibold mb-1">
+                    <?php
+                        echo htmlspecialchars(
+                            $experiencia['Puesto'] ?? 'Puesto no disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Empresa:
+                    <?php
+                        echo htmlspecialchars(
+                            $experiencia['Empresa'] ?? 'No disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Periodo:
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($experiencia['FechaInicio']) ?? 'No disponible'
+                        );
+                    ?>
+
+                    -
+
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($experiencia['FechaFin']) ?? 'Actualidad'
+                        );
+                    ?>
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+    <?php else: ?>
+
+        <div class="text-muted">
+            No hay experiencia laboral registrada.
+        </div>
+
+    <?php endif; ?>
+
+</div>
+
+<div class="section-title">
+    Concursos
+</div>
+
+<div class="mb-4">
+
+    <?php if (!empty($oferente['Concursos'])): ?>
+
+        <?php foreach ($oferente['Concursos'] as $concurso): ?>
+
+            <div class="list-item-custom">
+
+                <div class="fw-semibold mb-1">
+                    <?php
+                        echo htmlspecialchars(
+                            $concurso['Nombre'] ?? 'Concurso no disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Código:
+                    <?php
+                        echo htmlspecialchars(
+                            $concurso['CodigoConcurso'] ?? 'No disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Estado:
+                    <?php
+                        echo htmlspecialchars(
+                            $concurso['Estado'] ?? 'No disponible'
+                        );
+                    ?>
+                </div>
+
+                <div class="text-muted small">
+                    Periodo:
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($concurso['FechaInicio']) ?? 'No disponible'
+                        );
+                    ?>
+
+                    -
+
+                    <?php
+                        echo htmlspecialchars(
+                            formatearFechaWcf($concurso['FechaFin'])  ?? 'No disponible'
+                        );
+                    ?>
+                </div>
+
+            </div>
+
+        <?php endforeach; ?>
+
+    <?php else: ?>
+
+        <div class="text-muted">
+            No hay concursos registrados.
+        </div>
+
+    <?php endif; ?>
+
+</div>
 
             <div class="section-title">
                 Curriculum
             </div>
 
             <div class="detail-value mb-4">
-                📄
-                <?php echo htmlspecialchars($oferente['Curriculum']); ?>
+                
+               <?php
+        echo htmlspecialchars( $oferente['Curriculum'] ?? 'No disponible la información' );?>
             </div>
 
             <div class="d-flex flex-wrap gap-2">
