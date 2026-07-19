@@ -50,7 +50,7 @@ Salida esperada:
     Identificacion
     NombreCompleto
 ==========================================================
-*/
+
 
 $oferentes = [
     [
@@ -65,7 +65,47 @@ $oferentes = [
         'Identificacion' => '109990999',
         'NombreCompleto' => 'Daniela Vargas Gómez'
     ]
-];
+];*/
+
+// Consumo del servicio Core 2 (OferenteService)
+$payload = json_encode(["CodigoPuesto" => $codigo_puesto]);
+
+$wcf_url = "http://localhost:63602/OferenteService.svc/obtenerPorPuesto";
+
+$ch = curl_init($wcf_url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($payload)
+]);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+$oferentes = [];
+$errorCore2 = '';
+
+if ($response === false || $httpCode !== 200) {
+    $errorCore2 = 'Error al conectar con el servicio de oferentes.';
+} else {
+    $resultado = json_decode($response, true);
+    if (!empty($resultado['Success'])) {
+        foreach ($resultado['Oferentes'] as $item) {
+            $oferentes[] = [
+                'Identificacion' => $item['Identificacion'],
+                'NombreCompleto' => $item['NombreCompleto']
+            ];
+        }
+    } else {
+        $errorCore2 = $resultado['Mensaje'] ?? 'No se pudo obtener el listado de oferentes.';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -220,6 +260,7 @@ $oferentes = [
                     Seleccione el oferente que será convertido en empleado.
                 </p>
             </div>
+            
 
             <!-- <div style="font-size: 44px;">
                 👥
@@ -227,7 +268,11 @@ $oferentes = [
 
         </div>
 
-      
+        <?php if (!empty($errorCore2)): ?>
+            <div class="alert alert-danger">
+                <?php echo htmlspecialchars($errorCore2); ?>
+            </div>
+        <?php endif; ?>
 
         <?php if (empty($oferentes)): ?>
 
