@@ -17,38 +17,49 @@ get_header(); ?>
     <div class="container">
         <div class="row g-4">
             <?php
-            $wcf_url = "http://localhost:63602/PuestoService.svc/listarDisponibles";
-
-            $ch = curl_init($wcf_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-
-            $response = curl_exec($ch);
-            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
+            function ofe_conectar_bd() {
+                $mysqli = mysqli_init();
+                $mysqli->ssl_set(null, null, null, null, null);
+                $conectado = @$mysqli->real_connect(
+                    OFE_DB_HOST,
+                    OFE_DB_USER,
+                    OFE_DB_PASS,
+                    OFE_DB_NAME,
+                    OFE_DB_PORT,
+                    null,
+                    MYSQLI_CLIENT_SSL
+                );
+                return $conectado ? $mysqli : null;
+            }
 
             $puestos = array();
             $errorPuestos = '';
 
-            if ($response === false || $httpCode !== 200) {
+            $conn = ofe_conectar_bd();
+
+            if ($conn === null) {
                 $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
             } else {
-                $resultado = json_decode($response, true);
-                if (!empty($resultado['Success'])) {
-                    foreach ($resultado['Puestos'] as $p) {
-                        $puestos[] = array(
-                            'id'      => $p['PuestoId'],
-                            'nombre'  => $p['Nombre'],
-                            'salario' => $p['Salario'],
-                            'jefe'    => $p['Jefe']
-                        );
-                    }
+                // multi_query es necesario para CALL a un stored procedure
+                if ($conn->multi_query("CALL sp_listar_puestos_disponibles()")) {
+                    do {
+                        if ($resultado = $conn->store_result()) {
+                            while ($fila = $resultado->fetch_assoc()) {
+                                $puestos[] = array(
+                                    'id'      => $fila['puesto_id'],
+                                    'nombre'  => $fila['nombre'],
+                                    'salario' => $fila['salario'],
+                                    'jefe'    => $fila['nombre_jefe'] ?? 'Sin asignar'
+                                );
+                            }
+                            $resultado->free();
+                        }
+                    } while ($conn->more_results() && $conn->next_result());
                 } else {
                     $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
                 }
+
+                $conn->close();
             }
 
             if (!empty($errorPuestos)): ?>
@@ -64,7 +75,7 @@ get_header(); ?>
                     <div class="card-shirofy puesto-card">
                         <div class="card-body">
                             <div class="card-title">
-                                <a href="<?php echo home_url('/puestos/' . urlencode($p['id'])); ?>"
+                                <a href="<?php echo home_url('/puestos/?id=' . urlencode($p['id'])); ?>"
                                    class="puesto-link">
                                     <?php echo esc_html($p['nombre']); ?>
                                 </a>
