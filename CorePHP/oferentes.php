@@ -9,6 +9,11 @@ if (!isset($_SESSION['id_usuario'])) {
 
 $nombre_completo = $_SESSION['nombre_completo'] ?? 'Usuario';
 $usuario         = $_SESSION['usuario'] ?? '';
+$mensaje = '';
+
+if (isset($_GET['msg']) && $_GET['msg'] === 'empleado_creado') {
+    $mensaje = 'Empleado creado con éxito.';
+}
 
 // Recibir el código del puesto desde Core 6
 $codigo_puesto = filter_input(INPUT_GET, 'codigo_puesto', FILTER_VALIDATE_INT);
@@ -25,47 +30,6 @@ foreach (array_slice($palabras, 0, 2) as $p) {
     $iniciales .= strtoupper(mb_substr($p, 0, 1));
 }
 
-/*
-|--------------------------------------------------------------------------
-| MUCHACHONES AQUI HAY DATOS SIMULADOS, por fa al que le toque core 2 lea los comentarios de abajo
-|--------------------------------------------------------------------------
-| Este bloque se reemplazará luego por el consumo del servicio Core 2.
-|
-| Core 2 deberá recibir el código del puesto y devolver:
-| - Identificación del oferente
-| - Nombre completo del oferente
-|--------------------------------------------------------------------------
-*/
-/*
-==========================================================
-PENDIENTE INTEGRACIÓN CORE 2
-
-Este bloque de datos simulados será reemplazado por el
-consumo del servicio WCF Core 2.
-
-Entrada:
-    CodigoPuesto
-
-Salida esperada:
-    Identificacion
-    NombreCompleto
-==========================================================
-
-
-$oferentes = [
-    [
-        'Identificacion' => '305550555',
-        'NombreCompleto' => 'María Fernanda Pérez'
-    ],
-    [
-        'Identificacion' => '208880888',
-        'NombreCompleto' => 'Carlos Andrés Rodríguez'
-    ],
-    [
-        'Identificacion' => '109990999',
-        'NombreCompleto' => 'Daniela Vargas Gómez'
-    ]
-];*/
 
 // Consumo del servicio Core 2 (OferenteService)
 $payload = json_encode(["CodigoPuesto" => $codigo_puesto]);
@@ -94,6 +58,21 @@ if ($response === false || $httpCode !== 200) {
     $errorCore2 = 'Error al conectar con el servicio de oferentes.';
 } else {
     $resultado = json_decode($response, true);
+// echo '<pre>';
+
+// echo "HTTP CODE:\n";
+// var_dump($httpCode);
+
+// echo "\nRESPUESTA CRUDA:\n";
+// var_dump($response);
+
+// echo "\nJSON DECODIFICADO:\n";
+// var_dump($resultado);
+
+// echo '</pre>';
+
+// exit;
+
     if (!empty($resultado['Success'])) {
         foreach ($resultado['Oferentes'] as $item) {
             $oferentes[] = [
@@ -268,6 +247,12 @@ if ($response === false || $httpCode !== 200) {
 
         </div>
 
+        <?php if ($mensaje !== ''): ?>
+            <div class="alert alert-success">
+                <?php echo htmlspecialchars($mensaje); ?>
+            </div>
+
+        <?php endif; ?>
         <?php if (!empty($errorCore2)): ?>
             <div class="alert alert-danger">
                 <?php echo htmlspecialchars($errorCore2); ?>
