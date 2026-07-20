@@ -52,10 +52,10 @@
     <Compile Include="Entities\Responses\DetalleOferenteResponse.cs" />
     <Compile Include="Entities\Responses\EmpleadoResponse.cs" />
     <Compile Include="Entities\Responses\ExperienciaLaboralResponse.cs" />
-    <Compile Include="Entities\Responses\OferenteDto.cs" />
+    <Compile Include="Entities\Models\OferenteDto.cs" />
     <Compile Include="Entities\Responses\OferentesPorPuestoResponse.cs" />
     <Compile Include="Entities\Responses\PreparacionAcademicaResponse.cs" />
-    <Compile Include="Entities\Responses\PuestoDto.cs" />
+    <Compile Include="Entities\Models\PuestoDto.cs" />
     <Compile Include="Entities\Responses\PuestosDisponiblesResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

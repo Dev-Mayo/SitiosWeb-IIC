@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ADMExpedientePersonal.WebServices.Entities.Entities.Responses
+namespace ADMExpedientePersonal.WebServices.Entities.Entities.Models
 {
     [DataContract]
     public class PuestoDto

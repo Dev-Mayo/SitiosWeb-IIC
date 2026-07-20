@@ -1,5 +1,6 @@
 ﻿using ADMExpedientePersonal.WebServices.Entities.Entities.Requests;
 using ADMExpedientePersonal.WebServices.Entities.Entities.Responses;
+using ADMExpedientePersonal.WebServices.Entities.Entities.Models;
 using ADMExpedientePersonal.WebServices.Repositories;
 using System;
 using System.Collections.Generic;

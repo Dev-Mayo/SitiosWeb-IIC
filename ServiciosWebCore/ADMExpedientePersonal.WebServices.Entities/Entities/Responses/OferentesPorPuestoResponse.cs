@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using ADMExpedientePersonal.WebServices.Entities.Entities.Models;
 
 namespace ADMExpedientePersonal.WebServices.Entities.Entities.Responses
 {
