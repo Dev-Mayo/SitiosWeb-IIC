@@ -15,11 +15,17 @@ namespace ADMExpedientePersonal.WebServices
 
         public DetalleOferenteService()
         {
-            var repository =
-                RepositoryFactory.CrearDetalleOferenteRepository();
+            var detalleOferenteRepository =
+             RepositoryFactory.CrearDetalleOferenteRepository();
+
+            var bitacoraRepository =
+                RepositoryFactory.CrearBitacoraRepository();
 
             _service =
-                new DetalleOferenteBusinessService(repository);
+                new DetalleOferenteBusinessService(
+                    detalleOferenteRepository,
+                    bitacoraRepository
+                );
         }
 
         public DetalleOferenteResponse ObtenerDetalleOferente(

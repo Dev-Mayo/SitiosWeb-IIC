@@ -32,11 +32,24 @@ foreach (array_slice($palabras, 0, 2) as $p) {
 
 
 // Consumo del servicio Core 2 (OferenteService)
-$payload = json_encode(["CodigoPuesto" => $codigo_puesto]);
+$payload = json_encode(["CodigoPuesto" => $codigo_puesto,"Usuario" => $usuario]);
 
 $wcf_url = "http://localhost:63602/OferenteService.svc/obtenerPorPuesto";
 
 $ch = curl_init($wcf_url);
+// echo '<pre>';
+
+// echo "USUARIO EN SESIÓN:\n";
+// var_dump($_SESSION['usuario'] ?? null);
+
+// echo "\nVARIABLE USUARIO:\n";
+// var_dump($usuario);
+
+// echo "\nPAYLOAD:\n";
+// var_dump($payload);
+
+// echo '</pre>';
+// exit;
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);

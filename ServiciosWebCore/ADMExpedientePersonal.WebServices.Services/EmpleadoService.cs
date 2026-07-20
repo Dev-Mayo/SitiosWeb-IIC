@@ -1,18 +1,22 @@
-﻿using ADMExpedientePersonal.WebServices.Common;
-using ADMExpedientePersonal.WebServices.Entities.Requests;
+﻿using ADMExpedientePersonal.WebServices.Entities.Requests;
 using ADMExpedientePersonal.WebServices.Entities.Responses;
 using ADMExpedientePersonal.WebServices.Repositories;
 using System;
+using System.Text;
 
 namespace ADMExpedientePersonal.WebServices.Services
 {
     public class EmpleadoService
     {
         private readonly EmpleadoRepository _repository;
+        private readonly BitacoraRepository _bitacoraRepository;
 
-        public EmpleadoService(EmpleadoRepository repository)
+        public EmpleadoService(
+            EmpleadoRepository repository,
+            BitacoraRepository bitacoraRepository)
         {
             _repository = repository;
+            _bitacoraRepository = bitacoraRepository;
         }
 
         public EmpleadoResponse RegistrarEmpleado(EmpleadoRequest request)
@@ -37,25 +41,187 @@ namespace ADMExpedientePersonal.WebServices.Services
                 if (request.PuestoId <= 0)
                     return Error("El puesto es requerido.");
 
-                if (request.Telefonos == null || request.Telefonos.Count == 0)
+                if (request.Telefonos == null ||
+                    request.Telefonos.Count == 0)
+                {
                     return Error("Debe indicar al menos un teléfono.");
+                }
 
                 if (_repository.ExisteEmpleado(request.Identificacion))
-                    return Error("Ya existe un empleado con esa identificación.");
+                {
+                    return Error(
+                        "Ya existe un empleado con esa identificación."
+                    );
+                }
 
-                int empleadoId = _repository.RegistrarEmpleado(request);
+                int empleadoId =
+                    _repository.RegistrarEmpleado(request);
+
+                bool bitacoraRegistrada =
+                    RegistrarBitacoraCreacion(request, empleadoId);
 
                 return new EmpleadoResponse
                 {
                     Exito = true,
-                    Mensaje = "Empleado creado con éxito.",
+                    Mensaje = bitacoraRegistrada
+                        ? "Empleado creado con éxito."
+                        : "Empleado creado con éxito, pero no se pudo registrar la bitácora.",
                     EmpleadoId = empleadoId
                 };
             }
             catch (Exception ex)
             {
-                return Error("Error técnico al registrar el empleado: " + ex.Message);
+                RegistrarBitacoraError(request, ex);
+
+                return Error(
+                    "Error técnico al registrar el empleado: "
+                    + ex.Message
+                );
             }
+        }
+
+        private bool RegistrarBitacoraCreacion(
+            EmpleadoRequest request,
+            int empleadoId)
+        {
+            try
+            {
+                string descripcionJson =
+                    "{"
+                    + "\"Mensaje\":\"Empleado creado correctamente\","
+                    + "\"EmpleadoId\":" + empleadoId + ","
+                    + "\"Identificacion\":\""
+                    + EscaparJson(request.Identificacion) + "\","
+                    + "\"NombreCompleto\":\""
+                    + EscaparJson(request.NombreCompleto) + "\","
+                    + "\"PuestoId\":" + request.PuestoId
+                    + "}";
+
+                _bitacoraRepository.Registrar(
+                    ObtenerUsuario(request),
+                    "CREATE",
+                    descripcionJson
+                );
+
+                return true;
+            }
+            catch
+            {
+                /*
+                 * El empleado ya fue creado.
+                 * Si falla únicamente la bitácora, no se debe indicar
+                 * que toda la operación de creación falló.
+                 */
+                return false;
+            }
+        }
+
+        private void RegistrarBitacoraError(
+            EmpleadoRequest request,
+            Exception ex)
+        {
+            try
+            {
+                string identificacion =
+                    request?.Identificacion ?? string.Empty;
+
+                string nombreCompleto =
+                    request?.NombreCompleto ?? string.Empty;
+
+                string descripcionJson =
+                    "{"
+                    + "\"Mensaje\":\"Error técnico al registrar empleado\","
+                    + "\"Identificacion\":\""
+                    + EscaparJson(identificacion) + "\","
+                    + "\"NombreCompleto\":\""
+                    + EscaparJson(nombreCompleto) + "\","
+                    + "\"Error\":\""
+                    + EscaparJson(ex.Message) + "\""
+                    + "}";
+
+                _bitacoraRepository.Registrar(
+                    ObtenerUsuario(request),
+                    "ERROR",
+                    descripcionJson
+                );
+            }
+            catch
+            {
+                /*
+                 * Si también falla la bitácora, se conserva
+                 * el error original del registro del empleado.
+                 */
+            }
+        }
+
+        private string ObtenerUsuario(EmpleadoRequest request)
+        {
+            if (request == null ||
+                string.IsNullOrWhiteSpace(request.Usuario))
+            {
+                return "USUARIO_NO_IDENTIFICADO";
+            }
+
+            return request.Usuario;
+        }
+
+        private string EscaparJson(string valor)
+        {
+            if (valor == null)
+                return string.Empty;
+
+            var resultado = new StringBuilder();
+
+            foreach (char caracter in valor)
+            {
+                switch (caracter)
+                {
+                    case '"':
+                        resultado.Append("\\\"");
+                        break;
+
+                    case '\\':
+                        resultado.Append("\\\\");
+                        break;
+
+                    case '\b':
+                        resultado.Append("\\b");
+                        break;
+
+                    case '\f':
+                        resultado.Append("\\f");
+                        break;
+
+                    case '\n':
+                        resultado.Append("\\n");
+                        break;
+
+                    case '\r':
+                        resultado.Append("\\r");
+                        break;
+
+                    case '\t':
+                        resultado.Append("\\t");
+                        break;
+
+                    default:
+                        if (caracter < 32)
+                        {
+                            resultado.AppendFormat(
+                                "\\u{0:x4}",
+                                (int)caracter
+                            );
+                        }
+                        else
+                        {
+                            resultado.Append(caracter);
+                        }
+
+                        break;
+                }
+            }
+
+            return resultado.ToString();
         }
 
         public int ProbarConexionEMP()

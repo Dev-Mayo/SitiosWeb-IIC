@@ -100,6 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutenticacionRepository.cs" />
+    <Compile Include="BitacoraRepository.cs" />
     <Compile Include="Data\IDbConnectionFactory.cs" />
     <Compile Include="Data\MysqlConnectionFactory.cs" />
     <Compile Include="Data\RepositoryFactory.cs" />

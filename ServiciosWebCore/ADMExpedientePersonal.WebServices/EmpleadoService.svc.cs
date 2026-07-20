@@ -15,8 +15,13 @@ namespace ADMExpedientePersonal.WebServices
 
         public EmpleadoService()
         {
-            var repository = RepositoryFactory.CrearEmpleadoRepository();
-            _service = new EmpleadoBusinessService(repository);
+            var empleadoRepository = RepositoryFactory.CrearEmpleadoRepository();
+            var bitacoraRepository = RepositoryFactory.CrearBitacoraRepository();
+
+            _service = new EmpleadoBusinessService(
+                empleadoRepository,
+                bitacoraRepository
+            );
         }
 
         public EmpleadoResponse RegistrarEmpleado(EmpleadoRequest request)

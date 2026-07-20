@@ -2,15 +2,7 @@
 using ADMExpedientePersonal.WebServices.Contracts;
 using ADMExpedientePersonal.WebServices.Entities.Entities.Requests;
 using ADMExpedientePersonal.WebServices.Entities.Entities.Responses;
-using ADMExpedientePersonal.WebServices.Repositories;
-using ADMExpedientePersonal.WebServices.Repositories.Data;
 using ADMExpedientePersonal.WebServices.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 
 namespace ADMExpedientePersonal.WebServices
 {
@@ -20,12 +12,20 @@ namespace ADMExpedientePersonal.WebServices
 
         public OferenteServiceHost()
         {
+            var oferenteRepository =
+                RepositoryFactory.CrearOferenteRepository();
+
+            var bitacoraRepository =
+                RepositoryFactory.CrearBitacoraRepository();
+
             _service = new OferenteService(
-                RepositoryFactory.CrearOferenteRepository()
+                oferenteRepository,
+                bitacoraRepository
             );
         }
 
-        public OferentesPorPuestoResponse ObtenerOferentesPorPuesto(OferentesPorPuestoRequest request)
+        public OferentesPorPuestoResponse ObtenerOferentesPorPuesto(
+            OferentesPorPuestoRequest request)
         {
             return _service.ObtenerOferentesPorPuesto(request);
         }

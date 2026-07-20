@@ -27,5 +27,8 @@ namespace ADMExpedientePersonal.WebServices.Entities.Requests
 
         [DataMember]
         public List<string> Telefonos { get; set; }
+
+        [DataMember]
+        public string Usuario { get; set; }
     }
 }

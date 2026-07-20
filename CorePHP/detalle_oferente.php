@@ -63,7 +63,7 @@ if ($identificacion !== '' && $error === '') {
     $wcf_url = "http://localhost:63602/DetalleOferenteService.svc/obtener-detalle";
 
     $payload = json_encode([
-        "Identificacion" => $identificacion
+        "Identificacion" => $identificacion, "Usuario" => $usuario
     ]);
 
     $ch = curl_init($wcf_url);
@@ -143,7 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
     'FechaNacimiento'    => $oferente['FechaNacimiento'],
     'PuestoId'           => $codigo_puesto,
     'Correos'            => $oferente['Correos'] ?? [],
-    'Telefonos'          => $oferente['Telefonos'] ?? []
+    'Telefonos'          => $oferente['Telefonos'] ?? [],
+    'Usuario'            => $usuario
 ]);
 
         $wcf_url = "http://localhost:63602/EmpleadoService.svc/registrar-empleado"; // Cambiar a la URL del servicio Core 3, depende de la configuración de su puerto y la ruta del servicio.

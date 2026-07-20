@@ -12,5 +12,8 @@ namespace ADMExpedientePersonal.WebServices.Entities.Entities.Requests
     {
         [DataMember]
         public int CodigoPuesto { get; set; }
+
+        [DataMember]
+        public string Usuario { get; set; }
     }
 }

@@ -12,7 +12,10 @@ namespace ADMExpedientePersonal.WebServices.Common
         {
             return new EmpleadoRepository(_connectionFactory);
         }
-
+        public static BitacoraRepository CrearBitacoraRepository()
+        {
+            return new BitacoraRepository(_connectionFactory);
+        }
 
         public static AutenticacionRepository CrearAutenticacionRepository()
         {
@@ -32,6 +35,7 @@ namespace ADMExpedientePersonal.WebServices.Common
         {
             return new PuestoRepository(_connectionFactory);
         }
+
 
     }
 }

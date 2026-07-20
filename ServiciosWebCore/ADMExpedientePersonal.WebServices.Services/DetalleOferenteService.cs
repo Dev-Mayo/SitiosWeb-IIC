@@ -8,11 +8,14 @@ namespace ADMExpedientePersonal.WebServices.Services
     public class DetalleOferenteService
     {
         private readonly DetalleOferenteRepository _repository;
+        private readonly BitacoraRepository _bitacoraRepository;
 
         public DetalleOferenteService(
-            DetalleOferenteRepository repository)
+            DetalleOferenteRepository repository,
+            BitacoraRepository bitacoraRepository)
         {
             _repository = repository;
+            _bitacoraRepository = bitacoraRepository;
         }
 
         public DetalleOferenteResponse ObtenerDetalleOferente(
@@ -38,6 +41,8 @@ namespace ADMExpedientePersonal.WebServices.Services
                         "No se encontró un oferente con la identificación indicada."
                     );
 
+                RegistrarConsultaEnBitacora(request);
+
                 oferente.Exito = true;
                 oferente.Mensaje =
                     "Detalle del oferente obtenido correctamente.";
@@ -51,6 +56,49 @@ namespace ADMExpedientePersonal.WebServices.Services
                     + ex.Message
                 );
             }
+        }
+
+        private void RegistrarConsultaEnBitacora(
+            DetalleOferenteRequest request)
+        {
+            try
+            {
+                string descripcionJson =
+                    "{"
+                    + "\"Consulta\":\"El usuario consulta el detalle del oferente\","
+                    + "\"Identificacion\":\""
+                    + EscaparJson(request.Identificacion)
+                    + "\""
+                    + "}";
+
+                _bitacoraRepository.Registrar(
+                    ObtenerUsuario(request.Usuario),
+                    "READ",
+                    descripcionJson
+                );
+            }
+            catch
+            {
+                // No impedir que el servicio responda
+                // si falla el registro de la bitácora.
+            }
+        }
+
+        private string ObtenerUsuario(string usuario)
+        {
+            return string.IsNullOrWhiteSpace(usuario)
+                ? "USUARIO_NO_IDENTIFICADO"
+                : usuario;
+        }
+
+        private string EscaparJson(string valor)
+        {
+            if (valor == null)
+                return string.Empty;
+
+            return valor
+                .Replace("\\", "\\\\")
+                .Replace("\"", "\\\"");
         }
 
         private DetalleOferenteResponse Error(string mensaje)

@@ -13,5 +13,8 @@ namespace ADMExpedientePersonal.WebServices.Entities.Requests
     {
         [DataMember]
         public string Identificacion { get; set; }
+
+        [DataMember]
+        public string Usuario { get; set; }
     }
 }
