@@ -47,6 +47,7 @@ $nombreCompleto = '';
 $fechaNacimiento = '';
 $correo = '';
 $telefono = '';
+$puestoNombre = 'Puesto no seleccionado';
 
 
 /*
@@ -101,6 +102,7 @@ if ($puestoId > 0) {
                 'El puesto no existe, no está disponible o no tiene un concurso vigente.';
         }
     } else {
+        error_log('Error preparando sqlPuesto: ' . mysqli_error($conexion));
         $mensajeError =
             'No fue posible consultar la información del puesto.';
     }
@@ -232,6 +234,8 @@ if (
                 $puestoNombre =
                     $filaConcurso['puesto_nombre'];
             }
+        } else {
+            error_log('Error preparando sqlConcurso: ' . mysqli_error($conexion));
         }
 
 
