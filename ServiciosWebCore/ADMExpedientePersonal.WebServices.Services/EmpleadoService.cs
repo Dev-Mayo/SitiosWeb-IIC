@@ -57,6 +57,19 @@ namespace ADMExpedientePersonal.WebServices.Services
                 int empleadoId =
                     _repository.RegistrarEmpleado(request);
 
+                bool oferenteActualizado =
+                    _repository.MarcarOferenteComoContratado(
+                        request.Identificacion
+                    );
+
+                if (!oferenteActualizado)
+                {
+                    return Error(
+                        "El empleado fue creado, pero no se pudo marcar " +
+                        "el oferente como contratado."
+                    );
+                }
+
                 bool bitacoraRegistrada =
                     RegistrarBitacoraCreacion(request, empleadoId);
 

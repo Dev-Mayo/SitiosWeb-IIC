@@ -74,7 +74,31 @@ namespace ADMExpedientePersonal.WebServices.Repositories
                 }
             }
         }
+        public bool MarcarOferenteComoContratado(
+    string identificacion)
+        {
+            using (var connection =
+                _connectionFactory.CreateConnection("OFE"))
+            {
+                connection.Open();
 
+                string sql = @"
+            UPDATE oferentes
+            SET contratado = 1
+            WHERE identificacion = @Identificacion;
+        ";
+
+                int filasAfectadas = connection.Execute(
+                    sql,
+                    new
+                    {
+                        Identificacion = identificacion
+                    }
+                );
+
+                return filasAfectadas > 0;
+            }
+        }
         public bool ExisteEmpleado(string identificacion)
         {
             using (var connection = _connectionFactory.CreateConnection("EMP"))
