@@ -13,19 +13,32 @@ BEGIN
 END$$
 DELIMITER $$
 
-DROP PROCEDURE IF EXISTS sp_listar_puestos_disponibles;
+
+
+
+
+
+
+DROP PROCEDURE IF EXISTS EMP.sp_listar_puestos_disponibles;
+
 DELIMITER $$
-CREATE PROCEDURE sp_listar_puestos_disponibles()
+CREATE PROCEDURE EMP.sp_listar_puestos_disponibles()
 BEGIN
-    SELECT
-    p.puesto_id, p.nombre, p.salario,
-    jefe_emp.nombre_completo AS nombre_jefe,
-    p.disponible
-FROM puestos p
-LEFT JOIN empleados jefe_emp ON jefe_emp.puesto_id = p.jefe_puesto_id
-WHERE p.disponible = 1
-ORDER BY p.nombre;
+    SELECT DISTINCT
+        p.puesto_id,
+        p.nombre,
+        p.salario,
+        COALESCE(j.nombre_completo, 'Sin asignar') AS nombre_jefe,
+        p.disponible
+    FROM EMP.puestos p
+    LEFT JOIN EMP.empleados j
+        ON j.empleado_id = p.jefe_puesto_id
+    INNER JOIN OFE.concursos c
+        ON c.puesto_id = p.puesto_id
+    WHERE p.disponible = 1
+      AND c.estado = 'Vigente'
+      AND CURDATE() BETWEEN c.fecha_inicio AND c.fecha_fin
+    ORDER BY p.nombre;
 END$$
 DELIMITER ;
-
 
