@@ -1,31 +1,32 @@
 <?php
 
+define('OFE_DB_HOST', 'mysql-admin-personal-iic-2026-admin-personal-iic-2026.k.aivencloud.com');
+define('OFE_DB_PORT', 16341);
+define('OFE_DB_NAME', 'EMP');
+define('OFE_DB_USER', 'avnadmin');
+define('OFE_DB_PASS', 'AVNS_D9NXIT8nECYcHW1YV31');
 
-$dbHost = 'localhost';
-$dbUser = 'admin';
-$dbPass = 'admin123*';
-$dbPort = 3306;
+function ofe_conectar_bd() {
+    $mysqli = mysqli_init();
+    $mysqli->ssl_set(null, null, null, null, null);
 
-$conexion = mysqli_init();
+    $conectado = @$mysqli->real_connect(
+        OFE_DB_HOST,
+        OFE_DB_USER,
+        OFE_DB_PASS,
+        OFE_DB_NAME,
+        OFE_DB_PORT,
+        null,
+        MYSQLI_CLIENT_SSL
+    );
 
-if (!$conexion) {
-    wp_die('No fue posible inicializar la conexión con la base de datos.');
+    return $conectado ? $mysqli : null;
 }
 
-$conectado = mysqli_real_connect(
-    $conexion,
-    $dbHost,
-    $dbUser,
-    $dbPass,
-    null,
-    $dbPort
-);
+$conexion = ofe_conectar_bd();
 
-if (!$conectado) {
-    wp_die(
-        'No fue posible conectar con la base de datos: '
-        . esc_html(mysqli_connect_error())
-    );
+if (!$conexion) {
+    wp_die('No fue posible conectar con la base de datos.');
 }
 
 mysqli_set_charset($conexion, 'utf8mb4');

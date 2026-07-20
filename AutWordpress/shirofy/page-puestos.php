@@ -2,6 +2,13 @@
 /*
 Template Name: Puestos Disponibles
 */
+
+define('OFE_DB_HOST', 'mysql-admin-personal-iic-2026-admin-personal-iic-2026.k.aivencloud.com');
+define('OFE_DB_PORT', 16341);
+define('OFE_DB_NAME', 'EMP');
+define('OFE_DB_USER', 'avnadmin');
+define('OFE_DB_PASS', 'AVNS_D9NXIT8nECYcHW1YV31');
+
 get_header(); ?>
 
 <!-- HERO -->
@@ -40,7 +47,6 @@ get_header(); ?>
             if ($conn === null) {
                 $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
             } else {
-                // multi_query es necesario para CALL a un stored procedure
                 if ($conn->multi_query("CALL sp_listar_puestos_disponibles()")) {
                     do {
                         if ($resultado = $conn->store_result()) {
@@ -75,7 +81,7 @@ get_header(); ?>
                     <div class="card-shirofy puesto-card">
                         <div class="card-body">
                             <div class="card-title">
-                                <a href="<?php echo home_url('/puestos/?id=' . urlencode($p['id'])); ?>"
+                                <a href="<?php echo home_url('/registro-oferente/?id=' . urlencode($p['id'])); ?>"
                                    class="puesto-link">
                                     <?php echo esc_html($p['nombre']); ?>
                                 </a>
