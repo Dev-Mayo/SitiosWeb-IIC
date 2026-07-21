@@ -1,0 +1,313 @@
+/* ==========================================================
+   ESTILOS GENERALES
+   Sistema de Administración de Personal
+   ========================================================== */
+
+
+/* ----------------------------------------------------------
+   CONFIGURACIÓN GENERAL
+   ---------------------------------------------------------- */
+
+body {
+    background: #f0f2f5;
+    margin: 0;
+}
+
+/* Fondo particular de la pantalla de inicio de sesión */
+body.login-page {
+    background: #eef2f7;
+}
+
+
+/* ----------------------------------------------------------
+   BARRA SUPERIOR
+   ---------------------------------------------------------- */
+
+.topbar {
+    width: 100%;
+    box-sizing: border-box;
+    background: white;
+    padding: 14px 28px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.topbar-brand {
+    color: #1aad94;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #1aad94;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+
+/* ----------------------------------------------------------
+   CONTENIDO GENERAL
+   ---------------------------------------------------------- */
+
+.page-body {
+    padding: 40px 28px;
+}
+
+/* La bienvenida utiliza un poco más de espacio vertical */
+body.welcome-page .page-body {
+    padding: 48px 28px;
+}
+
+.content-card {
+    max-width: 950px;
+    margin: 0 auto;
+    padding: 32px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.page-title {
+    color: #1aad94;
+    font-weight: 700;
+}
+
+
+/* ----------------------------------------------------------
+   PANTALLA DE LOGIN
+   ---------------------------------------------------------- */
+
+.card-login {
+    max-width: 420px;
+    margin: 80px auto;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.15);
+}
+
+.card-header-custom {
+    padding: 36px 24px;
+    background: #1aad94;
+    color: white;
+    text-align: center;
+}
+
+.logo-emoji {
+    font-size: 64px;
+    text-align: center;
+}
+
+
+/* ----------------------------------------------------------
+   PANTALLA DE BIENVENIDA
+   ---------------------------------------------------------- */
+
+.welcome-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 48px;
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.welcome-icon {
+    margin-bottom: 16px;
+    font-size: 72px;
+}
+
+.welcome-msg {
+    margin: 24px 0;
+    padding: 16px 24px;
+    background: #e8f8f5;
+    border-left: 4px solid #1aad94;
+    border-radius: 8px;
+    color: #1aad94;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+
+/* ----------------------------------------------------------
+   INFORMACIÓN DEL PUESTO
+   ---------------------------------------------------------- */
+
+.puesto-info {
+    margin-bottom: 24px;
+    padding: 14px 18px;
+    background: #e8f8f5;
+    border-left: 4px solid #1aad94;
+    border-radius: 8px;
+}
+
+
+/* ----------------------------------------------------------
+   TABLAS
+   ---------------------------------------------------------- */
+
+.table thead th {
+    background: #1aad94;
+    color: white;
+    border-color: #1aad94;
+}
+
+
+/* ----------------------------------------------------------
+   ENLACES DE PUESTOS Y OFERENTES
+   ---------------------------------------------------------- */
+
+/*
+   Ambas clases comparten el mismo diseño.
+   Se mantienen sus nombres para no modificar el HTML actual.
+*/
+
+.puesto-link,
+.oferente-link {
+    color: #1aad94;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.puesto-link:hover,
+.oferente-link:hover {
+    color: #14836f;
+    text-decoration: underline;
+}
+
+
+/* ----------------------------------------------------------
+   DETALLE DEL OFERENTE
+   ---------------------------------------------------------- */
+
+.section-title {
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    color: #1aad94;
+    border-bottom: 2px solid #e8f8f5;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.detail-label {
+    margin-bottom: 4px;
+    color: #6c757d;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.detail-value {
+    min-height: 45px;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+.list-item-custom {
+    margin-bottom: 8px;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+}
+
+
+/* ----------------------------------------------------------
+   BOTONES PRINCIPALES
+   ---------------------------------------------------------- */
+
+.btn-crear {
+    padding: 10px 22px;
+    background: #1aad94;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-crear:hover {
+    background: #14836f;
+    color: white;
+}
+
+
+/* ----------------------------------------------------------
+   BOTONES REGRESAR Y CANCELAR
+   ---------------------------------------------------------- */
+
+/*
+   Ambos botones comparten todas sus propiedades.
+   Se conservan las dos clases para no cambiar el HTML.
+*/
+
+.btn-regresar,
+.btn-cancelar {
+    display: inline-block;
+    padding: 10px 22px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-regresar:hover,
+.btn-cancelar:hover {
+    background: #5c636a;
+    color: white;
+}
+
+
+/* ----------------------------------------------------------
+   BOTÓN CERRAR SESIÓN
+   ---------------------------------------------------------- */
+
+.btn-logout {
+    padding: 8px 16px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.btn-logout:hover {
+    background: #bb2d3b;
+    color: white;
+}
+
+
+/* ----------------------------------------------------------
+   PERSONALIZACIÓN DE BOTÓN BOOTSTRAP SUCCESS
+   ---------------------------------------------------------- */
+
+.btn-success {
+    background-color: #16a085;
+    border-color: #16a085;
+}
+
+.btn-success:hover {
+    background-color: #138d75;
+    border-color: #138d75;
+}
