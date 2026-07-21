@@ -88,17 +88,15 @@ foreach (array_slice($palabras, 0, 2) as $p) {
             margin: 24px 0;
         }
 
-        .btn-logout {
-            background: #dc3545;
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 12px;
-        }
+      .btn-success {
+    background-color: #16a085;
+    border-color: #16a085;
+}
+
+.btn-success:hover {
+    background-color: #138d75;
+    border-color: #138d75;
+}
 
         .btn-logout:hover { background: #bb2d3b; color: white; }
     </style>
@@ -131,7 +129,15 @@ foreach (array_slice($palabras, 0, 2) as $p) {
             Recursos Humanos.
         </p>
 
-        <a href="logout.php" class="btn-logout">Cerrar sesión</a>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+    <a href="puestos.php" class="btn btn-success action-btn">
+        Ver puestos
+    </a>
+
+    <a href="logout.php" class="btn btn-danger action-btn">
+        Cerrar sesión
+    </a>
+</div>
 
     </div>
 </div>
