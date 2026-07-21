@@ -1,731 +1,41 @@
 <?php
 
-define('OFE_DB_HOST', 'mysql-admin-personal-iic-2026-admin-personal-iic-2026.k.aivencloud.com');
-define('OFE_DB_PORT', 16341);
-define('OFE_DB_NAME', 'EMP');
-define('OFE_DB_USER', 'avnadmin');
-define('OFE_DB_PASS', 'AVNS_D9NXIT8nECYcHW1YV31');
-
-function ofe_conectar_bd() {
-    $mysqli = mysqli_init();
-    $mysqli->ssl_set(null, null, null, null, null);
-
-    $conectado = @$mysqli->real_connect(
-        OFE_DB_HOST,
-        OFE_DB_USER,
-        OFE_DB_PASS,
-        OFE_DB_NAME,
-        OFE_DB_PORT,
-        null,
-        MYSQLI_CLIENT_SSL
-    );
-
-    return $conectado ? $mysqli : null;
-}
-
-$conexion = ofe_conectar_bd();
-
-if (!$conexion) {
-    wp_die('No fue posible conectar con la base de datos.');
-}
-
-mysqli_set_charset($conexion, 'utf8mb4');
-
+require_once get_template_directory() . '/ET/OferenteET.php';
+require_once get_template_directory() . '/Repositories/OferenteRepository.php';
+require_once get_template_directory() . '/Services/OferenteService.php';
 
 $mensajeExito = '';
 $mensajeError = '';
+$oferente = new OferenteET();
+$oferente->puestoId = isset($_GET['id']) ? absint($_GET['id']) : 0;
 
-$puestoId = isset($_GET['id'])
-    ? absint($_GET['id'])
-    : 0;
-
-$codigoConcurso = 0;
-
-$identificacion = '';
-$tipoIdentificacion = '';
-$nombreCompleto = '';
-$fechaNacimiento = '';
-$correo = '';
-$telefono = '';
-$puestoNombre = 'Puesto no seleccionado';
-
-
-/*
-|--------------------------------------------------------------------------
-| CONSULTAR EL PUESTO Y EL CONCURSO VIGENTE
-|--------------------------------------------------------------------------
-*/
-
-if ($puestoId > 0) {
-
-    $sqlPuesto = "
-        SELECT
-            p.puesto_id,
-            p.nombre AS puesto_nombre,
-            c.codigo_concurso,
-            c.nombre AS concurso_nombre
-        FROM EMP.puestos p
-        INNER JOIN OFE.concursos c
-            ON c.puesto_id = p.puesto_id
-        WHERE p.puesto_id = ?
-          AND p.disponible = 1
-          AND c.estado = 'Vigente'
-          AND CURDATE() BETWEEN c.fecha_inicio AND c.fecha_fin
-        ORDER BY c.fecha_inicio DESC
-        LIMIT 1
-    ";
-
-    $stmtPuesto = mysqli_prepare($conexion, $sqlPuesto);
-
-    if ($stmtPuesto) {
-
-        mysqli_stmt_bind_param(
-            $stmtPuesto,
-            'i',
-            $puestoId
-        );
-
-        mysqli_stmt_execute($stmtPuesto);
-
-        $resultadoPuesto = mysqli_stmt_get_result($stmtPuesto);
-        $filaPuesto = mysqli_fetch_assoc($resultadoPuesto);
-
-        mysqli_stmt_close($stmtPuesto);
-
-        if ($filaPuesto) {
-            $puestoNombre = $filaPuesto['puesto_nombre'];
-            $codigoConcurso = (int) $filaPuesto['codigo_concurso'];
-        } else {
-            $puestoId = 0;
-            $puestoNombre = 'Puesto no disponible';
-            $mensajeError =
-                'El puesto no existe, no está disponible o no tiene un concurso vigente.';
-        }
-    } else {
-        error_log('Error preparando sqlPuesto: ' . mysqli_error($conexion));
-        $mensajeError =
-            'No fue posible consultar la información del puesto.';
-    }
+try {
+    $repository = new OferenteRepository();
+    $service = new OferenteService($repository);
+} catch (Throwable $error) {
+    wp_die($error->getMessage());
 }
 
+$mensajeError = $service->cargarPuesto($oferente);
 
-/*
-|--------------------------------------------------------------------------
-| PROCESAR FORMULARIO
-|--------------------------------------------------------------------------
-*/
-
-if (
-    $_SERVER['REQUEST_METHOD'] === 'POST'
-    && isset($_POST['guardar_oferente'])
-) {
-
-    /*
-    |--------------------------------------------------------------------------
-    | VALIDAR NONCE
-    |--------------------------------------------------------------------------
-    */
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_oferente'])) {
     $nonceValido = isset($_POST['aut3_nonce'])
         && wp_verify_nonce(
-            sanitize_text_field(
-                wp_unslash($_POST['aut3_nonce'])
-            ),
+            sanitize_text_field(wp_unslash($_POST['aut3_nonce'])),
             'guardar_oferente_aut3'
         );
 
     if (!$nonceValido) {
-
-        $mensajeError =
-            'La solicitud no es válida. Actualice la página e inténtelo nuevamente.';
-
+        $mensajeError = 'La solicitud no es válida. Actualice la página e inténtelo nuevamente.';
     } else {
+        $oferente->cargarDesdePost($_POST);
+        $resultado = $service->procesarRegistro($oferente, $_FILES);
 
-        /*
-        |--------------------------------------------------------------------------
-        | RECUPERAR DATOS
-        |--------------------------------------------------------------------------
-        */
-
-        $puestoId = isset($_POST['puesto_id'])
-            ? absint($_POST['puesto_id'])
-            : 0;
-
-        $identificacion = isset($_POST['identificacion'])
-            ? sanitize_text_field(
-                wp_unslash($_POST['identificacion'])
-            )
-            : '';
-
-        $tipoIdentificacion = isset($_POST['tipo_identificacion'])
-            ? sanitize_text_field(
-                wp_unslash($_POST['tipo_identificacion'])
-            )
-            : '';
-
-        $nombreCompleto = isset($_POST['nombre_completo'])
-            ? sanitize_text_field(
-                wp_unslash($_POST['nombre_completo'])
-            )
-            : '';
-
-        $fechaNacimiento = isset($_POST['fecha_nacimiento'])
-            ? sanitize_text_field(
-                wp_unslash($_POST['fecha_nacimiento'])
-            )
-            : '';
-
-        $correo = isset($_POST['correo'])
-            ? sanitize_email(
-                wp_unslash($_POST['correo'])
-            )
-            : '';
-
-        $telefono = isset($_POST['telefono'])
-            ? sanitize_text_field(
-                wp_unslash($_POST['telefono'])
-            )
-            : '';
-
-        $codigoConcurso = 0;
-
-        $sqlConcurso = "
-            SELECT
-                p.nombre AS puesto_nombre,
-                c.codigo_concurso
-            FROM EMP.puestos p
-            INNER JOIN OFE.concursos c
-                ON c.puesto_id = p.puesto_id
-            WHERE p.puesto_id = ?
-              AND p.disponible = 1
-              AND c.estado = 'Vigente'
-              AND CURDATE() BETWEEN c.fecha_inicio AND c.fecha_fin
-            ORDER BY c.fecha_inicio DESC
-            LIMIT 1
-        ";
-
-        $stmtConcurso = mysqli_prepare(
-            $conexion,
-            $sqlConcurso
-        );
-
-        if ($stmtConcurso) {
-
-            mysqli_stmt_bind_param(
-                $stmtConcurso,
-                'i',
-                $puestoId
-            );
-
-            mysqli_stmt_execute($stmtConcurso);
-
-            $resultadoConcurso =
-                mysqli_stmt_get_result($stmtConcurso);
-
-            $filaConcurso =
-                mysqli_fetch_assoc($resultadoConcurso);
-
-            mysqli_stmt_close($stmtConcurso);
-
-            if ($filaConcurso) {
-                $codigoConcurso =
-                    (int) $filaConcurso['codigo_concurso'];
-
-                $puestoNombre =
-                    $filaConcurso['puesto_nombre'];
-            }
+        if ($resultado['exito']) {
+            $mensajeExito = $resultado['mensaje'];
+            $mensajeError = '';
         } else {
-            error_log('Error preparando sqlConcurso: ' . mysqli_error($conexion));
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | VALIDACIONES
-        |--------------------------------------------------------------------------
-        */
-
-        $tiposPermitidos = array(
-            'Cedula',
-            'DIMEX',
-            'Pasaporte'
-        );
-
-        if (
-            empty($identificacion)
-            || empty($tipoIdentificacion)
-            || empty($nombreCompleto)
-            || empty($fechaNacimiento)
-            || empty($correo)
-            || empty($telefono)
-        ) {
-
-            $mensajeError =
-                'Debe completar todos los campos requeridos.';
-
-        } elseif ($puestoId <= 0 || $codigoConcurso <= 0) {
-
-            $mensajeError =
-                'El puesto seleccionado no tiene un concurso vigente.';
-
-        } elseif (
-            !in_array(
-                $tipoIdentificacion,
-                $tiposPermitidos,
-                true
-            )
-        ) {
-
-            $mensajeError =
-                'El tipo de identificación seleccionado no es válido.';
-
-        } elseif (!is_email($correo)) {
-
-            $mensajeError =
-                'El correo electrónico no tiene un formato válido.';
-
-        } elseif (
-            !preg_match(
-                '/^[0-9+\-\s]{8,20}$/',
-                $telefono
-            )
-        ) {
-
-            $mensajeError =
-                'El teléfono debe contener entre 8 y 20 caracteres válidos.';
-
-        } elseif (
-            !DateTime::createFromFormat(
-                'Y-m-d',
-                $fechaNacimiento
-            )
-        ) {
-
-            $mensajeError =
-                'La fecha de nacimiento no es válida.';
-
-        } elseif (
-            !isset($_FILES['curriculum'])
-            || $_FILES['curriculum']['error']
-                !== UPLOAD_ERR_OK
-        ) {
-
-            $mensajeError =
-                'Debe seleccionar un currículum válido.';
-
-        } else {
-
-            /*
-            |--------------------------------------------------------------------------
-            | VALIDAR QUE NO EXISTA LA MISMA POSTULACIÓN
-            |--------------------------------------------------------------------------
-            */
-
-            $sqlExistePostulacion = "
-                SELECT COUNT(*) AS cantidad
-                FROM OFE.oferente_concursos
-                WHERE identificacion = ?
-                  AND codigo_concurso = ?
-            ";
-
-            $stmtExistePostulacion = mysqli_prepare(
-                $conexion,
-                $sqlExistePostulacion
-            );
-
-            mysqli_stmt_bind_param(
-                $stmtExistePostulacion,
-                'si',
-                $identificacion,
-                $codigoConcurso
-            );
-
-            mysqli_stmt_execute($stmtExistePostulacion);
-
-            $resultadoExiste =
-                mysqli_stmt_get_result(
-                    $stmtExistePostulacion
-                );
-
-            $filaExiste =
-                mysqli_fetch_assoc($resultadoExiste);
-
-            mysqli_stmt_close(
-                $stmtExistePostulacion
-            );
-
-            if ((int) $filaExiste['cantidad'] > 0) {
-
-                $mensajeError =
-                    'El oferente ya está registrado en este concurso.';
-
-            } else {
-
-                /*
-                |--------------------------------------------------------------------------
-                | VALIDAR ARCHIVO
-                |--------------------------------------------------------------------------
-                */
-
-                $archivo = $_FILES['curriculum'];
-
-                $nombreArchivo = sanitize_file_name(
-                    $archivo['name']
-                );
-
-                $extension = strtolower(
-                    pathinfo(
-                        $nombreArchivo,
-                        PATHINFO_EXTENSION
-                    )
-                );
-
-                $extensionesPermitidas = array(
-                    'pdf',
-                    'doc',
-                    'docx'
-                );
-
-                $tamanoMaximo = 5 * 1024 * 1024;
-
-                if (
-                    !in_array(
-                        $extension,
-                        $extensionesPermitidas,
-                        true
-                    )
-                ) {
-
-                    $mensajeError =
-                        'El currículum debe ser PDF, DOC o DOCX.';
-
-                } elseif (
-                    (int) $archivo['size'] > $tamanoMaximo
-                ) {
-
-                    $mensajeError =
-                        'El currículum no puede superar los 5 MB.';
-
-                } else {
-
-                    /*
-                    |--------------------------------------------------------------------------
-                    | SUBIR CURRÍCULUM A WORDPRESS
-                    |--------------------------------------------------------------------------
-                    */
-
-                    require_once ABSPATH
-                        . 'wp-admin/includes/file.php';
-
-                    $subida = wp_handle_upload(
-                        $archivo,
-                        array(
-                            'test_form' => false,
-                            'mimes' => array(
-                                'pdf' =>
-                                    'application/pdf',
-
-                                'doc' =>
-                                    'application/msword',
-
-                                'docx' =>
-                                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                            )
-                        )
-                    );
-
-                    if (
-                        isset($subida['error'])
-                        || empty($subida['url'])
-                    ) {
-
-                        $mensajeError = isset($subida['error'])
-                            ? $subida['error']
-                            : 'No fue posible subir el currículum.';
-
-                    } else {
-
-                        $curriculumRuta = esc_url_raw(
-                            $subida['url']
-                        );
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | INICIAR TRANSACCIÓN
-                        |--------------------------------------------------------------------------
-                        */
-
-                        mysqli_begin_transaction($conexion);
-
-                        try {
-
-                            /*
-                            |--------------------------------------------------------------------------
-                            | INSERTAR O ACTUALIZAR OFERENTE
-                            |--------------------------------------------------------------------------
-                            */
-
-                            $sqlOferente = "
-                                INSERT INTO OFE.oferentes
-                                (
-                                    identificacion,
-                                    tipo_identificacion,
-                                    nombre_completo,
-                                    fecha_nacimiento,
-                                    contratado
-                                )
-                                VALUES (?, ?, ?, ?, 0)
-                                ON DUPLICATE KEY UPDATE
-                                    tipo_identificacion =
-                                        VALUES(tipo_identificacion),
-
-                                    nombre_completo =
-                                        VALUES(nombre_completo),
-
-                                    fecha_nacimiento =
-                                        VALUES(fecha_nacimiento)
-                            ";
-
-                            $stmtOferente = mysqli_prepare(
-                                $conexion,
-                                $sqlOferente
-                            );
-
-                            if (!$stmtOferente) {
-                                throw new Exception(
-                                    mysqli_error($conexion)
-                                );
-                            }
-
-                            mysqli_stmt_bind_param(
-                                $stmtOferente,
-                                'ssss',
-                                $identificacion,
-                                $tipoIdentificacion,
-                                $nombreCompleto,
-                                $fechaNacimiento
-                            );
-
-                            if (
-                                !mysqli_stmt_execute(
-                                    $stmtOferente
-                                )
-                            ) {
-                                throw new Exception(
-                                    mysqli_stmt_error(
-                                        $stmtOferente
-                                    )
-                                );
-                            }
-
-                            mysqli_stmt_close($stmtOferente);
-
-
-                            /*
-                            |--------------------------------------------------------------------------
-                            | INSERTAR CORREO SI NO EXISTE
-                            |--------------------------------------------------------------------------
-                            */
-
-                            $sqlCorreo = "
-                                INSERT INTO OFE.oferente_emails
-                                (
-                                    identificacion,
-                                    email
-                                )
-                                SELECT ?, ?
-                                WHERE NOT EXISTS
-                                (
-                                    SELECT 1
-                                    FROM OFE.oferente_emails
-                                    WHERE identificacion = ?
-                                      AND email = ?
-                                )
-                            ";
-
-                            $stmtCorreo = mysqli_prepare(
-                                $conexion,
-                                $sqlCorreo
-                            );
-
-                            if (!$stmtCorreo) {
-                                throw new Exception(
-                                    mysqli_error($conexion)
-                                );
-                            }
-
-                            mysqli_stmt_bind_param(
-                                $stmtCorreo,
-                                'ssss',
-                                $identificacion,
-                                $correo,
-                                $identificacion,
-                                $correo
-                            );
-
-                            if (
-                                !mysqli_stmt_execute(
-                                    $stmtCorreo
-                                )
-                            ) {
-                                throw new Exception(
-                                    mysqli_stmt_error(
-                                        $stmtCorreo
-                                    )
-                                );
-                            }
-
-                            mysqli_stmt_close($stmtCorreo);
-
-
-                            /*
-                            |--------------------------------------------------------------------------
-                            | INSERTAR TELÉFONO SI NO EXISTE
-                            |--------------------------------------------------------------------------
-                            */
-
-                            $sqlTelefono = "
-                                INSERT INTO OFE.oferente_telefonos
-                                (
-                                    identificacion,
-                                    telefono
-                                )
-                                SELECT ?, ?
-                                WHERE NOT EXISTS
-                                (
-                                    SELECT 1
-                                    FROM OFE.oferente_telefonos
-                                    WHERE identificacion = ?
-                                      AND telefono = ?
-                                )
-                            ";
-
-                            $stmtTelefono = mysqli_prepare(
-                                $conexion,
-                                $sqlTelefono
-                            );
-
-                            if (!$stmtTelefono) {
-                                throw new Exception(
-                                    mysqli_error($conexion)
-                                );
-                            }
-
-                            mysqli_stmt_bind_param(
-                                $stmtTelefono,
-                                'ssss',
-                                $identificacion,
-                                $telefono,
-                                $identificacion,
-                                $telefono
-                            );
-
-                            if (
-                                !mysqli_stmt_execute(
-                                    $stmtTelefono
-                                )
-                            ) {
-                                throw new Exception(
-                                    mysqli_stmt_error(
-                                        $stmtTelefono
-                                    )
-                                );
-                            }
-
-                            mysqli_stmt_close($stmtTelefono);
-
-
-                            /*
-                            |--------------------------------------------------------------------------
-                            | INSERTAR POSTULACIÓN
-                            |--------------------------------------------------------------------------
-                            */
-
-                            $sqlPostulacion = "
-                                INSERT INTO OFE.oferente_concursos
-                                (
-                                    identificacion,
-                                    codigo_concurso,
-                                    curriculum_ruta
-                                )
-                                VALUES (?, ?, ?)
-                            ";
-
-                            $stmtPostulacion = mysqli_prepare(
-                                $conexion,
-                                $sqlPostulacion
-                            );
-
-                            if (!$stmtPostulacion) {
-                                throw new Exception(
-                                    mysqli_error($conexion)
-                                );
-                            }
-
-                            mysqli_stmt_bind_param(
-                                $stmtPostulacion,
-                                'sis',
-                                $identificacion,
-                                $codigoConcurso,
-                                $curriculumRuta
-                            );
-
-                            if (
-                                !mysqli_stmt_execute(
-                                    $stmtPostulacion
-                                )
-                            ) {
-                                throw new Exception(
-                                    mysqli_stmt_error(
-                                        $stmtPostulacion
-                                    )
-                                );
-                            }
-
-                            mysqli_stmt_close(
-                                $stmtPostulacion
-                            );
-
-
-                            /*
-                            |--------------------------------------------------------------------------
-                            | CONFIRMAR TRANSACCIÓN
-                            |--------------------------------------------------------------------------
-                            */
-
-                            mysqli_commit($conexion);
-
-                            $mensajeExito =
-                                'Datos guardados de manera satisfactoria.';
-
-                            $identificacion = '';
-                            $tipoIdentificacion = '';
-                            $nombreCompleto = '';
-                            $fechaNacimiento = '';
-                            $correo = '';
-                            $telefono = '';
-
-                        } catch (Throwable $error) {
-
-                            mysqli_rollback($conexion);
-
-                            /*
-                            | Si falló la BD, se elimina el archivo subido.
-                            */
-                            if (
-                                !empty($subida['file'])
-                                && file_exists($subida['file'])
-                            ) {
-                                unlink($subida['file']);
-                            }
-
-                            $mensajeError =
-                                'No fue posible guardar los datos: '
-                                . $error->getMessage();
-                        }
-                    }
-                }
-            }
+            $mensajeError = $resultado['mensaje'];
         }
     }
 }
@@ -766,7 +76,7 @@ get_header();
 
                             <h2 class="section-title mb-2">
                                 <?php
-                                echo esc_html($puestoNombre);
+                                echo esc_html($oferente->puestoNombre);
                                 ?>
                             </h2>
 
@@ -809,7 +119,7 @@ get_header();
 
                         <?php else: ?>
 
-                            <?php if ($puestoId <= 0): ?>
+                            <?php if ($oferente->puestoId <= 0): ?>
 
                                 <div class="alert alert-warning">
                                     No se recibió un puesto válido.
@@ -834,7 +144,7 @@ get_header();
                                        name="puesto_id"
                                        value="<?php
                                             echo esc_attr(
-                                                $puestoId
+                                                $oferente->puestoId
                                             );
                                        ?>">
 
@@ -856,7 +166,7 @@ get_header();
                                                maxlength="20"
                                                value="<?php
                                                     echo esc_attr(
-                                                        $identificacion
+                                                        $oferente->identificacion
                                                     );
                                                ?>"
                                                required>
@@ -883,7 +193,7 @@ get_header();
                                             <option value="Cedula"
                                                 <?php
                                                 selected(
-                                                    $tipoIdentificacion,
+                                                    $oferente->tipoIdentificacion,
                                                     'Cedula'
                                                 );
                                                 ?>>
@@ -894,7 +204,7 @@ get_header();
                                             <option value="DIMEX"
                                                 <?php
                                                 selected(
-                                                    $tipoIdentificacion,
+                                                    $oferente->tipoIdentificacion,
                                                     'DIMEX'
                                                 );
                                                 ?>>
@@ -905,7 +215,7 @@ get_header();
                                             <option value="Pasaporte"
                                                 <?php
                                                 selected(
-                                                    $tipoIdentificacion,
+                                                    $oferente->tipoIdentificacion,
                                                     'Pasaporte'
                                                 );
                                                 ?>>
@@ -931,7 +241,7 @@ get_header();
                                                maxlength="100"
                                                value="<?php
                                                     echo esc_attr(
-                                                        $nombreCompleto
+                                                        $oferente->nombreCompleto
                                                     );
                                                ?>"
                                                required>
@@ -952,7 +262,7 @@ get_header();
                                                class="form-control"
                                                value="<?php
                                                     echo esc_attr(
-                                                        $fechaNacimiento
+                                                        $oferente->fechaNacimiento
                                                     );
                                                ?>"
                                                required>
@@ -974,7 +284,7 @@ get_header();
                                                maxlength="100"
                                                value="<?php
                                                     echo esc_attr(
-                                                        $correo
+                                                        $oferente->correo
                                                     );
                                                ?>"
                                                required>
@@ -997,7 +307,7 @@ get_header();
                                                pattern="[0-9+\-\s]{8,20}"
                                                value="<?php
                                                     echo esc_attr(
-                                                        $telefono
+                                                        $oferente->telefono
                                                     );
                                                ?>"
                                                required>
@@ -1053,7 +363,7 @@ get_header();
                                             class="btn text-white"
                                             style="background:var(--primary)"
                                             <?php
-                                            echo $puestoId <= 0
+                                            echo $oferente->puestoId <= 0
                                                 ? 'disabled'
                                                 : '';
                                             ?>>
@@ -1077,6 +387,6 @@ get_header();
 </section>
 
 <?php
-mysqli_close($conexion);
+$repository->cerrar();
 get_footer();
 ?>
