@@ -25,90 +25,25 @@ foreach (array_slice($palabras, 0, 2) as $p) {
     <title>Bienvenida — Administración de Personal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet" />
-    <style>
-        body { background: #f0f2f5; margin: 0; }
-
-        .topbar {
-            background: white;
-            padding: 14px 28px;
-            border-bottom: 1px solid #dee2e6;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        .topbar-brand {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1aad94;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #1aad94;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .page-body { padding: 48px 28px; }
-
-        .welcome-card {
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 14px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            padding: 48px;
-            text-align: center;
-        }
-
-        .welcome-icon { font-size: 72px; margin-bottom: 16px; }
-
-        .welcome-msg {
-            background: #e8f8f5;
-            border-left: 4px solid #1aad94;
-            border-radius: 8px;
-            padding: 16px 24px;
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #1aad94;
-            margin: 24px 0;
-        }
-
-      .btn-success {
-    background-color: #16a085;
-    border-color: #16a085;
-}
-
-.btn-success:hover {
-    background-color: #138d75;
-    border-color: #138d75;
-}
-
-        .btn-logout:hover { background: #bb2d3b; color: white; }
-    </style>
+        <link rel="stylesheet" href="css/estilos.css">
+    
 </head>
-<body>
+<body class="welcome-page">
 
 <!-- TOPBAR -->
 <div class="topbar">
-    <span class="topbar-brand">🏢 Sistema de Recursos Humanos</span>
+    <span class="topbar-brand">
+        🏢 Sistema de Recursos Humanos
+    </span>
+
     <div class="user-info">
-        <span class="fw-semibold"><?php echo htmlspecialchars($nombre_completo); ?></span>
-        <div class="avatar"><?php echo htmlspecialchars($iniciales); ?></div>
+        <span class="fw-semibold">
+            <?php echo htmlspecialchars($nombre_completo); ?>
+        </span>
+
+        <div class="avatar">
+            <?php echo htmlspecialchars($iniciales); ?>
+        </div>
     </div>
 </div>
 
@@ -117,6 +52,7 @@ foreach (array_slice($palabras, 0, 2) as $p) {
     <div class="welcome-card">
 
         <div class="welcome-icon">🏢</div>
+        <!-- <img src="imagen/EDIFICIO.jpg" alt="Recursos Humanos" class="logo-sistema"> -->
 
         <h3 class="fw-bold">Bienvenido al Sistema</h3>
 

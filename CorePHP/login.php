@@ -61,25 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login — Administración de Personal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet" />
-    <style>
-        body { background: #eef2f7; }
-        .card-login {
-            max-width: 420px;
-            margin: 80px auto;
-            border-radius: 14px;
-            overflow: hidden;
-            box-shadow: 0 6px 28px rgba(0,0,0,.15);
-        }
-        .card-header-custom {
-            background: #1aad94;
-            padding: 36px 24px;
-            text-align: center;
-            color: white;
-        }
-        .logo-emoji { font-size: 64px; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
-<body>
+<body class="login-page">
 
 <div class="card-login bg-white">
 
