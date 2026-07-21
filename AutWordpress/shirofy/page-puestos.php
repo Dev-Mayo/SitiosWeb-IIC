@@ -3,13 +3,32 @@
 Template Name: Puestos Disponibles
 */
 
-define('OFE_DB_HOST', 'mysql-admin-personal-iic-2026-admin-personal-iic-2026.k.aivencloud.com');
-define('OFE_DB_PORT', 16341);
-define('OFE_DB_NAME', 'EMP');
-define('OFE_DB_USER', 'avnadmin');
-define('OFE_DB_PASS', 'AVNS_D9NXIT8nECYcHW1YV31');
+require_once get_template_directory() . '/ET/PuestoET.php';
+require_once get_template_directory() . '/Repositories/PuestoRepository.php';
+require_once get_template_directory() . '/Services/PuestoService.php';
 
-get_header(); ?>
+$puestos = array();
+$errorPuestos = '';
+
+try {
+    $repository = new PuestoRepository();
+    $service = new PuestoService($repository);
+
+    $resultado = $service->obtenerPuestosDisponibles();
+
+    if ($resultado['exito']) {
+        $puestos = $resultado['puestos'];
+    } else {
+        $errorPuestos = $resultado['mensaje'];
+    }
+
+    $repository->cerrar();
+} catch (Throwable $error) {
+    $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
+}
+
+get_header();
+?>
 
 <!-- HERO -->
 <section class="hero">
@@ -23,52 +42,8 @@ get_header(); ?>
 <section class="section">
     <div class="container">
         <div class="row g-4">
-            <?php
-            function ofe_conectar_bd() {
-                $mysqli = mysqli_init();
-                $mysqli->ssl_set(null, null, null, null, null);
-                $conectado = @$mysqli->real_connect(
-                    OFE_DB_HOST,
-                    OFE_DB_USER,
-                    OFE_DB_PASS,
-                    OFE_DB_NAME,
-                    OFE_DB_PORT,
-                    null,
-                    MYSQLI_CLIENT_SSL
-                );
-                return $conectado ? $mysqli : null;
-            }
 
-            $puestos = array();
-            $errorPuestos = '';
-
-            $conn = ofe_conectar_bd();
-
-            if ($conn === null) {
-                $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
-            } else {
-                if ($conn->multi_query("CALL sp_listar_puestos_disponibles()")) {
-                    do {
-                        if ($resultado = $conn->store_result()) {
-                            while ($fila = $resultado->fetch_assoc()) {
-                                $puestos[] = array(
-                                    'id'      => $fila['puesto_id'],
-                                    'nombre'  => $fila['nombre'],
-                                    'salario' => $fila['salario'],
-                                    'jefe'    => $fila['nombre_jefe'] ?? 'Sin asignar'
-                                );
-                            }
-                            $resultado->free();
-                        }
-                    } while ($conn->more_results() && $conn->next_result());
-                } else {
-                    $errorPuestos = 'No se pudieron cargar los puestos disponibles en este momento.';
-                }
-
-                $conn->close();
-            }
-
-            if (!empty($errorPuestos)): ?>
+            <?php if (!empty($errorPuestos)): ?>
                 <div class="col-12">
                     <p class="text-muted"><?php echo esc_html($errorPuestos); ?></p>
                 </div>
@@ -81,21 +56,22 @@ get_header(); ?>
                     <div class="card-shirofy puesto-card">
                         <div class="card-body">
                             <div class="card-title">
-                                <a href="<?php echo home_url('/registro-oferente/?id=' . urlencode($p['id'])); ?>"
+                                <a href="<?php echo home_url('/registro-oferente/?id=' . urlencode($p->id)); ?>"
                                    class="puesto-link">
-                                    <?php echo esc_html($p['nombre']); ?>
+                                    <?php echo esc_html($p->nombre); ?>
                                 </a>
                             </div>
                             <p class="text-muted" style="font-size:0.9rem; margin-top:8px">
-                                <strong>Salario:</strong> <?php echo esc_html($p['salario']); ?>
+                                <strong>Salario:</strong> <?php echo esc_html($p->salario); ?>
                             </p>
                             <p class="text-muted" style="font-size:0.85rem; margin-top:4px">
-                                <strong>Jefe:</strong> <?php echo esc_html($p['jefe']); ?>
+                                <strong>Jefe:</strong> <?php echo esc_html($p->jefe); ?>
                             </p>
                         </div>
                     </div>
                 </div>
             <?php endforeach; endif; ?>
+
         </div>
     </div>
 </section>
