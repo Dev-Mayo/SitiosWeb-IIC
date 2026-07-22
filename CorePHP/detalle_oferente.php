@@ -108,9 +108,7 @@ if ($identificacion !== '' && $error === '') {
 
 /*
 |--------------------------------------------------------------------------
-| SIMULACIÓN DEL BOTÓN CREAR EMPLEADO - CORE 3
-|--------------------------------------------------------------------------
-| Luego este bloque llamará al servicio Core 3 mediante cURL.
+|BOTÓN CREAR EMPLEADO - CORE 3
 |--------------------------------------------------------------------------
 */
 
@@ -122,20 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_empleado'])) {
         $error = 'No se recibió un código de puesto válido.';
     } else {
 
-        // // Convertir la fecha WCF al formato DateTime que espera Core 3
-        // $fechaNacimiento = null;
-
-        // if (
-        //     !empty($oferente['FechaNacimiento']) &&
-        //     preg_match('/\/Date\((\-?\d+)/', $oferente['FechaNacimiento'], $coincidencias)
-        // ) {
-        //     $fechaNacimiento = date(
-        //         'Y-m-d\TH:i:s',
-        //         ((int)$coincidencias[1]) / 1000
-        //     );
-        // }
-
-        // Construir el JSON que recibirá Core 3
+       
         $payload = json_encode([
     'Identificacion'     => $oferente['Identificacion'],
     'TipoIdentificacion' => $oferente['TipoIdentificacion'],
