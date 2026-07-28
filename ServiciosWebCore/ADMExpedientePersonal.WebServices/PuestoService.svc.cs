@@ -17,9 +17,7 @@ namespace ADMExpedientePersonal.WebServices
 
         public PuestoServiceHost()
         {
-            _service = new PuestoService(
-                RepositoryFactory.CrearPuestoRepository()
-            );
+            _service = ServiceFactory.CrearPuestoService();
         }
 
         public PuestosDisponiblesResponse ListarPuestosDisponibles()

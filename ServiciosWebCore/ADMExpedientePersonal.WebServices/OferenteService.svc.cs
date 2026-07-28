@@ -12,16 +12,7 @@ namespace ADMExpedientePersonal.WebServices
 
         public OferenteServiceHost()
         {
-            var oferenteRepository =
-                RepositoryFactory.CrearOferenteRepository();
-
-            var bitacoraRepository =
-                RepositoryFactory.CrearBitacoraRepository();
-
-            _service = new OferenteService(
-                oferenteRepository,
-                bitacoraRepository
-            );
+            _service = ServiceFactory.CrearOferenteService();
         }
 
         public OferentesPorPuestoResponse ObtenerOferentesPorPuesto(

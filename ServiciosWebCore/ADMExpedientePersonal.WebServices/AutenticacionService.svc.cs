@@ -12,9 +12,7 @@ namespace ADMExpedientePersonal.WebServices
 
         public AutenticacionServiceHost()
         {
-            _service = new AutenticacionService(
-                RepositoryFactory.CrearAutenticacionRepository()
-            );
+            _service = ServiceFactory.CrearAutenticacionService();
         }
 
         public AutenticacionResponse Autenticar(AutenticacionRequest request)

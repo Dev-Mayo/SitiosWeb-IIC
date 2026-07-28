@@ -2,10 +2,11 @@
 using ADMExpedientePersonal.WebServices.Contracts;
 using ADMExpedientePersonal.WebServices.Entities.Requests;
 using ADMExpedientePersonal.WebServices.Entities.Responses;
-using System;
 
-// Alias para evitar conflicto con el nombre, porque se llama igual al que tengo en el proyecto.services
-using EmpleadoBusinessService = ADMExpedientePersonal.WebServices.Services.EmpleadoService;
+
+// Alias para evitar conflicto con el nombre, porque se llama igual al que tengo en el proyecto Services
+using EmpleadoBusinessService =
+   ADMExpedientePersonal.WebServices.Services.EmpleadoService;
 
 namespace ADMExpedientePersonal.WebServices
 {
@@ -15,13 +16,7 @@ namespace ADMExpedientePersonal.WebServices
 
         public EmpleadoService()
         {
-            var empleadoRepository = RepositoryFactory.CrearEmpleadoRepository();
-            var bitacoraRepository = RepositoryFactory.CrearBitacoraRepository();
-
-            _service = new EmpleadoBusinessService(
-                empleadoRepository,
-                bitacoraRepository
-            );
+            _service = ServiceFactory.CrearEmpleadoService();
         }
 
         public EmpleadoResponse RegistrarEmpleado(EmpleadoRequest request)

@@ -46,19 +46,19 @@ namespace ADMExpedientePersonal.WebServices.Services
                     );
                 }
 
-                // Tipo de identificación
-                if (string.IsNullOrWhiteSpace(request.TipoIdentificacion))
-                    return Error("El tipo de identificación es requerido.");
+                //// Tipo de identificación
+                //if (string.IsNullOrWhiteSpace(request.TipoIdentificacion))
+                //    return Error("El tipo de identificación es requerido.");
 
-                request.TipoIdentificacion =
-                    request.TipoIdentificacion.Trim();
+                //request.TipoIdentificacion =
+                //    request.TipoIdentificacion.Trim();
 
-                if (!TipoIdentificacionValido(request.TipoIdentificacion))
-                {
-                    return Error(
-                        "El tipo de identificación indicado no es válido."
-                    );
-                }
+                //if (!TipoIdentificacionValido(request.TipoIdentificacion))
+                //{
+                //    return Error(
+                //        "El tipo de identificación indicado no es válido."
+                //    );
+                //}
 
                 // Nombre
                 if (string.IsNullOrWhiteSpace(request.NombreCompleto))
