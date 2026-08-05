@@ -1,23 +1,17 @@
-import { postJson } from './apiClient';
+import { getJson } from './apiClient';
 import { SERVICES } from '../config';
 
-// Equivalente a oferentes.php (Core 2). POST a OferenteService.
-export async function obtenerOferentesPorPuesto(codigoPuesto, usuario) {
-  const resultado = await postJson(SERVICES.oferentesPorPuesto, {
-    CodigoPuesto: Number(codigoPuesto) || 0,
-    Usuario: usuario
-  });
+// Oferentes por puesto. GET /api/oferentes?codigoPuesto={id} devuelve la
+// lista directamente (OferenteDto[]).
+export async function obtenerOferentesPorPuesto(codigoPuesto, _usuario) {
+  const ruta = `${SERVICES.oferentesPorPuesto}?codigoPuesto=${encodeURIComponent(
+    Number(codigoPuesto) || 0
+  )}`;
+  const oferentes = await getJson(ruta);
+  const lista = Array.isArray(oferentes) ? oferentes : [];
 
-  if (!resultado.Success) {
-    throw new Error(
-      resultado.Mensaje ?? 'No se pudo obtener el listado de oferentes.'
-    );
-  }
-
-  const oferentes = Array.isArray(resultado.Oferentes) ? resultado.Oferentes : [];
-
-  return oferentes.map((item) => ({
-    identificacion: item.Identificacion,
-    nombreCompleto: item.NombreCompleto
+  return lista.map((item) => ({
+    identificacion: item.identificacion,
+    nombreCompleto: item.nombreCompleto
   }));
 }

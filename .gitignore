@@ -445,3 +445,10 @@ dist-ssr
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+/bin/
+/obj/
+
+
+EjemploMicroServicioPersona/

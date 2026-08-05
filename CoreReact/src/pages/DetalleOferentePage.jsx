@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { servicios } from '../services';
-import { formatearFechaWcf } from '../utils/format';
+import { formatearFecha } from '../utils/format';
 import Topbar from '../components/Topbar';
 
 export default function DetalleOferentePage() {
@@ -123,7 +123,7 @@ export default function DetalleOferentePage() {
                 <div className="col-md-4">
                   <div className="detail-label">Fecha de nacimiento</div>
                   <div className="detail-value">
-                    {formatearFechaWcf(oferente.fechaNacimiento)}
+                    {formatearFecha(oferente.fechaNacimiento)}
                   </div>
                 </div>
               </div>
@@ -176,8 +176,8 @@ export default function DetalleOferentePage() {
                         {preparacion.CodigoInstitucion ?? 'No disponible'}
                       </div>
                       <div className="text-muted small">
-                        Periodo: {formatearFechaWcf(preparacion.FechaInicio)} -{' '}
-                        {formatearFechaWcf(preparacion.FechaFin)}
+                        Periodo: {formatearFecha(preparacion.FechaInicio)} -{' '}
+                        {formatearFecha(preparacion.FechaFin)}
                       </div>
                     </div>
                   ))
@@ -201,8 +201,8 @@ export default function DetalleOferentePage() {
                         Empresa: {experiencia.Empresa ?? 'No disponible'}
                       </div>
                       <div className="text-muted small">
-                        Periodo: {formatearFechaWcf(experiencia.FechaInicio)} -{' '}
-                        {formatearFechaWcf(experiencia.FechaFin)}
+                        Periodo: {formatearFecha(experiencia.FechaInicio)} -{' '}
+                        {formatearFecha(experiencia.FechaFin)}
                       </div>
                     </div>
                   ))
@@ -229,8 +229,8 @@ export default function DetalleOferentePage() {
                         Estado: {concurso.Estado ?? 'No disponible'}
                       </div>
                       <div className="text-muted small">
-                        Periodo: {formatearFechaWcf(concurso.FechaInicio)} -{' '}
-                        {formatearFechaWcf(concurso.FechaFin)}
+                        Periodo: {formatearFecha(concurso.FechaInicio)} -{' '}
+                        {formatearFecha(concurso.FechaFin)}
                       </div>
                     </div>
                   ))

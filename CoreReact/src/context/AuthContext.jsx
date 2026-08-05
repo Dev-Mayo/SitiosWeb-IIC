@@ -1,33 +1,57 @@
 import { createContext, useContext, useState, useCallback } from 'react';
-
-const STORAGE_KEY = 'corereact_usuario';
+import { USER_KEY, TOKEN_KEY } from '../config';
 
 const AuthContext = createContext(null);
 
-// Sustituye a la sesión PHP. En un SPA el estado se guarda en el navegador;
-// cuando se migre a microservicios basta con intercambiar el origen de los
-// datos (cookie, token JWT, etc.) en este mismo contexto.
+// Sesión del SPA: perfil del usuario + token JWT, persistidos en localStorage.
+// El token lo adjunta apiClient como "Authorization: Bearer <token>" en cada
+// llamada protegida al gateway.
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
+      return JSON.parse(localStorage.getItem(USER_KEY) ?? 'null');
     } catch {
       return null;
     }
   });
 
+  const [token, setToken] = useState(() => {
+    try {
+      return localStorage.getItem(TOKEN_KEY) ?? '';
+    } catch {
+      return '';
+    }
+  });
+
   const login = useCallback((datosUsuario) => {
-    setUser(datosUsuario);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(datosUsuario));
+    const { token: nuevoToken, ...perfil } = datosUsuario;
+    setUser(perfil);
+    setToken(nuevoToken ?? '');
+    try {
+      localStorage.setItem(USER_KEY, JSON.stringify(perfil));
+      if (nuevoToken) {
+        localStorage.setItem(TOKEN_KEY, nuevoToken);
+      } else {
+        localStorage.removeItem(TOKEN_KEY);
+      }
+    } catch {
+      // almacenamiento no disponible
+    }
   }, []);
 
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem(STORAGE_KEY);
+    setToken('');
+    try {
+      localStorage.removeItem(USER_KEY);
+      localStorage.removeItem(TOKEN_KEY);
+    } catch {
+      // almacenamiento no disponible
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

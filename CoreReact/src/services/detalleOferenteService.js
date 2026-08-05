@@ -1,35 +1,46 @@
-import { postJson } from './apiClient';
+import { getJson } from './apiClient';
 import { SERVICES } from '../config';
 
-// Equivalente a detalle_oferente.php (Core 8). POST a DetalleOferenteService.
-// Normaliza la respuesta para que la vista no dependa del WCF.
-export async function obtenerDetalleOferente(identificacion, usuario) {
-  const resultado = await postJson(SERVICES.detalleOferente, {
-    Identificacion: identificacion,
-    Usuario: usuario
-  });
-
-  if (!resultado.Exito) {
-    throw new Error(
-      resultado.Mensaje ?? 'No se encontró información para el oferente seleccionado.'
-    );
-  }
+// Detalle del oferente. GET /api/oferentes/{identificacion} devuelve el
+// DetalleOferenteResponse directamente (404 -> { mensaje }). Normaliza la
+// respuesta (camelCase del backend) al formato que espera la vista.
+export async function obtenerDetalleOferente(identificacion, _usuario) {
+  const ruta = `${SERVICES.detalleOferente}/${encodeURIComponent(identificacion)}`;
+  const resultado = await getJson(ruta);
 
   return {
-    identificacion: resultado.Identificacion,
-    tipoIdentificacion: resultado.TipoIdentificacion,
-    nombreCompleto: resultado.NombreCompleto,
-    fechaNacimiento: resultado.FechaNacimiento,
-    contratado: Boolean(resultado.Contratado),
-    correos: Array.isArray(resultado.Correos) ? resultado.Correos : [],
-    telefonos: Array.isArray(resultado.Telefonos) ? resultado.Telefonos : [],
-    preparacionAcademica: Array.isArray(resultado.PreparacionAcademica)
-      ? resultado.PreparacionAcademica
+    identificacion: resultado.identificacion,
+    tipoIdentificacion: resultado.tipoIdentificacion,
+    nombreCompleto: resultado.nombreCompleto,
+    fechaNacimiento: resultado.fechaNacimiento,
+    contratado: Boolean(resultado.contratado),
+    correos: Array.isArray(resultado.correos) ? resultado.correos : [],
+    telefonos: Array.isArray(resultado.telefonos) ? resultado.telefonos : [],
+    preparacionAcademica: Array.isArray(resultado.preparacionAcademica)
+      ? resultado.preparacionAcademica.map((item) => ({
+          CodigoInstitucion: item.codigoInstitucion,
+          Titulo: item.titulo,
+          FechaInicio: item.fechaInicio,
+          FechaFin: item.fechaFin
+        }))
       : [],
-    experienciaLaboral: Array.isArray(resultado.ExperienciaLaboral)
-      ? resultado.ExperienciaLaboral
+    experienciaLaboral: Array.isArray(resultado.experienciaLaboral)
+      ? resultado.experienciaLaboral.map((item) => ({
+          Empresa: item.empresa,
+          Puesto: item.puesto,
+          FechaInicio: item.fechaInicio,
+          FechaFin: item.fechaFin
+        }))
       : [],
-    concursos: Array.isArray(resultado.Concursos) ? resultado.Concursos : [],
-    curriculum: resultado.Curriculum
+    concursos: Array.isArray(resultado.concursos)
+      ? resultado.concursos.map((item) => ({
+          CodigoConcurso: item.codigoConcurso,
+          Nombre: item.nombre,
+          FechaInicio: item.fechaInicio,
+          FechaFin: item.fechaFin,
+          Estado: item.estado
+        }))
+      : [],
+    curriculum: resultado.curriculum
   };
 }

@@ -42,7 +42,8 @@ export default function LoginPage() {
       login({
         idUsuario: resultado.idUsuario,
         nombreCompleto: resultado.nombreCompleto,
-        usuario: resultado.usuario
+        usuario: resultado.usuario,
+        token: resultado.token
       });
 
       navigate('/', { replace: true });

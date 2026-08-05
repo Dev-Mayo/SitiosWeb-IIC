@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Gateway/">
+    <Project Path="src/Gateway/ADMExpedientePersonal.Api.Gateway/ADMExpedientePersonal.Api.Gateway.csproj" />
+  </Folder>
+  <Folder Name="/src/Services/">
+    <Project Path="src/Services/ADMExpedientePersonal.Api.Auth/ADMExpedientePersonal.Api.Auth.csproj" />
+    <Project Path="src/Services/ADMExpedientePersonal.Api.DetalleOferente/ADMExpedientePersonal.Api.DetalleOferente.csproj" />
+    <Project Path="src/Services/ADMExpedientePersonal.Api.Empleados/ADMExpedientePersonal.Api.Empleados.csproj" />
+    <Project Path="src/Services/ADMExpedientePersonal.Api.Oferentes/ADMExpedientePersonal.Api.Oferentes.csproj" />
+    <Project Path="src/Services/ADMExpedientePersonal.Api.Puestos/ADMExpedientePersonal.Api.Puestos.csproj" />
+  </Folder>
+</Solution>
