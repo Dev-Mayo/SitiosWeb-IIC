@@ -109,14 +109,11 @@ StyleCopReport.xml
 *.pgc
 *.pgd
 *.rsp
-<<<<<<< HEAD
 *.dtbcache,json
 *.dll
 *.pdb
 *.cache
 *.suo
-=======
->>>>>>> Dev
 # but not Directory.Build.rsp, as it configures directory-level build defaults
 !Directory.Build.rsp
 *.sbr
@@ -437,3 +434,14 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+
+
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
