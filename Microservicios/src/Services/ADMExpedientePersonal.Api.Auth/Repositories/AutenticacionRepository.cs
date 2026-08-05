@@ -1,5 +1,4 @@
 using ADMExpedientePersonal.Api.Auth.Models;
-using ADMExpedientePersonal.Api.Auth.Models;
 using ADMExpedientePersonal.Api.Auth.Data;
 using Dapper;
 using System.Data;

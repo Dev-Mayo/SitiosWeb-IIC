@@ -1,13 +1,14 @@
-using ADMExpedientePersonal.Api.Empleados.Services;
 using ADMExpedientePersonal.Api.Empleados.Models;
 using ADMExpedientePersonal.Api.Empleados.Repositories;
+using ADMExpedientePersonal.Api.Empleados.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ADMExpedientePersonal.Api.Empleados
 {
     public static class EmpleadosEndpoints
     {
-        public static void MapEmpleadosEndpoints(this IEndpointRouteBuilder routes)
+        public static void MapEmpleadosEndpoints(
+            this IEndpointRouteBuilder routes)
         {
             var group = routes
                 .MapGroup("/api/empleados")
@@ -17,45 +18,100 @@ namespace ADMExpedientePersonal.Api.Empleados
 
             // POST /api/empleados
             group.MapPost("/",
-                async (EmpleadoService service, HttpContext context, [FromBody] EmpleadoRequest request) =>
+                async (
+                    [FromServices] EmpleadoService service,
+                    HttpContext context,
+                    [FromBody] EmpleadoRequest? request) =>
                 {
                     if (request == null)
-                        return Results.BadRequest(new { mensaje = "No se recibieron datos del empleado." });
+                    {
+                        return Results.BadRequest(new
+                        {
+                            exito = false,
+                            mensaje = "No se recibieron datos del empleado."
+                        });
+                    }
 
-                    // El usuario que ejecuta la acción sale del token, no del cuerpo.
-                    request.Usuario = context.User.Identity?.Name ?? request.Usuario;
+                    // El usuario se obtiene del token, no del cuerpo.
+                    request.Usuario =
+                        context.User.Identity?.Name
+                        ?? "USUARIO_NO_IDENTIFICADO";
 
-                    var result = await service.RegistrarEmpleadoAsync(request);
+                    var result =
+                        await service.RegistrarEmpleadoAsync(request);
 
                     if (!result.Exito)
                     {
-                        if (result.Mensaje.Contains("Ya existe"))
-                            return Results.Conflict(new { mensaje = result.Mensaje });
+                        return result.CodigoEstado switch
+                        {
+                            400 => Results.BadRequest(new
+                            {
+                                exito = false,
+                                mensaje = result.Mensaje
+                            }),
 
-                        if (result.Mensaje.StartsWith("Error técnico"))
-                            return Results.Problem(result.Mensaje, statusCode: 500);
+                            404 => Results.NotFound(new
+                            {
+                                exito = false,
+                                mensaje = result.Mensaje
+                            }),
 
-                        return Results.BadRequest(new { mensaje = result.Mensaje });
+                            409 => Results.Conflict(new
+                            {
+                                exito = false,
+                                mensaje = result.Mensaje
+                            }),
+
+                            _ => Results.Json(
+                                new
+                                {
+                                    exito = false,
+                                    mensaje = result.Mensaje
+                                },
+                                statusCode: 500
+                            )
+                        };
                     }
 
-                    return Results.Created($"/api/empleados/{result.EmpleadoId}", result);
+                    return Results.Created(
+                        $"/api/empleados/{result.EmpleadoId}",
+                        new
+                        {
+                            exito = true,
+                            mensaje = result.Mensaje,
+                            empleadoId = result.EmpleadoId
+                        }
+                    );
                 })
                 .WithName("RegistrarEmpleado");
 
-            // GET /api/empleados/health (verifica conexión a EMP)
+            // GET /api/empleados/health
             group.MapGet("/health",
-                async (EmpleadoRepository repository) =>
+                async (
+                    [FromServices] EmpleadoRepository repository) =>
                 {
                     try
                     {
-                        var count = await repository.ProbarConexionEmpAsync();
-                        return Results.Ok(new { conexion = true, empleados = count });
+                        var count =
+                            await repository.ProbarConexionEmpAsync();
+
+                        return Results.Ok(new
+                        {
+                            conexion = true,
+                            empleados = count
+                        });
                     }
                     catch
                     {
-                        return Results.Problem(
-                            "No se pudo conectar a la base de datos.",
-                            statusCode: 503);
+                        return Results.Json(
+                            new
+                            {
+                                conexion = false,
+                                mensaje =
+                                    "No se pudo conectar a la base de datos."
+                            },
+                            statusCode: 503
+                        );
                     }
                 })
                 .WithName("ProbarConexionEmp");

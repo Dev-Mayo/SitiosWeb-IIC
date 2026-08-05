@@ -8,6 +8,7 @@ namespace ADMExpedientePersonal.Api.Empleados.Repositories
     {
         private readonly IDbConnectionFactory _connectionFactory;
 
+
         public EmpleadoRepository(IDbConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
@@ -126,5 +127,54 @@ namespace ADMExpedientePersonal.Api.Empleados.Repositories
                 return await connection.ExecuteScalarAsync<int>(sql);
             }
         }
+        public async Task<bool> ExistePuestoAsync(int puestoId) // verifica si el puesto ya existe en la base de datos
+        {
+            using (var connection = _connectionFactory.CreateConnection("EMP"))
+            {
+                const string sql = @"
+            SELECT COUNT(1)
+            FROM puestos
+            WHERE puesto_id = @PuestoId;";
+
+                return await connection.ExecuteScalarAsync<int>(
+                    sql,
+                    new { PuestoId = puestoId }
+                ) > 0;
+            }
+        }
+        public async Task<bool> ExisteOferenteAsync(string identificacion) // verifica si el oferente ya existe en la base de datos
+        {
+            using (var connection = _connectionFactory.CreateConnection("OFE"))
+            {
+                const string sql = @"
+            SELECT COUNT(1)
+            FROM oferentes
+            WHERE identificacion = @Identificacion;";
+
+                return await connection.ExecuteScalarAsync<int>(
+                    sql,
+                    new { Identificacion = identificacion }
+                ) > 0;
+            }
+        }
+
+        public async Task<bool> EstaContratadoAsync(string identificacion) // verifica si el oferente ya ha sido marcado como contratado
+        {
+            using (var connection = _connectionFactory.CreateConnection("OFE"))
+            {
+                const string sql = @"
+            SELECT contratado
+            FROM oferentes
+            WHERE identificacion = @Identificacion;";
+
+                var contratado = await connection.ExecuteScalarAsync<int?>(
+                    sql,
+                    new { Identificacion = identificacion }
+                );
+
+                return contratado == 1;
+            }
+        }
+
     }
 }
