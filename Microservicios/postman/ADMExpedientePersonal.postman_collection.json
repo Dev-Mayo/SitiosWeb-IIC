@@ -1,27 +1,11 @@
 {
   "info": {
-    "_postman_id": "b0f4b2a6-5c8d-4e3a-9f7d-1c2e3a4b5c6d",
+    "_postman_id": "406fee9a-1fe6-406f-a1ca-4229e2b435c1",
     "name": "ADMExpedientePersonal (Microservicios)",
     "description": "Colección para probar los microservicios vía Gateway YARP (http://localhost:5080).\n1) Ejecuta Login para obtener el token (se guarda automáticamente en {{token}}).\n2) El resto de endpoints lo usan con Authorization: Bearer {{token}}.\n\nCredenciales reales: las que usaba la app web anterior (BD SEG).",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56723602"
   },
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:5080",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": "",
-      "type": "string"
-    },
-    {
-      "key": "identificacion",
-      "value": "1234567890",
-      "type": "string"
-    }
-  ],
   "item": [
     {
       "name": "Auth",
@@ -38,7 +22,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"usuario\": \"TU_USUARIO\",\n  \"password\": \"TU_PASSWORD\"\n}"
+              "raw": "{\n  \"usuario\": \"JuPerez\",\n  \"password\": \"1234\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
@@ -53,28 +37,21 @@
             },
             "description": "Autentica contra la BD SEG. En el script se guarda el token en la variable {{token}}."
           },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "var jsonData = pm.response.json();",
-                  "if (pm.response.code === 200 && jsonData && jsonData.token) {",
-                  "    pm.collectionVariables.set('token', jsonData.token);",
-                  "    console.log('Token guardado correctamente.');",
-                  "} else {",
-                  "    console.log('Login fallido:', jsonData);",
-                  "}"
-                ]
-              }
-            }
-          ]
+          "response": []
         },
         {
           "name": "Me (usuario del token)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -86,16 +63,6 @@
                 "api",
                 "auth",
                 "me"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
               ]
             }
           },
@@ -109,6 +76,16 @@
         {
           "name": "Listar puestos disponibles",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -119,16 +96,6 @@
               "path": [
                 "api",
                 "puestos"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
               ]
             }
           },
@@ -142,10 +109,20 @@
         {
           "name": "Oferentes por puesto",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/oferentes?codigoPuesto=1",
+              "raw": "{{baseUrl}}/api/oferentes?codigoPuesto=1&pagina=1&tamanoPagina=10",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -157,16 +134,14 @@
                 {
                   "key": "codigoPuesto",
                   "value": "1"
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
+                },
                 {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
+                  "key": "pagina",
+                  "value": "1"
+                },
+                {
+                  "key": "tamanoPagina",
+                  "value": "10"
                 }
               ]
             }
@@ -176,6 +151,16 @@
         {
           "name": "Detalle de oferente",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -187,16 +172,6 @@
                 "api",
                 "oferentes",
                 "{{identificacion}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
               ]
             },
             "description": "Reemplaza la variable {{identificacion}} por una cédula real que exista en la BD OFE."
@@ -211,6 +186,16 @@
         {
           "name": "Health (conexión BD EMP)",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -223,7 +208,13 @@
                 "empleados",
                 "health"
               ]
-            },
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar empleado",
+          "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
@@ -233,13 +224,7 @@
                   "type": "string"
                 }
               ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Registrar empleado",
-          "request": {
+            },
             "method": "POST",
             "header": [
               {
@@ -261,21 +246,25 @@
                 "empleados"
               ]
             },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
             "description": "El campo 'usuario' se ignora (se toma del token)."
           },
           "response": []
         }
       ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "identificacion",
+      "value": "1234567890"
     }
   ]
 }
