@@ -13,16 +13,45 @@ namespace ADMExpedientePersonal.Api.Puestos
                 .RequireCors("ReactDev")
                 .RequireAuthorization();
 
-            // GET /api/puestos
+            // GET /api/puestos?pagina=1&tamanoPagina=10
             group.MapGet("/",
-                async ([FromServices] PuestoService service) =>
+                async (
+                    [FromQuery] int pagina,
+                    [FromQuery] int tamanoPagina,
+                    [FromServices] PuestoService service
+                ) =>
                 {
-                    var result = await service.ListarPuestosDisponiblesAsync();
+                    if (pagina <= 0)
+                    {
+                        return Results.BadRequest(new
+                        {
+                            mensaje = "La página debe ser mayor a cero."
+                        });
+                    }
+
+                    if (tamanoPagina <= 0)
+                    {
+                        return Results.BadRequest(new
+                        {
+                            mensaje = "El tamaño de página debe ser mayor a cero."
+                        });
+                    }
+
+                    var result = await service
+                        .ListarPuestosDisponiblesAsync(
+                            pagina,
+                            tamanoPagina
+                        );
 
                     if (!result.Success)
-                        return Results.Problem(result.Mensaje, statusCode: 500);
+                    {
+                        return Results.Problem(
+                            result.Mensaje,
+                            statusCode: 500
+                        );
+                    }
 
-                    return Results.Ok(result.Puestos);
+                    return Results.Ok(result);
                 })
                 .WithName("ListarPuestosDisponibles");
         }
