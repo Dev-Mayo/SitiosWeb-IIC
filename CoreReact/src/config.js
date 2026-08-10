@@ -12,7 +12,7 @@
 // "Authorization: Bearer <token>" en el resto de llamadas.
 // ---------------------------------------------------------------------------
 
-export const API_BASE_URL = 'https://admexpedientepersonalapigateway20260809214543.azurewebsites.net/';
+export const API_BASE_URL = 'https://sitiosweb-iic-3.onrender.com';
 
 // Claves de almacenamiento local (sesión).
 export const USER_KEY = 'corereact_usuario';
