@@ -27,6 +27,9 @@ var app = builder.Build();
 
 app.UseCors("ReactDev");
 
+// Health check para que Render sepa que el gateway está vivo.
+app.MapGet("/", () => Results.Ok("Gateway OK"));
+
 // Reenvía las peticiones a los microservicios según las rutas configuradas.
 app.MapReverseProxy();
 
