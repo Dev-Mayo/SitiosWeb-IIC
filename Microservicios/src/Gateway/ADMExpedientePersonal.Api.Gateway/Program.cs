@@ -1,6 +1,10 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// CORS para que React (http://localhost:5173) pueda consumir el gateway.
+// Render asigna el puerto por la variable de entorno PORT.
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
+// CORS para que React (local y producción en Render) pueda consumir el gateway.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactDev", policy =>
@@ -8,7 +12,8 @@ builder.Services.AddCors(options =>
         policy
             .WithOrigins(
                 "http://localhost:5173",
-                "https://localhost:5173")
+                "https://localhost:5173",
+                builder.Configuration["Cors:AllowedOrigin"] ?? "")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
