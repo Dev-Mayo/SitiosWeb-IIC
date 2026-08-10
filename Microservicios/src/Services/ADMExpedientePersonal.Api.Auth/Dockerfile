@@ -6,10 +6,10 @@ WORKDIR /src
 COPY . .
 
 # Restauramos dependencias
-RUN dotnet restore ./Services/ADMExpedientePersonal.Api.Empleados/ADMExpedientePersonal.Api.Empleados.csproj
+RUN dotnet restore ./Services/ADMExpedientePersonal.Api.Auth/ADMExpedientePersonal.Api.Auth.csproj
 
 # Publicamos la API
-RUN dotnet publish ./Services/ADMExpedientePersonal.Api.Empleados/ADMExpedientePersonal.Api.Empleados.csproj -c Release -o /app/out
+RUN dotnet publish ./Services/ADMExpedientePersonal.Api.Auth/ADMExpedientePersonal.Api.Auth.csproj -c Release -o /app/out
 
 # Etapa de runtime
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
