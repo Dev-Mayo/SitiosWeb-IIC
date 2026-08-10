@@ -1,8 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Render asigna el puerto por la variable de entorno PORT.
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+// Render inyecta el puerto vía HTTP_PORTS (p.ej. 8080). Solo forzamos el
+// puerto si existe la variable PORT; si no, usamos el puerto de Render.
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
 
 // CORS para que React (local y producción en Render) pueda consumir el gateway.
 builder.Services.AddCors(options =>
