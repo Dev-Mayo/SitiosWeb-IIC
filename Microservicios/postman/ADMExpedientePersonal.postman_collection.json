@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "406fee9a-1fe6-406f-a1ca-4229e2b435c1",
+    "_postman_id": "9700be47-1f9d-42ed-a6c5-25688a8180f4",
     "name": "ADMExpedientePersonal (Microservicios)",
     "description": "Colección para probar los microservicios vía Gateway YARP (http://localhost:5080).\n1) Ejecuta Login para obtener el token (se guarda automáticamente en {{token}}).\n2) El resto de endpoints lo usan con Authorization: Bearer {{token}}.\n\nCredenciales reales: las que usaba la app web anterior (BD SEG).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -272,10 +272,34 @@
       ]
     }
   ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5080"
+      "value": "https://admexpedientepersonalapigateway20260809214543.azurewebsites.net/"
     },
     {
       "key": "token",
@@ -283,7 +307,7 @@
     },
     {
       "key": "identificacion",
-      "value": "1234567890"
+      "value": "100000009"
     }
   ]
 }
