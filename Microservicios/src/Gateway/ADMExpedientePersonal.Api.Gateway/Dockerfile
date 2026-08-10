@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copiamos solo el proyecto de Auth
+# Copiamos solo el proyecto de gateway
 COPY . .
 
 # Restauramos dependencias del proyecto específico
